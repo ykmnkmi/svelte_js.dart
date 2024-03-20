@@ -4,33 +4,25 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
+import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
-
-extension type NestedProperties._(JSObject _) implements JSObject {
-  factory NestedProperties({required int answer}) {
-    return NestedProperties.js(answer: answer.toJSBox);
-  }
-
-  external NestedProperties.js({JSBoxedDartObject? answer});
-
-  @JS('answer')
-  external JSBoxedDartObject get _answer;
-
-  int get answer => _answer.toDart as int;
-}
-
-extension type const Nested._(Component<NestedProperties> component) {
-  void call(Node node, {required int answer}) {
-    component(node, NestedProperties(answer: answer));
-  }
-}
-
-const Nested nested = Nested._(_component);
 
 final _template = $.template('<p> </p>');
 
-void _component(Node $anchor, NestedProperties $properties) {
+extension type NestedProperties._(JSObject _) implements JSObject {
+  factory NestedProperties({required Object answer}) {
+    return NestedProperties.js(answer: unsafeCast<JSAny>(answer));
+  }
+
+  external factory NestedProperties.js({JSAny answer});
+
+  @JS('answer')
+  external JSAny get _answer;
+
+  Object get answer => unsafeCast<Object>(_answer);
+}
+
+void nested(Node $anchor, NestedProperties $properties) {
   $.push($properties, false);
   $.init();
 
@@ -39,11 +31,10 @@ void _component(Node $anchor, NestedProperties $properties) {
   var text = $.child<Text>(p);
 
   // Update
-  String text$textEffect() {
+  $.textEffect(text, () {
     return 'The answer is ${$properties.answer}';
-  }
+  });
 
-  $.textEffect(text, text$textEffect);
   $.close($anchor, p);
   $.pop();
 }

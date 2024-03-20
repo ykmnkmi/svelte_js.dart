@@ -1,16 +1,24 @@
 import {
-  // blocks/*.dart
-  each_keyed, each_indexed, if as if_block,
-  // operations.dart
+  // dom/blocks/*
+  await as await_block, each_keyed, each_indexed, if as if_block, html,
+  // dom/elements/*
+  attr_effect, attr, event,
+  // dom/legacy/*
+  init,
+  // dom/operations.js
   child, child_frag, sibling,
-  // reactivity/computations.dart
-  pre_effect, render_effect,
-  // reactivity/sources.dart
-  mutable_source,
-  // render.dart
-  template, open, open_frag, space, comment, close, close_frag, event, text_effect, text, html, attr_effect, attr, spread_props, mount, unmount, append_styles, prop, init,
-  // runtime.dart
-  get, set, mutate, untrack, push, pop, unwrap,
+  // dom/template.js
+  template, open, open_frag, space, comment, close, close_frag,
+  // reactivity/effects.js
+  legacy_pre_effect, legacy_pre_effect_reset, render_effect,
+  // reactivity/props.js
+  spread_props, prop,
+  // reactivity/sources.js
+  mutable_source, mutate, set,
+  // render.js
+  text_effect, text, mount, unmount, append_styles,
+  // runtime.js
+  get, push, pop,
 } from 'svelte/internal';
 
 const set_getter = (object, key, getter) => {
@@ -22,11 +30,16 @@ const set_getter = (object, key, getter) => {
 };
 
 export default {
-  set_getter,
-  each_keyed, each_indexed, if_block,
+  await_block, each_keyed, each_indexed, if_block, html,
+  attr_effect, attr,
+  event,
+  init,
   child, child_frag, sibling,
-  pre_effect, render_effect,
-  mutable_source,
-  template, open, open_frag, space, comment, close, close_frag, event, text_effect, text, html, attr_effect, attr, spread_props, mount, unmount, append_styles, prop, init,
-  get, set, mutate, untrack, push, pop, unwrap,
+  template, open, open_frag, space, comment, close, close_frag,
+  legacy_pre_effect, legacy_pre_effect_reset, render_effect,
+  spread_props, prop,
+  mutable_source, mutate, set,
+  text_effect, text, mount, unmount, append_styles,
+  get, push, pop,
+  set_getter,
 };

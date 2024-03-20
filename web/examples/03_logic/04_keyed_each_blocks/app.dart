@@ -4,31 +4,22 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 import 'thing.dart' as $$;
 
 typedef Thing = ({int id, String color});
 
-extension type AppProperties._(JSObject object) implements JSObject {
-  AppProperties() : object = JSObject();
-}
-
-extension type const App._(Component<AppProperties> component) {
-  void call(Node node) {
-    component(node, AppProperties());
-  }
-}
-
-const App app = App._(_component);
-
-final _eachBlock = $.fragment(' <!>');
-final _eachBlock1 = $.fragment(' <!>');
 final _fragment = $.fragment(
     '<button>Remove first thing</button> <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em"><div><h2>Keyed</h2> <!></div> <div><h2>Unkeyed</h2> <!></div></div>');
 
-void _component(Node $anchor, AppProperties $properties) {
+extension type AppProperties._(JSObject _) implements JSObject {
+  factory AppProperties() {
+    return AppProperties._(JSObject());
+  }
+}
+
+void app(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
   var things = $.mutableSource<List<Thing>>(<Thing>[
@@ -57,79 +48,30 @@ void _component(Node $anchor, AppProperties $properties) {
   var node2 = $.sibling($.sibling(h21, true));
   $.event('click', button, handleClick, false);
 
-  List<Thing> node$each$collection() {
-    return $.get<List<Thing>>(things);
-  }
-
-  Object node$each$key(Thing thing, int index, List<Thing> list) {
-    return thing.id;
-  }
-
-  void node$each$render(Node? $anchor, Signal<Thing> thing, Signal<int> index) {
+  $.eachKeyedBlock<Thing>(node, () => $.get<List<Thing>>(things), 5, (thing, index, list) => thing.id,
+      ($anchor, thing, index) {
     // Init
-    var fragment1 = $.openFragment($anchor, true, _eachBlock);
-    var text = $.childFragment<Text>(fragment1, true);
-    var node1 = $.sibling<Node>(text);
+    var fragment1 = $.comment($anchor);
+    var node1 = $.childFragment<Text>(fragment1, true);
 
-    // Update
-    String node$textEffect() {
-      return '${$.get<int>(index)}: ';
-    }
-
-    $.textEffect(text, node$textEffect);
-
-    var thing$properties = $$.ThingProperties.js();
-
-    String thing$properties$current() {
-      return $.get<Thing>(thing).color;
-    }
-
-    $.setGetter(thing$properties, 'current', thing$properties$current);
-    $$.thing.component(node1, thing$properties);
+    var thingProperties = $$.ThingProperties.js();
+    $.setGetter(thingProperties, 'current', () => $.get<Thing>(thing).color);
+    $$.thing(node1, thingProperties);
 
     $.closeFragment($anchor, fragment1);
-  }
+  }, null);
 
-  $.eachKeyed(
-    node,
-    node$each$collection,
-    7,
-    node$each$key,
-    node$each$render,
-    null,
-  );
-
-  List<Thing> node2$each$collection() {
-    return $.get<List<Thing>>(things);
-  }
-
-  void node2$each$render(Node? $anchor, Signal<Thing> thing, int index) {
+  $.eachIndexedBlock<Thing>(node2, () => $.get<List<Thing>>(things), 1, ($anchor, thing, index) {
     // Init
-    var fragment2 = $.openFragment($anchor, true, _eachBlock1);
-    var text1 = $.childFragment<Text>(fragment2, true);
-    $.nodeValue(text1, '$index');
-
-    var node3 = $.sibling<Node>(text1);
+    var fragment2 = $.comment($anchor);
+    var node3 = $.childFragment<Node>(fragment2);
 
     var thing$properties = $$.ThingProperties.js();
-
-    String thing$properties$current() {
-      return $.get<Thing>(thing).color;
-    }
-
-    $.setGetter(thing$properties, 'current', thing$properties$current);
-    $$.thing.component(node3, thing$properties);
+    $.setGetter(thing$properties, 'current', () => $.get<Thing>(thing).color);
+    $$.thing(node3, thing$properties);
 
     $.closeFragment($anchor, fragment2);
-  }
-
-  $.eachIndexed(
-    node2,
-    node2$each$collection,
-    1,
-    node2$each$render,
-    null,
-  );
+  }, null);
 
   $.closeFragment($anchor, fragment);
   $.pop();

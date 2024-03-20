@@ -4,26 +4,19 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 import 'nested.dart' as $$;
 
 extension type AppProperties._(JSObject _) implements JSObject {
-  AppProperties() : _ = JSObject();
-}
-
-extension type const App._(Component<AppProperties> component) {
-  void call(Node node) {
-    component(node, AppProperties());
+  factory AppProperties() {
+    return AppProperties._(JSObject());
   }
 }
 
-const App app = App._(_component);
-
 final _fragment = $.fragment('<!> <!>');
 
-void _component(Node $anchor, AppProperties $properties) {
+void app(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
   $.init();
 
@@ -32,8 +25,8 @@ void _component(Node $anchor, AppProperties $properties) {
   var node = $.childFragment<Node>(fragment);
   var node1 = $.sibling<Node>($.sibling<Text>(node, true));
 
-  $$.nested(node1, answer: 42);
-  $$.nested(node1);
+  $$.nested(node, $$.NestedProperties(answer: 42));
+  $$.nested(node1, $$.NestedProperties());
   $.closeFragment($anchor, fragment);
   $.pop();
 }

@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 final _fragment = $.fragment('<button> </button> <p> </p> <p> </p>');
@@ -15,74 +14,45 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-const App app = App._();
+void app(Node $anchor, AppProperties $properties) {
+  $.push($properties, true);
 
-final class App implements Component<AppProperties> {
-  const App._();
+  var doubled = $.mutableSource<int>();
+  var quadrupled = $.mutableSource<int>();
+  var count = $.mutableSource<int>(0);
 
-  @override
-  void call(Node node) {
-    component(node, AppProperties());
+  void handleClick(Event event) {
+    $.set<int>(count, $.get<int>(count) + 1);
   }
 
-  @override
-  void component(Node $anchor, AppProperties $properties) {
-    $.push($properties, true);
+  $.legacyPreEffect<int>(() => $.get<int>(count), () {
+    $.set<int>(doubled, $.get<int>(count) * 2);
+  });
 
-    var count = $.mutableSource<int>(0);
-    var doubled = $.mutableSource<int>();
-    var quadrupled = $.mutableSource<int>();
+  $.legacyPreEffect(() => $.get<int>(doubled), () {
+    $.set<int>(quadrupled, $.get<int>(doubled) * 2);
+  });
 
-    void handleClick(Event event) {
-      $.set<int>(count, $.get<int>(count) + 1);
-    }
+  $.legacyPreEffectReset();
+  $.init();
 
-    void app$preEffect() {
-      $.get<int>(count);
+  // Init
+  var fragment = $.openFragment($anchor, true, _fragment);
+  var button = $.childFragment<Element>(fragment);
+  var text = $.child<Text>(button);
+  var p = $.sibling<Element>($.sibling<Text>(button, true));
+  var text1 = $.child<Text>(p);
+  var p1 = $.sibling<Element>($.sibling<Text>(p, true));
+  var text2 = $.child<Text>(p1);
 
-      void doubled$untrack() {
-        $.set<int>(doubled, $.get<int>(count) * 2);
-      }
+  // Update
+  $.renderEffect((block, signal) {
+    $.text(text, 'Count: ${$.get<int>(count)}');
+    $.text(text1, '${$.get<int>(count)} * 2 = ${$.get<int>(doubled)}');
+    $.text(text2, '${$.get<int>(doubled)} * 2 = ${$.get<int>(quadrupled)}');
+  });
 
-      $.untrack<void>(doubled$untrack);
-    }
-
-    $.preEffect(app$preEffect);
-
-    void app1$preEffect() {
-      $.get<int>(doubled);
-
-      void quadrupled$untracked() {
-        $.set<int>(quadrupled, $.get<int>(doubled) * 2);
-      }
-
-      $.untrack<void>(quadrupled$untracked);
-    }
-
-    $.preEffect(app1$preEffect);
-
-    $.init();
-
-    // Init
-    var fragment = $.openFragment($anchor, true, _fragment);
-    var button = $.childFragment<Element>(fragment);
-    var text = $.child<Text>(button);
-    var p = $.sibling<Element>($.sibling<Text>(button, true));
-    var text1 = $.child<Text>(p);
-    var p1 = $.sibling<Element>($.sibling<Text>(p, true));
-    var text2 = $.child<Text>(p1);
-
-    // Update
-    void app$renderEffect() {
-      $.text(text, 'Count: ${$.get<int>(count)}');
-      $.text(text1, '${$.get<int>(count)} * 2 = ${$.get<int>(doubled)}');
-      $.text(text2, '${$.get<int>(doubled)} * 2 = ${$.get<int>(quadrupled)}');
-    }
-
-    $.renderEffect(app$renderEffect);
-
-    $.event('click', button, handleClick, false);
-    $.closeFragment($anchor, fragment);
-    $.pop();
-  }
+  $.event('click', button, handleClick, false);
+  $.closeFragment($anchor, fragment);
+  $.pop();
 }

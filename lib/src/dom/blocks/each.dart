@@ -17,16 +17,12 @@ external void _eachKeyed(
   JSFunction? fallback,
 );
 
-void eachKeyed<T extends Object?>(
+void eachKeyedBlock<T extends Object?>(
   Node anchor,
   List<T> Function() collection,
   int flags,
   Object Function(T item, int index, List<T> list)? key,
-  void Function(
-    Node? anchor,
-    Signal<T> item,
-    Signal<int> index,
-  ) render,
+  void Function(Node? anchor, Value<T> item, int index) render,
   void Function(Node $anchor)? fallback,
 ) {
   JSArray jsCollection() {
@@ -34,7 +30,11 @@ void eachKeyed<T extends Object?>(
     return list.toJS;
   }
 
-  JSAny? Function(JSAny? item, JSNumber index, JSArray list)? jsKey;
+  void jsRender(Node? anchor, JSObject item, JSNumber index) {
+    render(anchor, unsafeCast<Value<T>>(item), index.toDartInt);
+  }
+
+  JSExportedDartFunction? jsKey;
 
   if (key != null) {
     jsKey = (JSAny? item, JSNumber index, JSArray list) {
@@ -43,21 +43,9 @@ void eachKeyed<T extends Object?>(
         index.toDartInt,
         unsafeCast<List<T>>(list.toDart),
       ));
-    };
+    }.toJS;
   }
-
-  void jsRender(Node? anchor, JSObject item, JSObject index) {
-    render(anchor, Signal<T>(item), Signal<int>(index));
-  }
-
-  _eachKeyed(
-    anchor,
-    jsCollection.toJS,
-    flags.toJS,
-    jsKey?.toJS,
-    jsRender.toJS,
-    fallback?.toJS,
-  );
+  _eachKeyed(anchor, jsCollection.toJS, flags.toJS, jsKey, jsRender.toJS, fallback?.toJS);
 }
 
 @JS('each_indexed')
@@ -69,15 +57,11 @@ external void _eachIndexed(
   JSFunction? fallback,
 );
 
-void eachIndexed<T>(
+void eachIndexedBlock<T extends Object?>(
   Node anchor,
   List<T> Function() collection,
   int flags,
-  void Function(
-    Node? anchor,
-    Signal<T> item,
-    int index,
-  ) render,
+  void Function(Node? anchor, Value<T> item, int index) render,
   void Function(Node $anchor)? fallback,
 ) {
   JSArray jsCollection() {
@@ -86,14 +70,8 @@ void eachIndexed<T>(
   }
 
   void jsRender(Node? anchor, JSObject item, JSNumber index) {
-    render(anchor, Signal<T>(item), index.toDartInt);
+    render(anchor, unsafeCast<Value<T>>(item), index.toDartInt);
   }
 
-  _eachIndexed(
-    anchor,
-    jsCollection.toJS,
-    flags.toJS,
-    jsRender.toJS,
-    fallback?.toJS,
-  );
+  _eachIndexed(anchor, jsCollection.toJS, flags.toJS, jsRender.toJS, fallback?.toJS);
 }

@@ -4,13 +4,11 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 import 'nested.dart' as $$;
 
-final _fragment =
-    $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
+final _fragment = $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -18,28 +16,26 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-const App app = App._();
+final app = () {
+  $.appendStyles(null, 'svelte-urs9w7', '''
+p.svelte-urs9w7 {
+  color: purple;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 2em;
+}
+''');
 
-final class App implements Component<AppProperties> {
-  const App._();
-
-  @override
-  void call(Node node) {
-    component(node, AppProperties());
-  }
-
-  @override
-  void component(Node $anchor, AppProperties $properties) {
+  return (Node $anchor, AppProperties $properties) {
     $.push($properties, false);
     $.init();
 
     // Init
     var fragment = $.openFragment($anchor, true, _fragment);
     var p = $.childFragment<Element>(fragment);
-    var node = $.sibling<Node>($.sibling<Node>(p));
+    var node = $.sibling<Node>($.sibling<Text>(p, true));
 
-    $$.nested(node);
+    $$.nested(node, $$.NestedProperties());
     $.closeFragment($anchor, fragment);
     $.pop();
-  }
-}
+  };
+}();

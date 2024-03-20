@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 final _template = $.template('<button> </button>');
@@ -15,41 +14,27 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-const App app = App._();
+void app(Node $anchor, AppProperties $properties) {
+  $.push($properties, false);
 
-final class App implements Component<AppProperties> {
-  const App._();
+  var count = $.mutableSource<int>(0);
 
-  @override
-  void call(Node node) {
-    component(node, AppProperties());
+  void handleClick(Event event) {
+    $.set<int>(count, $.get<int>(count) + 1);
   }
 
-  @override
-  void component(Node $anchor, AppProperties $properties) {
-    $.push($properties, false);
+  $.init();
 
-    var count = $.mutableSource<int>(0);
+  // Init
+  var button = $.open<Element>($anchor, true, _template);
+  var text = $.child<Text>(button);
 
-    void handleClick(Event event) {
-      $.set<int>(count, $.get<int>(count) + 1);
-    }
+  // Update
+  $.textEffect(text, () {
+    return 'Clicked ${$.get<int>(count)} ${$.get<int>(count) == 1 ? 'time' : 'times'}';
+  });
 
-    $.init();
-
-    // Init
-    var button = $.open<Element>($anchor, true, _template);
-    var text = $.child<Text>(button);
-
-    // Update
-    String text$textEffect() {
-      return 'Clicked ${$.get<int>(count)} ${$.get<int>(count) == 1 ? 'time' : 'times'}';
-    }
-
-    $.textEffect(text, text$textEffect);
-
-    $.event('click', button, handleClick, false);
-    $.close($anchor, button);
-    $.pop();
-  }
+  $.event('click', button, handleClick, false);
+  $.close($anchor, button);
+  $.pop();
 }

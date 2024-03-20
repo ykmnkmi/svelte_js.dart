@@ -1,0 +1,16 @@
+{
+  "dart.lineLength": 120,
+  "files.associations": {
+    "*.svelte": "html"
+  },
+  "yaml.schemas": {
+    "https://json.schemastore.org/dart-build": [
+      "build.yaml",
+      "*.build.yaml",
+      "build.*.yaml"
+    ]
+  },
+  "[html]": {
+    "files.trimTrailingWhitespace": false
+  }
+}

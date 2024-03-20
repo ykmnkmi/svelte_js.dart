@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 final _template = $.template('<h1> </h1>');
@@ -15,30 +14,18 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-const App app = App._();
+void app(Node $anchor, AppProperties $properties) {
+  $.push($properties, false);
 
-final class App implements Component<AppProperties> {
-  const App._();
+  var name = 'world';
 
-  @override
-  void call(Node node) {
-    component(node, AppProperties());
-  }
+  $.init();
 
-  @override
-  void component(Node $anchor, AppProperties $properties) {
-    $.push($properties, false);
+  // Init
+  var h1 = $.open<Element>($anchor, true, _template);
+  var text = $.child<Text>(h1);
 
-    var name = 'world';
-
-    $.init();
-
-    // Init
-    var h1 = $.open<Element>($anchor, true, _template);
-    var text = $.child<Text>(h1);
-
-    $.nodeValue(text, 'Hello $name!');
-    $.close($anchor, h1);
-    $.pop();
-  }
+  text.nodeValue = 'Hello $name!';
+  $.close($anchor, h1);
+  $.pop();
 }
