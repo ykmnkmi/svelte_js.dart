@@ -18,7 +18,7 @@ external void _awaitBlock(
 void awaitBlock<T extends Object?>(
   Comment anchor,
   Future<T> Function() input,
-  void Function(Node anchor)? onLoading,
+  void Function(Node anchor)? onPending,
   void Function(Node anchor, T value)? onValue,
   void Function(Node anchor, Object error)? onError,
 ) {
@@ -43,5 +43,5 @@ void awaitBlock<T extends Object?>(
     }.toJS;
   }
 
-  _awaitBlock(anchor, jsInput.toJS, onLoading?.toJS, jsOnValue, jsOnError);
+  _awaitBlock(anchor, jsInput.toJS, onPending?.toJS, jsOnValue, jsOnError);
 }

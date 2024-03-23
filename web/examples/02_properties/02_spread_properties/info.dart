@@ -63,8 +63,8 @@ void info(Node $anchor, InfoProperties $properties) {
   var text1 = $.sibling<Text>(code, true);
   var a = $.sibling<Element>(text1);
   var a1 = $.sibling<Element>($.sibling<Text>(a, true));
-  String? ahref;
-  String? a1href;
+  var ahref = '';
+  var a1href = '';
 
   $.renderEffect((block, signal) {
     $.text(text, $properties.name);

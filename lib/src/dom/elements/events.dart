@@ -19,11 +19,7 @@ void event<T extends Event>(
   Element dom,
   void Function(T event) handler,
   bool capture, [
-  bool? passive,
+  bool passive = false,
 ]) {
-  if (passive == null) {
-    _event(eventName.toJS, dom, handler.toJS, capture.toJS);
-  } else {
-    _event(eventName.toJS, dom, handler.toJS, capture.toJS, passive.toJS);
-  }
+  _event(eventName.toJS, dom, handler.toJS, capture.toJS, passive.toJS);
 }

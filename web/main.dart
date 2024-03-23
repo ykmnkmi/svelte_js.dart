@@ -24,62 +24,33 @@ import 'examples/03_logic/03_each_blocks/app.dart' as each_blocks;
 import 'examples/03_logic/04_keyed_each_blocks/app.dart' as keyed_each_blocks;
 import 'examples/03_logic/05_await_blocks/app.dart' as await_blocks;
 import 'examples/04_events/00_dom_events/app.dart' as dom_events;
+import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
+import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
+import 'examples/04_events/03_component_events/app.dart' as component_events;
 
-Component? selectFactory(String name) {
+ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
-    'hello_world' => (Node node, JSObject properties) {
-        hello_world.app(node, hello_world.AppProperties());
-      },
-    'dynamic_attributes' => (Node node, JSObject properties) {
-        dynamic_attributes.app(node, dynamic_attributes.AppProperties());
-      },
-    'styling' => (Node node, JSObject properties) {
-        styling.app(node, styling.AppProperties());
-      },
-    'nested_components' => (Node node, JSObject properties) {
-        nested_components.app(node, nested_components.AppProperties());
-      },
-    'html_tags' => (Node node, JSObject properties) {
-        html_tags.app(node, html_tags.AppProperties());
-      },
-    'reactive_assignments' => (Node node, JSObject properties) {
-        reactive_assignments.app(node, reactive_assignments.AppProperties());
-      },
-    'reactive_declarations' => (Node node, JSObject properties) {
-        reactive_declarations.app(node, reactive_declarations.AppProperties());
-      },
-    'reactive_statements' => (Node node, JSObject properties) {
-        reactive_statements.app(node, reactive_statements.AppProperties());
-      },
-    'declaring_properties' => (Node node, JSObject properties) =>
-        declaring_properties.app(node, declaring_properties.AppProperties()),
-    'default_values' => (Node node, JSObject properties) {
-        default_values.app(node, default_values.AppProperties());
-      },
-    'spread_properties' => (Node node, JSObject properties) {
-        spread_properties.app(node, spread_properties.AppProperties());
-      },
-    'if_blocks' => (Node node, JSObject properties) {
-        if_blocks.app(node, if_blocks.AppProperties());
-      },
-    'else_blocks' => (Node node, JSObject properties) {
-        else_blocks.app(node, else_blocks.AppProperties());
-      },
-    'else_if_blocks' => (Node node, JSObject properties) {
-        else_if_blocks.app(node, else_if_blocks.AppProperties());
-      },
-    'each_blocks' => (Node node, JSObject properties) {
-        each_blocks.app(node, each_blocks.AppProperties());
-      },
-    'keyed_each_blocks' => (Node node, JSObject properties) {
-        keyed_each_blocks.app(node, keyed_each_blocks.AppProperties());
-      },
-    'await_blocks' => (Node node, JSObject properties) {
-        await_blocks.app(node, await_blocks.AppProperties());
-      },
-    'dom_events' => (Node node, JSObject properties) {
-        dom_events.app(node, dom_events.AppProperties());
-      },
+    'hello_world' => mount(hello_world.app, target: target),
+    'dynamic_attributes' => mount(dynamic_attributes.app, target: target),
+    'styling' => mount(styling.app, target: target),
+    'nested_components' => mount(nested_components.app, target: target),
+    'html_tags' => mount(html_tags.app, target: target),
+    'reactive_assignments' => mount(reactive_assignments.app, target: target),
+    'reactive_declarations' => mount(reactive_declarations.app, target: target),
+    'reactive_statements' => mount(reactive_statements.app, target: target),
+    'declaring_properties' => mount(declaring_properties.app, target: target),
+    'default_values' => mount(default_values.app, target: target),
+    'spread_properties' => mount(spread_properties.app, target: target),
+    'if_blocks' => mount(if_blocks.app, target: target),
+    'else_blocks' => mount(else_blocks.app, target: target),
+    'else_if_blocks' => mount(else_if_blocks.app, target: target),
+    'each_blocks' => mount(each_blocks.app, target: target),
+    'keyed_each_blocks' => mount(keyed_each_blocks.app, target: target),
+    'await_blocks' => mount(await_blocks.app, target: target),
+    'dom_events' => mount(dom_events.app, target: target),
+    'inline_handlers' => mount(inline_handlers.app, target: target),
+    'event_modifiers' => mount(event_modifiers.app, target: target),
+    'component_events' => mount(component_events.app, target: target),
     _ => null,
   };
 }
@@ -88,23 +59,19 @@ void main() {
   var select = document.querySelector('select') as HTMLSelectElement;
   var target = document.querySelector('main') as HTMLElement;
 
-  ComponentReference? component;
+  ComponentReference? current;
 
   void onChange(Event event) {
     try {
-      var app = selectFactory(select.value);
-
-      if (component case var component?) {
+      if (current case var component?) {
         unmount(component);
       }
 
-      if (app != null) {
-        component = mount(app, target: target);
-        console.log(component);
-      }
+      current = mountComponent(select.value, target);
     } catch (error, stackTrace) {
       print(error);
       print(stackTrace);
+      rethrow;
     }
   }
 

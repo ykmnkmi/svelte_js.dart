@@ -13,8 +13,8 @@ void attrEffect(Node dom, String attribute, String Function() value) {
 }
 
 @JS('attr')
-external void _attr(Element dom, JSString attribute, JSString? value);
+external void _attr(Element dom, JSString attribute, JSString value);
 
-void attr(Element dom, String attribute, String? value) {
-  _attr(dom, attribute.toJS, value?.toJS);
+void attr(Element dom, String attribute, String value) {
+  _attr(dom, attribute.toJS, value.toJS);
 }

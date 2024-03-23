@@ -47,7 +47,7 @@ void app(Node $anchor, AppProperties $properties) {
   var button = $.childFragment<Element>(fragment);
   var node = $.sibling<Comment>($.sibling<Text>(button, true));
 
-  $.event('click', button, handleClick, false);
+  $.event<Event>('click', button, handleClick, false);
 
   $.awaitBlock<String>(node, () => $.get<Future<String>>(future), ($anchor) {
     /* Init */

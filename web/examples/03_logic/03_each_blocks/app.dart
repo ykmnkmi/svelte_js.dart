@@ -46,7 +46,7 @@ void app(Node $anchor, AppProperties $properties) {
     var li = $.open<Element>($anchor, true, _eachBlock);
     var a = $.child<Element>(li);
     var text = $.child<Text>(a);
-    String? ahref;
+    var ahref = '';
 
     // Update
     $.renderEffect((block, signal) {

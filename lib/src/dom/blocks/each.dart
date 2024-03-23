@@ -45,6 +45,7 @@ void eachKeyedBlock<T extends Object?>(
       ));
     }.toJS;
   }
+
   _eachKeyed(anchor, jsCollection.toJS, flags.toJS, jsKey, jsRender.toJS, fallback?.toJS);
 }
 

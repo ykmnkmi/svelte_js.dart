@@ -21,6 +21,10 @@ import {
   get, push, pop,
 } from 'svelte/internal';
 
+import {
+  createEventDispatcher,
+} from 'svelte';
+
 const set_getter = (object, key, getter) => {
   Object.defineProperty(object, key, {
     get: getter,
@@ -42,4 +46,6 @@ export default {
   text_effect, text, mount, unmount, append_styles,
   get, push, pop,
   set_getter,
+
+  createEventDispatcher,
 };

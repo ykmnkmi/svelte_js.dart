@@ -96,3 +96,10 @@ typedef Source<T extends Object?> = Value<T>;
 typedef Component<T extends JSObject> = void Function(Node anchor, T properties);
 
 extension type ComponentReference(JSObject _) implements JSObject {}
+
+@optionalTypeArgs
+extension type TypedEvent<T extends Object?>(CustomEvent _) implements CustomEvent {
+  T get detail {
+    return unsafeCast<T>(_.detail);
+  }
+}

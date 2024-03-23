@@ -52,7 +52,7 @@ void app(Node $anchor, AppProperties $properties) {
     $.text(text2, '${$.get<int>(doubled)} * 2 = ${$.get<int>(quadrupled)}');
   });
 
-  $.event('click', button, handleClick, false);
+  $.event<Event>('click', button, handleClick, false);
   $.closeFragment($anchor, fragment);
   $.pop();
 }

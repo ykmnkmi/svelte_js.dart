@@ -42,7 +42,7 @@ void app(Node $anchor, AppProperties $properties) {
     return 'Clicked ${$.get<int>(count)} ${$.get<int>(count) == 1 ? 'time' : 'times'}';
   });
 
-  $.event('click', button, handleClick, false);
+  $.event<Event>('click', button, handleClick, false);
   $.close($anchor, button);
   $.pop();
 }

@@ -46,7 +46,8 @@ void app(Node $anchor, AppProperties $properties) {
   var div2 = $.sibling<Element>($.sibling<Text>(div1, true));
   var h21 = $.child<Element>(div2);
   var node2 = $.sibling($.sibling(h21, true));
-  $.event('click', button, handleClick, false);
+
+  $.event<Event>('click', button, handleClick, false);
 
   $.eachKeyedBlock<Thing>(node, () => $.get<List<Thing>>(things), 5, (thing, index, list) => thing.id,
       ($anchor, thing, index) {

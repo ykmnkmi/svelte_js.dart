@@ -1,7 +1,7 @@
 <script type="application/dart">
 	import 'package:web/web.dart';
 
-	let count = 0;
+	var count = 0;
 
 	$: if (count >= 10) {
 		window.alert(`count is dangerously high!`);
