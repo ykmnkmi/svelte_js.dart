@@ -12,15 +12,17 @@ final _template =
 
 extension type ThingProperties._(JSObject _) implements JSObject {
   factory ThingProperties({required String current}) {
-    return ThingProperties.js(current: unsafeCast<JSAny>(current));
+    return ThingProperties.$(current: unsafeCast<JSAny?>(current));
   }
 
-  external factory ThingProperties.js({JSAny current});
+  external factory ThingProperties.$({JSAny? current});
 
   @JS('current')
-  external JSAny get _current;
+  external JSAny? get _current;
 
-  String get current => unsafeCast<String>(_current);
+  String get current {
+    return unsafeCast<String>(_current);
+  }
 }
 
 final thing = () {

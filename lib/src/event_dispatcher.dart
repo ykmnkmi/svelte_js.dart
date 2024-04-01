@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/src/unsafe_cast.dart';
 
 extension type _DispatchOptions._(JSObject _) implements JSObject {
-  external factory _DispatchOptions({bool cancelable});
+  external factory _DispatchOptions({JSBoolean cancelable});
 }
 
 @JS('createEventDispatcher')
@@ -26,7 +26,7 @@ EventDispatcher<T> createEventDispatcher<T extends Object?>() {
       null,
       type.toJS,
       unsafeCast<JSAny?>(details),
-      _DispatchOptions(cancelable: cancelable),
+      _DispatchOptions(cancelable: cancelable.toJS),
     ) as JSBoolean;
     return jsValue.toDart;
   };

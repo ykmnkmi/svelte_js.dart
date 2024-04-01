@@ -11,15 +11,17 @@ final _template = $.template('<p> </p>');
 
 extension type NestedProperties._(JSObject _) implements JSObject {
   factory NestedProperties({Object answer = 'a mystery'}) {
-    return NestedProperties.js(answer: unsafeCast<JSAny>(answer));
+    return NestedProperties.$(answer: unsafeCast<JSAny?>(answer));
   }
 
-  external factory NestedProperties.js({JSAny answer});
+  external factory NestedProperties.$({JSAny? answer});
 
   @JS('answer')
-  external JSAny get _answer;
+  external JSAny? get _answer;
 
-  Object get answer => unsafeCast<Object>(_answer);
+  Object get answer {
+    return unsafeCast<Object>(_answer);
+  }
 }
 
 void nested(Node $anchor, NestedProperties $properties) {

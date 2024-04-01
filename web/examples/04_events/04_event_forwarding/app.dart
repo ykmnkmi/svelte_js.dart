@@ -7,8 +7,8 @@ import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-import 'inner.dart' as $$;
 import 'message.dart';
+import 'outer.dart' as $$;
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -33,7 +33,7 @@ void app(Node $anchor, AppProperties $properties) {
     handleMessage(TypedEvent<Message>(event));
   }
 
-  $$.inner(node, $$.InnerProperties($$events: $$.InnerEvents(message: $onMessage)));
+  $$.outer(node, $$.OuterProperties($$events: $$.OuterEvents(message: $onMessage)));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

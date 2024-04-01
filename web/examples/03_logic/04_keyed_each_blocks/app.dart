@@ -55,7 +55,7 @@ void app(Node $anchor, AppProperties $properties) {
     var fragment1 = $.comment($anchor);
     var node1 = $.childFragment<Text>(fragment1, true);
 
-    var thingProperties = $$.ThingProperties.js();
+    var thingProperties = $$.ThingProperties.$();
     $.setGetter(thingProperties, 'current', () => $.get<Thing>(thing).color);
     $$.thing(node1, thingProperties);
 
@@ -67,7 +67,7 @@ void app(Node $anchor, AppProperties $properties) {
     var fragment2 = $.comment($anchor);
     var node3 = $.childFragment<Node>(fragment2);
 
-    var thing$properties = $$.ThingProperties.js();
+    var thing$properties = $$.ThingProperties.$();
     $.setGetter(thing$properties, 'current', () => $.get<Thing>(thing).color);
     $$.thing(node3, thing$properties);
 

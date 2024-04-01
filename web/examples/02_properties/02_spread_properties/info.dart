@@ -16,40 +16,48 @@ extension type InfoProperties._(JSObject _) implements JSObject {
     required String speed,
     required String website,
   }) {
-    return InfoProperties.js(
-      name: unsafeCast<JSAny>(name),
+    return InfoProperties.$(
+      name: unsafeCast<JSAny?>(name),
       version: unsafeCast<JSAny>(version),
       speed: unsafeCast<JSAny>(speed),
       website: unsafeCast<JSAny>(website),
     );
   }
 
-  external factory InfoProperties.js({
-    JSAny name,
-    JSAny version,
-    JSAny speed,
-    JSAny website,
+  external factory InfoProperties.$({
+    JSAny? name,
+    JSAny? version,
+    JSAny? speed,
+    JSAny? website,
   });
 
   @JS('name')
-  external JSAny get _name;
+  external JSAny? get _name;
 
-  String get name => unsafeCast<String>(_name);
+  String get name {
+    return unsafeCast<String>(_name);
+  }
 
   @JS('version')
-  external JSAny get _version;
+  external JSAny? get _version;
 
-  int get version => unsafeCast<int>(_version);
+  int get version {
+    return unsafeCast<int>(_version);
+  }
 
   @JS('speed')
-  external JSAny get _speed;
+  external JSAny? get _speed;
 
-  String get speed => unsafeCast<String>(_speed);
+  String get speed {
+    return unsafeCast<String>(_speed);
+  }
 
   @JS('website')
-  external JSAny get _website;
+  external JSAny? get _website;
 
-  String get website => unsafeCast<String>(_website);
+  String get website {
+    return unsafeCast<String>(_website);
+  }
 }
 
 void info(Node $anchor, InfoProperties $properties) {

@@ -2,12 +2,12 @@
 	import 'package:svelte_js/svelte_js.dart' show TypedEvent;
 	import 'package:web/web.dart';
 
-	import 'Inner.svelte';
 	import 'message.dart';
+	import 'Outer.svelte';
 
 	void handleMessage(TypedEvent<Message> event) {
 		window.alert(event.detail.text);
 	}
 </script>
 
-<Inner on:message={handleMessage} />
+<Outer on:message={handleMessage} />
