@@ -4,6 +4,7 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/src/unsafe_cast.dart';
+import 'package:web/web.dart';
 
 @JS('forward_event')
 external JSObject _forwardEvent(JSString event, JSObject properties);
@@ -20,10 +21,9 @@ T forwardEvents<T extends JSObject>(List<String> events, JSObject properties) {
   return unsafeCast<T>(_forwardEvents(jsEvents.toJS, properties));
 }
 
-@JS('set_getter')
-external JSVoid _setGetter(JSObject object, JSString key, JSFunction getter);
+@JS('event_bubble')
+external void _eventBubble(JSString eventName, Element dom, JSObject properties);
 
-void setGetter<T>(JSObject object, String key, T Function() getter) {
-  var jsGetter = unsafeCast<JSAny? Function()>(getter);
-  _setGetter(object, key.toJS, jsGetter.toJS);
+void evenBubblet<T extends JSObject>(String eventName, Element dom, T properties) {
+  _eventBubble(eventName.toJS, dom, properties);
 }

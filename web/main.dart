@@ -28,6 +28,7 @@ import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
 import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
 import 'examples/04_events/03_component_events/app.dart' as component_events;
 import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
+import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
 
 ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
@@ -53,6 +54,7 @@ ComponentReference? mountComponent(String name, Node target) {
     'event_modifiers' => mount(event_modifiers.app, target: target),
     'component_events' => mount(component_events.app, target: target),
     'event_forwarding' => mount(event_forwarding.app, target: target),
+    'dom_event_forwarding' => mount(dom_event_forwarding.app, target: target),
     _ => null,
   };
 }

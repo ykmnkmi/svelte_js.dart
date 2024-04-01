@@ -9,7 +9,7 @@ import 'package:web/web.dart';
 
 import 'message.dart';
 
-final _fragment = $.template('<button>Click to say hello</button>');
+final _template = $.template('<button>Click to say hello</button>');
 
 extension type InnerEvents._(JSObject _) implements JSObject {
   factory InnerEvents({void Function(CustomEvent event)? message}) {
@@ -39,7 +39,7 @@ void inner(Node $anchor, InnerProperties $properties) {
   $.init();
 
   // Init
-  var button = $.open<Element>($anchor, true, _fragment);
+  var button = $.open<Element>($anchor, true, _template);
 
   $.event<Event>('click', button, sayHello, false);
   $.close($anchor, button);

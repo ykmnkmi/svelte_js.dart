@@ -20,6 +20,14 @@ void push<T extends JSObject>(T properties, bool runes) {
   _push(properties, runes.toJS);
 }
 
+@JS('set_getter')
+external JSVoid _setGetter(JSObject object, JSString key, JSFunction getter);
+
+void setGetter<T>(JSObject object, String key, T Function() getter) {
+  var jsGetter = unsafeCast<JSAny? Function()>(getter);
+  _setGetter(object, key.toJS, jsGetter.toJS);
+}
+
 @JS('pop')
 external void _pop([JSObject properties]);
 

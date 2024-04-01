@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template('<button>Click me</button>');
+import 'custom_button.dart' as $$;
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -17,16 +17,18 @@ extension type AppProperties._(JSObject _) implements JSObject {
 void app(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
-  void handleMousemove(Event event) {
-    window.alert('no more alerts');
+  void handleClick(Event event) {
+    window.alert('clicked');
   }
 
   $.init();
 
   // Init
-  var button = $.open<Element>($anchor, true, _template);
+  var fragment = $.comment($anchor);
+  var node = $.childFragment(fragment);
+  print(node);
 
-  $.event<Event>('click', button, $.once(handleMousemove), false);
-  $.close($anchor, button);
+  $$.customButton(node, $$.CustomButtonProperties($$events: $$.CustomButtonEvents(click: handleClick)));
+  $.closeFragment($anchor, fragment);
   $.pop();
 }

@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _fragment = $.template('<div class="svelte-1c44y5p"> </div>');
+final _template = $.template('<div class="svelte-1c44y5p"> </div>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -29,7 +29,7 @@ div.svelte-1c44y5p {
     $.init();
 
     // Init
-    var div = $.open<Element>($anchor, true, _fragment);
+    var div = $.open<Element>($anchor, true, _template);
     var text = $.child<Text>(div);
 
     // Update
