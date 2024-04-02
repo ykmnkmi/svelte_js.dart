@@ -7,7 +7,8 @@ import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
-final _template = $.template('<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>');
+final _template = $.template(
+    '<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>');
 
 extension type InfoProperties._(JSObject _) implements JSObject {
   factory InfoProperties({
@@ -17,46 +18,46 @@ extension type InfoProperties._(JSObject _) implements JSObject {
     required String website,
   }) {
     return InfoProperties.$(
-      name: unsafeCast<JSAny?>(name),
-      version: unsafeCast<JSAny>(version),
-      speed: unsafeCast<JSAny>(speed),
-      website: unsafeCast<JSAny>(website),
+      name: name.toExternalReference,
+      version: version.toExternalReference,
+      speed: speed.toExternalReference,
+      website: website.toExternalReference,
     );
   }
 
   external factory InfoProperties.$({
-    JSAny? name,
-    JSAny? version,
-    JSAny? speed,
-    JSAny? website,
+    ExternalDartReference? name,
+    ExternalDartReference? version,
+    ExternalDartReference? speed,
+    ExternalDartReference? website,
   });
 
   @JS('name')
-  external JSAny? get _name;
+  external ExternalDartReference get _name;
 
   String get name {
-    return unsafeCast<String>(_name);
+    return unsafeCast<String>(_name.toDartObject);
   }
 
   @JS('version')
-  external JSAny? get _version;
+  external ExternalDartReference get _version;
 
   int get version {
-    return unsafeCast<int>(_version);
+    return unsafeCast<int>(_version.toDartObject);
   }
 
   @JS('speed')
-  external JSAny? get _speed;
+  external ExternalDartReference get _speed;
 
   String get speed {
-    return unsafeCast<String>(_speed);
+    return unsafeCast<String>(_speed.toDartObject);
   }
 
   @JS('website')
-  external JSAny? get _website;
+  external ExternalDartReference get _website;
 
   String get website {
-    return unsafeCast<String>(_website);
+    return unsafeCast<String>(_website.toDartObject);
   }
 }
 
@@ -76,9 +77,11 @@ void info(Node $anchor, InfoProperties $properties) {
 
   $.renderEffect((block, signal) {
     $.text(text, $properties.name);
-    $.text(text1, ' package is ${$properties.speed} fast. Download version ${$properties.version} from ');
+    $.text(text1,
+        ' package is ${$properties.speed} fast. Download version ${$properties.version} from ');
 
-    if (ahref != (ahref = 'https://www.npmjs.com/package/${$properties.name}')) {
+    if (ahref !=
+        (ahref = 'https://www.npmjs.com/package/${$properties.name}')) {
       $.attr(a, 'href', ahref);
     }
 

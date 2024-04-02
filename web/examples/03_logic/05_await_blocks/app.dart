@@ -21,7 +21,8 @@ void app(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
   Future<String> getRandomNumber() async {
-    var responsePromise = window.fetch('https://svelte.dev/tutorial/random-number'.toJS);
+    var responsePromise =
+        window.fetch('https://svelte.dev/tutorial/random-number'.toJS);
     // var responsePromise = window.fetch('/tutorial/random-number'.toJS);
     var response = await responsePromise.toDart;
     var textPromise = response.text();
@@ -31,7 +32,7 @@ void app(Node $anchor, AppProperties $properties) {
       return text.toDart;
     }
 
-    throw Exception(text);
+    throw Exception(text.toDart);
   }
 
   var future = $.mutableSource<Future<String>>(getRandomNumber());

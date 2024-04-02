@@ -3,14 +3,14 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 
 @JS('get')
-external JSAny? _get(JSObject signal);
+external ExternalDartReference? _get(JSObject signal);
 
 T get<T extends Object?>(Value<T> signal) {
-  return unsafeCast<T>(_get(signal));
+  return unref<T>(_get(signal));
 }
 
 @JS('push')
@@ -21,10 +21,14 @@ void push<T extends JSObject>(T properties, bool runes) {
 }
 
 @JS('set_getter')
-external JSVoid _setGetter(JSObject object, JSString key, JSFunction getter);
+external JSVoid _setGetter(
+    JSObject object, JSString key, JSExportedDartFunction getter);
 
 void setGetter<T>(JSObject object, String key, T Function() getter) {
-  var jsGetter = unsafeCast<JSAny? Function()>(getter);
+  ExternalDartReference? jsGetter() {
+    return ref<T>(getter());
+  }
+
   _setGetter(object, key.toJS, jsGetter.toJS);
 }
 

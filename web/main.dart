@@ -7,16 +7,23 @@ import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 import 'examples/00_introduction/00_hello_world/app.dart' as hello_world;
-import 'examples/00_introduction/01_dynamic_attributes/app.dart' as dynamic_attributes;
+import 'examples/00_introduction/01_dynamic_attributes/app.dart'
+    as dynamic_attributes;
 import 'examples/00_introduction/02_styling/app.dart' as styling;
-import 'examples/00_introduction/03_nested_components/app.dart' as nested_components;
+import 'examples/00_introduction/03_nested_components/app.dart'
+    as nested_components;
 import 'examples/00_introduction/04_html_tags/app.dart' as html_tags;
-import 'examples/01_reactivity/00_reactive_assignments/app.dart' as reactive_assignments;
-import 'examples/01_reactivity/01_reactive_declarations/app.dart' as reactive_declarations;
-import 'examples/01_reactivity/02_reactive_statements/app.dart' as reactive_statements;
-import 'examples/02_properties/00_declaring_properties/app.dart' as declaring_properties;
+import 'examples/01_reactivity/00_reactive_assignments/app.dart'
+    as reactive_assignments;
+import 'examples/01_reactivity/01_reactive_declarations/app.dart'
+    as reactive_declarations;
+import 'examples/01_reactivity/02_reactive_statements/app.dart'
+    as reactive_statements;
+import 'examples/02_properties/00_declaring_properties/app.dart'
+    as declaring_properties;
 import 'examples/02_properties/01_default_values/app.dart' as default_values;
-import 'examples/02_properties/02_spread_properties/app.dart' as spread_properties;
+import 'examples/02_properties/02_spread_properties/app.dart'
+    as spread_properties;
 import 'examples/03_logic/00_if_blocks/app.dart' as if_blocks;
 import 'examples/03_logic/01_else_blocks/app.dart' as else_blocks;
 import 'examples/03_logic/02_else_if_blocks/app.dart' as else_if_blocks;
@@ -28,7 +35,8 @@ import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
 import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
 import 'examples/04_events/03_component_events/app.dart' as component_events;
 import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
-import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
+import 'examples/04_events/05_dom_event_forwarding/app.dart'
+    as dom_event_forwarding;
 
 ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
@@ -71,6 +79,7 @@ void main() {
         unmount(component);
       }
 
+      window.location.hash = select.value;
       current = mountComponent(select.value, target);
     } catch (error, stackTrace) {
       print(error);
@@ -80,4 +89,9 @@ void main() {
   }
 
   select.addEventListener('change', onChange.toJS);
+
+  if (window.location.hash case var hash when hash.isNotEmpty) {
+    select.value = hash.substring(1);
+    onChange(Event('change'));
+  }
 }

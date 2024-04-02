@@ -4,23 +4,22 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 final _template = $.template('<p> </p>');
 
 extension type NestedProperties._(JSObject _) implements JSObject {
   factory NestedProperties({required Object answer}) {
-    return NestedProperties.$(answer: unsafeCast<JSAny?>(answer));
+    return NestedProperties.$(answer: answer.toExternalReference);
   }
 
-  external factory NestedProperties.$({JSAny? answer});
+  external factory NestedProperties.$({ExternalDartReference? answer});
 
   @JS('answer')
-  external JSAny? get _answer;
+  external ExternalDartReference get _answer;
 
   Object get answer {
-    return unsafeCast<Object>(_answer);
+    return _answer.toDartObject;
   }
 }
 

@@ -26,9 +26,11 @@ T open<T extends Node>(Node? anchor, bool useCloneNode, Template template) {
 }
 
 @JS('open_frag')
-external DocumentFragment _openFragment(Node? anchor, JSBoolean useCloneNode, JSFunction template);
+external DocumentFragment _openFragment(
+    Node? anchor, JSBoolean useCloneNode, JSFunction template);
 
-DocumentFragment openFragment(Node? anchor, bool useCloneNode, Fragment fragment) {
+DocumentFragment openFragment(
+    Node? anchor, bool useCloneNode, Fragment fragment) {
   return _openFragment(anchor, useCloneNode.toJS, fragment);
 }
 

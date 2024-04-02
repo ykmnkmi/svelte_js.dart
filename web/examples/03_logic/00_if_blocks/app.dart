@@ -24,7 +24,8 @@ void app(Node $anchor, AppProperties $properties) {
   var user = $.mutableSource<User>(User(loggedIn: false));
 
   void toggle(Event event) {
-    $.mutate<User, bool>(user, $.get<User>(user).loggedIn = !$.get<User>(user).loggedIn);
+    $.mutate<User, bool>(
+        user, $.get<User>(user).loggedIn = !$.get<User>(user).loggedIn);
   }
 
   $.init();

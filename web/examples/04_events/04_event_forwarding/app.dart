@@ -33,7 +33,8 @@ void app(Node $anchor, AppProperties $properties) {
     handleMessage(TypedEvent<Message>(event));
   }
 
-  $$.outer(node, $$.OuterProperties($$events: $$.OuterEvents(message: $onMessage)));
+  $$.outer(
+      node, $$.OuterProperties($$events: $$.OuterEvents(message: $onMessage)));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

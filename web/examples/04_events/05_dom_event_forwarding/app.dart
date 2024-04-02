@@ -28,7 +28,10 @@ void app(Node $anchor, AppProperties $properties) {
   var node = $.childFragment(fragment);
   print(node);
 
-  $$.customButton(node, $$.CustomButtonProperties($$events: $$.CustomButtonEvents(click: handleClick)));
+  $$.customButton(
+      node,
+      $$.CustomButtonProperties(
+          $$events: $$.CustomButtonEvents(click: handleClick)));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

@@ -3,16 +3,16 @@ library;
 
 import 'dart:js_interop';
 
-import 'package:svelte_js/src/unsafe_cast.dart';
+import 'package:svelte_js/src/ref.dart';
 import 'package:web/web.dart';
 
 @JS('await_block')
 external void _awaitBlock(
   Comment anchor,
-  JSFunction input,
-  JSFunction? onLoading,
-  JSFunction? onValue,
-  JSFunction? onError,
+  JSExportedDartFunction input,
+  JSExportedDartFunction? onLoading,
+  JSExportedDartFunction? onValue,
+  JSExportedDartFunction? onError,
 );
 
 void awaitBlock<T extends Object?>(
@@ -22,26 +22,34 @@ void awaitBlock<T extends Object?>(
   void Function(Node anchor, T value)? onValue,
   void Function(Node anchor, Object error)? onError,
 ) {
-  JSPromise<JSAny?> jsInput() {
-    var future = unsafeCast<Future<JSAny?>>(input());
-    return future.toJS;
+  JSPromise jsInput() {
+    return futureRefCast<T>(input());
   }
 
   JSExportedDartFunction? jsOnValue;
 
   if (onValue != null) {
-    jsOnValue = (Node anchor, JSAny? value) {
-      onValue(anchor, unsafeCast<T>(value));
+    jsOnValue = (Node anchor, ExternalDartReference? value) {
+      onValue(anchor, unref<T>(value));
     }.toJS;
   }
 
   JSExportedDartFunction? jsOnError;
 
   if (onError != null) {
-    jsOnError = (Node anchor, JSAny? value) {
-      onError(anchor, unsafeCast<Object>(value));
+    jsOnError = (Node anchor, JSObject wrappedError) {
+      onError(anchor, wrappedError.error);
     }.toJS;
   }
 
   _awaitBlock(anchor, jsInput.toJS, onPending?.toJS, jsOnValue, jsOnError);
+}
+
+extension on JSObject {
+  @JS('error')
+  external JSBoxedDartObject get _error;
+
+  Object get error {
+    return _error.toDart;
+  }
 }

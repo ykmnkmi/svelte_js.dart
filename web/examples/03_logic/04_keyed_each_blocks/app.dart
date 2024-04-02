@@ -49,7 +49,8 @@ void app(Node $anchor, AppProperties $properties) {
 
   $.event<Event>('click', button, handleClick, false);
 
-  $.eachKeyedBlock<Thing>(node, () => $.get<List<Thing>>(things), 5, (thing, index, list) => thing.id,
+  $.eachKeyedBlock<Thing>(
+      node, () => $.get<List<Thing>>(things), 5, (thing) => '${thing.id}',
       ($anchor, thing, index) {
     // Init
     var fragment1 = $.comment($anchor);
@@ -62,7 +63,8 @@ void app(Node $anchor, AppProperties $properties) {
     $.closeFragment($anchor, fragment1);
   }, null);
 
-  $.eachIndexedBlock<Thing>(node2, () => $.get<List<Thing>>(things), 1, ($anchor, thing, index) {
+  $.eachIndexedBlock<Thing>(node2, () => $.get<List<Thing>>(things), 1,
+      ($anchor, thing, index) {
     // Init
     var fragment2 = $.comment($anchor);
     var node3 = $.childFragment<Node>(fragment2);

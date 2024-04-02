@@ -7,21 +7,21 @@ import 'package:svelte_js/internal.dart' as $;
 import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
-final _template =
-    $.template('<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>');
+final _template = $.template(
+    '<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>');
 
 extension type ThingProperties._(JSObject _) implements JSObject {
   factory ThingProperties({required String current}) {
-    return ThingProperties.$(current: unsafeCast<JSAny?>(current));
+    return ThingProperties.$(current: current.toExternalReference);
   }
 
-  external factory ThingProperties.$({JSAny? current});
+  external factory ThingProperties.$({ExternalDartReference? current});
 
   @JS('current')
-  external JSAny? get _current;
+  external ExternalDartReference get _current;
 
   String get current {
-    return unsafeCast<String>(_current);
+    return unsafeCast<String>(_current.toDartObject);
   }
 }
 

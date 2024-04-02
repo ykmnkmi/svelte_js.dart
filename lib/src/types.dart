@@ -4,6 +4,7 @@ library;
 import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
+import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
@@ -41,14 +42,14 @@ extension type Signal<T extends Object?>(JSObject _) implements JSObject {
 @optionalTypeArgs
 extension type Value<T extends Object?>(JSObject _) implements Signal<T> {
   @JS('v')
-  external JSAny? _value;
+  external ExternalDartReference? _value;
 
   T get value {
-    return unsafeCast<T>(_value);
+    return unref<T>(_value);
   }
 
   set value(T value) {
-    _value = unsafeCast<JSAny?>(value);
+    _value = ref<T>(value);
   }
 
   @JS('version')
@@ -74,7 +75,7 @@ extension type Effect(JSObject _) implements Reaction {
   }
 
   set block(Block? block) {
-    _block = unsafeCast<JSObject?>(block);
+    _block = block;
   }
 
   @JS('l')
@@ -93,12 +94,14 @@ extension type Effect(JSObject _) implements Reaction {
 typedef Source<T extends Object?> = Value<T>;
 
 @optionalTypeArgs
-typedef Component<T extends JSObject> = void Function(Node anchor, T properties);
+typedef Component<T extends JSObject> = void Function(
+    Node anchor, T properties);
 
 extension type ComponentReference(JSObject _) implements JSObject {}
 
 @optionalTypeArgs
-extension type TypedEvent<T extends Object?>(CustomEvent _) implements CustomEvent {
+extension type TypedEvent<T extends Object?>(CustomEvent _)
+    implements CustomEvent {
   T get detail {
     return unsafeCast<T>(_.detail);
   }

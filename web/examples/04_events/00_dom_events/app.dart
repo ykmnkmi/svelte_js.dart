@@ -27,8 +27,10 @@ div.svelte-1c44y5p {
     var point = $.mutableSource<List<int>>(<int>[0, 0]);
 
     void handleMousemove(MouseEvent event) {
-      $.mutate<List<int>, int>(point, $.get<List<int>>(point)[0] = event.clientX);
-      $.mutate<List<int>, int>(point, $.get<List<int>>(point)[1] = event.clientY);
+      $.mutate<List<int>, int>(
+          point, $.get<List<int>>(point)[0] = event.clientX);
+      $.mutate<List<int>, int>(
+          point, $.get<List<int>>(point)[1] = event.clientY);
     }
 
     $.init();

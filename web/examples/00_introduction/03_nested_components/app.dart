@@ -8,7 +8,8 @@ import 'package:web/web.dart';
 
 import 'nested.dart' as $$;
 
-final _fragment = $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
+final _fragment =
+    $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
