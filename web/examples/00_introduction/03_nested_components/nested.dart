@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -14,7 +14,7 @@ extension type NestedProperties._(JSObject _) implements JSObject {
   }
 }
 
-void nested(Node $anchor, NestedProperties $properties) {
+void Nested(Node $anchor, NestedProperties $properties) {
   $.push($properties, false);
   $.init();
 

@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -13,21 +13,21 @@ final _template = $.template('<button>Click to say hello</button>');
 
 extension type InnerEvents._(JSObject _) implements JSObject {
   factory InnerEvents({void Function(CustomEvent event)? message}) {
-    return InnerEvents.__(message: message?.toJS);
+    return InnerEvents.js(message: message?.toJS);
   }
 
-  external InnerEvents.__({JSFunction? message});
+  external InnerEvents.js({JSFunction? message});
 }
 
 extension type InnerProperties._(JSObject _) implements JSObject {
   factory InnerProperties({InnerEvents? $$events}) {
-    return InnerProperties.__($$events: $$events);
+    return InnerProperties.js($$events: $$events);
   }
 
-  external factory InnerProperties.__({InnerEvents? $$events});
+  external factory InnerProperties.js({InnerEvents? $$events});
 }
 
-void inner(Node $anchor, InnerProperties $properties) {
+void Inner(Node $anchor, InnerProperties $properties) {
   $.push($properties, false);
 
   var dispatch = createEventDispatcher();

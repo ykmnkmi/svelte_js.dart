@@ -1,9 +1,7 @@
 <script type="application/dart">
 	import Thing from './Thing.svelte';
   
-  typedef Thing = ({String id, String color});
-
-	var things = <Thing>[
+  var things = <({String id, String color})>[
 		(id: 1, color: 'darkblue'),
 		(id: 2, color: 'indigo'),
 		(id: 3, color: 'deeppink'),

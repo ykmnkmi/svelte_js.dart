@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -8,7 +8,7 @@ import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 import 'message.dart';
-import 'outer.dart' as $$;
+import 'outer.dart';
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -16,7 +16,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void app(Node $anchor, AppProperties $properties) {
+void App(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
   void handleMessage(TypedEvent<Message> event) {
@@ -29,12 +29,12 @@ void app(Node $anchor, AppProperties $properties) {
   var fragment = $.comment($anchor);
   var node = $.childFragment(fragment);
 
-  void $onMessage(CustomEvent event) {
+  void $onmessage(CustomEvent event) {
     handleMessage(TypedEvent<Message>(event));
   }
 
-  $$.outer(
-      node, $$.OuterProperties($$events: $$.OuterEvents(message: $onMessage)));
+  var $$outerEvents = OuterEvents(message: $onmessage);
+  Outer(node, OuterProperties($$events: $$outerEvents));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

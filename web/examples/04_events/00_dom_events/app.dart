@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -14,7 +14,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final app = () {
+final App = () {
   $.appendStyles(null, 'svelte-1c44y5p', '''
 div.svelte-1c44y5p {
   width: 100%;

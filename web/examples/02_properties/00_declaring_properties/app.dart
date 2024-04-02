@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-import 'nested.dart' as $$;
+import 'nested.dart';
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,7 +14,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void app(Node $anchor, AppProperties $properties) {
+void App(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
   $.init();
 
@@ -22,7 +22,7 @@ void app(Node $anchor, AppProperties $properties) {
   var fragment = $.comment($anchor);
   var node = $.childFragment<Node>(fragment);
 
-  $$.nested(node, $$.NestedProperties(answer: 42));
+  Nested(node, NestedProperties(answer: 42));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-import 'info.dart' as $$;
+import 'info.dart';
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,10 +14,10 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void app(Node $anchor, AppProperties $properties) {
+void App(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
-  var properties = $$.InfoProperties(
+  var properties = InfoProperties(
     name: 'svelte',
     version: 3,
     speed: 'blazing',
@@ -30,7 +30,7 @@ void app(Node $anchor, AppProperties $properties) {
   var fragment = $.comment($anchor);
   var node = $.childFragment<Node>(fragment);
 
-  $$.info(node, $.spreadProperties(properties));
+  Info(node, $.spreadProperties(properties));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

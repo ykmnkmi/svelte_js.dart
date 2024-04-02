@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -12,10 +12,10 @@ final _template = $.template(
 
 extension type ThingProperties._(JSObject _) implements JSObject {
   factory ThingProperties({required String current}) {
-    return ThingProperties.$(current: current.toExternalReference);
+    return ThingProperties.js(current: current.toExternalReference);
   }
 
-  external factory ThingProperties.$({ExternalDartReference? current});
+  external factory ThingProperties.js({ExternalDartReference? current});
 
   @JS('current')
   external ExternalDartReference get _current;
@@ -25,7 +25,7 @@ extension type ThingProperties._(JSObject _) implements JSObject {
   }
 }
 
-final thing = () {
+final Thing = () {
   $.appendStyles(null, 'svelte-dgndg6', '''
 span.svelte-dgndg6 {
 		display: inline-block;

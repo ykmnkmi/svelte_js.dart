@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -14,7 +14,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void app(Node $anchor, AppProperties $properties) {
+void App(Node $anchor, AppProperties $properties) {
   $.push($properties, false);
 
   void handleMousemove(Event event) {
@@ -26,7 +26,7 @@ void app(Node $anchor, AppProperties $properties) {
   // Init
   var button = $.open<Element>($anchor, true, _template);
 
-  $.event<Event>('click', button, $.once(handleMousemove), false);
+  $.event<Event>('click', button, $.once<Event>(handleMousemove), false);
   $.close($anchor, button);
   $.pop();
 }

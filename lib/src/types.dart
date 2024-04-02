@@ -100,9 +100,8 @@ typedef Component<T extends JSObject> = void Function(
 extension type ComponentReference(JSObject _) implements JSObject {}
 
 @optionalTypeArgs
-extension type TypedEvent<T extends Object?>(CustomEvent _)
-    implements CustomEvent {
+extension type TypedEvent<T extends Object?>(CustomEvent _) implements CustomEvent {
   T get detail {
-    return unsafeCast<T>(_.detail);
+    return unref<T>(unsafeCast<ExternalDartReference?>(_.detail));
   }
 }

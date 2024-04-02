@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -10,10 +10,10 @@ final _template = $.template('<p> </p>');
 
 extension type NestedProperties._(JSObject _) implements JSObject {
   factory NestedProperties({required Object answer}) {
-    return NestedProperties.$(answer: answer.toExternalReference);
+    return NestedProperties.js(answer: answer.toExternalReference);
   }
 
-  external factory NestedProperties.$({ExternalDartReference? answer});
+  external factory NestedProperties.js({ExternalDartReference? answer});
 
   @JS('answer')
   external ExternalDartReference get _answer;
@@ -23,7 +23,7 @@ extension type NestedProperties._(JSObject _) implements JSObject {
   }
 }
 
-void nested(Node $anchor, NestedProperties $properties) {
+void Nested(Node $anchor, NestedProperties $properties) {
   $.push($properties, false);
   $.init();
 

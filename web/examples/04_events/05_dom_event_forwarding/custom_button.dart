@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -10,21 +10,21 @@ final _template = $.template('<button class="svelte-hg07jm">Click me</button>');
 
 extension type CustomButtonEvents._(JSObject _) implements JSObject {
   factory CustomButtonEvents({void Function(Event event)? click}) {
-    return CustomButtonEvents.__(click: click?.toJS);
+    return CustomButtonEvents.js(click: click?.toJS);
   }
 
-  external CustomButtonEvents.__({JSFunction? click});
+  external CustomButtonEvents.js({JSFunction? click});
 }
 
 extension type CustomButtonProperties._(JSObject _) implements JSObject {
   factory CustomButtonProperties({CustomButtonEvents? $$events}) {
-    return CustomButtonProperties.__($$events: $$events);
+    return CustomButtonProperties.js($$events: $$events);
   }
 
-  external factory CustomButtonProperties.__({CustomButtonEvents? $$events});
+  external factory CustomButtonProperties.js({CustomButtonEvents? $$events});
 }
 
-final customButton = () {
+final CustomButton = () {
   $.appendStyles(null, 'svelte-urs9w7', '''
 button.svelte-hg07jm {
   height: 4rem;

@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -17,7 +17,7 @@ extension type InfoProperties._(JSObject _) implements JSObject {
     required String speed,
     required String website,
   }) {
-    return InfoProperties.$(
+    return InfoProperties.js(
       name: name.toExternalReference,
       version: version.toExternalReference,
       speed: speed.toExternalReference,
@@ -25,7 +25,7 @@ extension type InfoProperties._(JSObject _) implements JSObject {
     );
   }
 
-  external factory InfoProperties.$({
+  external factory InfoProperties.js({
     ExternalDartReference? name,
     ExternalDartReference? version,
     ExternalDartReference? speed,
@@ -61,7 +61,7 @@ extension type InfoProperties._(JSObject _) implements JSObject {
   }
 }
 
-void info(Node $anchor, InfoProperties $properties) {
+void Info(Node $anchor, InfoProperties $properties) {
   $.push($properties, false);
   $.init();
 

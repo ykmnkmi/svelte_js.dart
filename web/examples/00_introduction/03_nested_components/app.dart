@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes
+// ignore_for_file: library_prefixes, non_constant_identifier_names
 library;
 
 import 'dart:js_interop';
@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-import 'nested.dart' as $$;
+import 'nested.dart';
 
 final _fragment =
     $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
@@ -17,7 +17,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final app = () {
+final App = () {
   $.appendStyles(null, 'svelte-urs9w7', '''
 p.svelte-urs9w7 {
   color: purple;
@@ -35,7 +35,7 @@ p.svelte-urs9w7 {
     var p = $.childFragment<Element>(fragment);
     var node = $.sibling<Node>($.sibling<Text>(p, true));
 
-    $$.nested(node, $$.NestedProperties());
+    Nested(node, NestedProperties());
     $.closeFragment($anchor, fragment);
     $.pop();
   };
