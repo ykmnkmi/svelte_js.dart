@@ -4,5 +4,6 @@
 .sdk/
 build/
 node_modules/
+web/main.unopt.wasm
 package-lock.json
 pubspec.lock

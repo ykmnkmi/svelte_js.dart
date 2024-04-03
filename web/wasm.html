@@ -60,8 +60,8 @@
   <main>
   </main>
   <script type="module">
-    import { instantiate, invoke } from './main.dart.mjs';
-    const response = await fetch('main.dart.wasm');
+    import { instantiate, invoke } from './main.mjs';
+    const response = await fetch('main.wasm');
     const bytes = await response.arrayBuffer();
     const module = new WebAssembly.Module(bytes);
     const instance = await instantiate(module, {});
