@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 @JS('text_effect')
@@ -36,16 +35,15 @@ extension type _Mount._(JSObject _) implements JSObject {
 }
 
 @JS('mount')
-external JSObject _mount(JSFunction component, _Mount options);
+external ComponentReference _mount(JSFunction component, _Mount options);
 
 ComponentReference mount<T extends JSObject>(Component<T> component,
     {required Node target}) {
-  var jsObject = _mount(component.toJS, _Mount(target: target));
-  return unsafeCast<ComponentReference>(jsObject);
+  return _mount(component.toJS, _Mount(target: target));
 }
 
 @JS('unmount')
-external void _unmount(JSObject component);
+external void _unmount(ComponentReference component);
 
 void unmount(ComponentReference component) {
   _unmount(component);

@@ -5,19 +5,17 @@ import 'dart:js_interop';
 
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 
 @JS('legacy_pre_effect')
-external JSObject _legacyPreEffect(
+external Effect _legacyPreEffect(
     JSExportedDartFunction dependency, JSExportedDartFunction function);
 
-Effect legacyPreEffect<T extends Object?>(
-    T Function() dependency, void Function() function) {
+Effect legacyPreEffect<T>(T Function() dependency, void Function() function) {
   ExternalDartReference? jsDependency() {
-    return ref<T>(dependency());
+    return ref(dependency());
   }
 
-  return unsafeCast<Effect>(_legacyPreEffect(jsDependency.toJS, function.toJS));
+  return _legacyPreEffect(jsDependency.toJS, function.toJS);
 }
 
 @JS('legacy_pre_effect_reset')
@@ -28,8 +26,8 @@ void legacyPreEffectReset() {
 }
 
 @JS('render_effect')
-external JSObject _renderEffect(JSExportedDartFunction initialValue);
+external Effect _renderEffect(JSExportedDartFunction initialValue);
 
 Effect renderEffect(void Function(Block block, Signal signal) function) {
-  return unsafeCast<Effect>(_renderEffect(function.toJS));
+  return _renderEffect(function.toJS);
 }

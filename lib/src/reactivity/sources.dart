@@ -5,27 +5,26 @@ import 'dart:js_interop';
 
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 
 @JS('mutable_source')
-external JSObject _mutableSource(ExternalDartReference? initialValue);
+external JSObject _mutableSource<T>(ExternalDartReference? initialValue);
 
-Source<T> mutableSource<T extends Object?>([T? initialValue]) {
-  return unsafeCast<Source<T>>(_mutableSource(ref<T?>(initialValue)));
+Source<T> mutableSource<T>([T? initialValue]) {
+  return Source<T>(_mutableSource<T>(ref(initialValue)));
 }
 
 @JS('mutate')
-external ExternalDartReference? _mutate(
-    JSObject signal, ExternalDartReference? value);
+external ExternalDartReference? _mutate<T>(
+    Source<T> signal, ExternalDartReference? value);
 
-V mutate<T extends Object?, V extends Object?>(Source<T> signal, V value) {
-  return unref<V>(_mutate(signal, ref<V>(value)));
+V mutate<T, V>(Source<T> signal, V value) {
+  return unref<V>(_mutate(signal, ref(value)));
 }
 
 @JS('set')
-external ExternalDartReference? _set(
-    JSObject signal, ExternalDartReference? value);
+external ExternalDartReference? _set<T>(
+    Source<T> signal, ExternalDartReference? value);
 
-T set<T extends Object?>(Source<T> signal, T value) {
-  return unref<T>(_set(signal, ref<T>(value)));
+T set<T>(Source<T> signal, T value) {
+  return unref<T>(_set(signal, ref(value)));
 }

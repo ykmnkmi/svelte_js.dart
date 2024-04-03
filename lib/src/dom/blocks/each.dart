@@ -5,7 +5,6 @@ import 'dart:js_interop';
 
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 @JS('each_keyed')
@@ -18,7 +17,7 @@ external void _eachKeyed(
   JSExportedDartFunction? fallback,
 );
 
-void eachKeyedBlock<T extends Object?>(
+void eachKeyedBlock<T>(
   Node anchor,
   List<T> Function() collection,
   int flags,
@@ -41,8 +40,8 @@ void eachKeyedBlock<T extends Object?>(
     jsKey = map.toJS;
   }
 
-  void jsRender(Node? anchor, JSObject item, JSNumber index) {
-    render(anchor, unsafeCast<Value<T>>(item), index.toDartInt);
+  void jsRender(Node? anchor, Value<T> item, JSNumber index) {
+    render(anchor, item, index.toDartInt);
   }
 
   _eachKeyed(anchor, jsCollection.toJS, flags.toJS, jsKey, jsRender.toJS,
@@ -58,7 +57,7 @@ external void _eachIndexed(
   JSExportedDartFunction? fallback,
 );
 
-void eachIndexedBlock<T extends Object?>(
+void eachIndexedBlock<T>(
   Node anchor,
   List<T> Function() collection,
   int flags,
@@ -69,8 +68,8 @@ void eachIndexedBlock<T extends Object?>(
     return arrayRefCast<T>(collection());
   }
 
-  void jsRender(Node? anchor, JSObject item, JSNumber index) {
-    render(anchor, unsafeCast<Value<T>>(item), index.toDartInt);
+  void jsRender(Node? anchor, Value<T> item, JSNumber index) {
+    render(anchor, item, index.toDartInt);
   }
 
   _eachIndexed(

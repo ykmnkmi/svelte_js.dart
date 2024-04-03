@@ -1,10 +1,11 @@
 Testing Svelte 5 JS bindings and ~~compiler~~.
 
-Run `npm run build` to rebuild Svelte 5 JS bundle.
+To rebuild Svelte 5 JS bundle, run `npm run build`.
 
-Download the main channel Dart SDK (`^3.5.0`) from [dart.dev](https://dart.dev/get-dart) which supports `ExternalDartReference` and extract it to `.sdk` folder.
+Download Dart SDK from [dart.dev](https://dart.dev/get-dart) which supports `ExternalDartReference` and extract it to `.sdk` folder.
+If you have Dart SDK installed, update the path below and delete SDK path in `.vscode/settings.json` file.
 
-To build WASM module, run the following command:
+To rebuild WASM module, run the following command:
 
 - on Windows:
   ```pwsh

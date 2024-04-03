@@ -68,8 +68,9 @@ ComponentReference? mountComponent(String name, Node target) {
 }
 
 void main() {
-  var select = document.querySelector('select') as HTMLSelectElement;
+  var select = document.querySelector('nav select') as HTMLSelectElement;
   var target = document.querySelector('main') as HTMLElement;
+  var link = document.querySelector('nav a') as HTMLAnchorElement;
 
   ComponentReference? current;
 
@@ -79,7 +80,7 @@ void main() {
         unmount(component);
       }
 
-      window.location.hash = select.value;
+      window.location.hash = link.hash = select.value;
       current = mountComponent(select.value, target);
     } catch (error, stackTrace) {
       print(error);
@@ -91,7 +92,7 @@ void main() {
   select.addEventListener('change', onChange.toJS);
 
   if (window.location.hash case var hash when hash.isNotEmpty) {
-    select.value = hash.substring(1);
+    select.value = link.hash = hash.substring(1);
     onChange(Event('change'));
   }
 }

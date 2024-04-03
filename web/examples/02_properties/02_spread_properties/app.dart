@@ -30,7 +30,7 @@ void App(Node $anchor, AppProperties $properties) {
   var fragment = $.comment($anchor);
   var node = $.childFragment<Node>(fragment);
 
-  Info(node, $.spreadProperties(properties));
+  Info(node, $.spreadProperties<InfoProperties>(properties));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

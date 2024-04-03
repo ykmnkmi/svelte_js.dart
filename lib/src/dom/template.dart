@@ -4,25 +4,25 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/src/types.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 @JS('template')
 external JSFunction _template(JSString html, [JSBoolean returnFragment]);
 
 Template template(String html) {
-  return unsafeCast<Template>(_template(html.toJS));
+  return Template(_template(html.toJS));
 }
 
 Fragment fragment(String html) {
-  return unsafeCast<Fragment>(_template(html.toJS, true.toJS));
+  return Fragment(_template(html.toJS, true.toJS));
 }
 
 @JS('open')
-external Node _open(Node? anchor, JSBoolean useCloneNode, JSFunction template);
+external T _open<T extends Node>(
+    Node? anchor, JSBoolean useCloneNode, JSFunction template);
 
 T open<T extends Node>(Node? anchor, bool useCloneNode, Template template) {
-  return unsafeCast<T>(_open(anchor, useCloneNode.toJS, template));
+  return _open<T>(anchor, useCloneNode.toJS, template);
 }
 
 @JS('open_frag')
@@ -35,10 +35,10 @@ DocumentFragment openFragment(
 }
 
 @JS('space')
-external Node _space(Node? anchor);
+external T _space<T extends Node>(Node? anchor);
 
 T space<T extends Node>(Node? anchor) {
-  return unsafeCast<T>(_space(anchor));
+  return _space<T>(anchor);
 }
 
 @JS('comment')

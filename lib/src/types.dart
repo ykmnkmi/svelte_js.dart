@@ -26,7 +26,7 @@ extension type Block(JSObject _) implements JSObject {
 }
 
 @optionalTypeArgs
-extension type Signal<T extends Object?>(JSObject _) implements JSObject {
+extension type Signal(JSObject _) implements JSObject {
   @JS('f')
   external JSNumber _flags;
 
@@ -40,7 +40,7 @@ extension type Signal<T extends Object?>(JSObject _) implements JSObject {
 }
 
 @optionalTypeArgs
-extension type Value<T extends Object?>(JSObject _) implements Signal<T> {
+extension type Value<T>(JSObject _) implements Signal {
   @JS('v')
   external ExternalDartReference? _value;
 
@@ -49,7 +49,7 @@ extension type Value<T extends Object?>(JSObject _) implements Signal<T> {
   }
 
   set value(T value) {
-    _value = ref<T>(value);
+    _value = ref(value);
   }
 
   @JS('version')
@@ -91,7 +91,7 @@ extension type Effect(JSObject _) implements Reaction {
 }
 
 @optionalTypeArgs
-typedef Source<T extends Object?> = Value<T>;
+typedef Source<T> = Value<T>;
 
 @optionalTypeArgs
 typedef Component<T extends JSObject> = void Function(
@@ -100,7 +100,7 @@ typedef Component<T extends JSObject> = void Function(
 extension type ComponentReference(JSObject _) implements JSObject {}
 
 @optionalTypeArgs
-extension type TypedEvent<T extends Object?>(CustomEvent _) implements CustomEvent {
+extension type TypedEvent<T>(CustomEvent _) implements CustomEvent {
   T get detail {
     return unref<T>(unsafeCast<ExternalDartReference?>(_.detail));
   }

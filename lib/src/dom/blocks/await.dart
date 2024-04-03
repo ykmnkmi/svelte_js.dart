@@ -15,7 +15,7 @@ external void _awaitBlock(
   JSExportedDartFunction? onError,
 );
 
-void awaitBlock<T extends Object?>(
+void awaitBlock<T>(
   Comment anchor,
   Future<T> Function() input,
   void Function(Node anchor)? onPending,
