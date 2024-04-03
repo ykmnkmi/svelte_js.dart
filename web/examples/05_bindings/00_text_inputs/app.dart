@@ -34,10 +34,8 @@ void App(Node $anchor, AppProperties $properties) {
     return 'Hello, ${$.get<String>(name).isNotEmpty ? $.get<String>(name) : 'stranger'}!';
   });
 
-  $.bindValue(input, () => $.get<String>(name), (value) {
-    $.set<String>(name, value);
-  });
-
+  $.bindValue(input, () => $.get<String>(name),
+      ($value) => $.set<String>(name, $value));
   $.closeFragment($anchor, fragment);
   $.pop();
 }

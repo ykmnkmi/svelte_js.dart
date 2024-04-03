@@ -38,6 +38,7 @@ import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
 import 'examples/04_events/05_dom_event_forwarding/app.dart'
     as dom_event_forwarding;
 import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
+import 'examples/05_bindings/01_numeric_inputs/app.dart' as numeric_inputs;
 
 ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
@@ -65,6 +66,7 @@ ComponentReference? mountComponent(String name, Node target) {
     'event_forwarding' => mount(event_forwarding.App, target: target),
     'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
     'text_inputs' => mount(text_inputs.App, target: target),
+    'numeric_inputs' => mount(numeric_inputs.App, target: target),
     _ => null,
   };
 }
