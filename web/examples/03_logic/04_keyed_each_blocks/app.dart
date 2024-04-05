@@ -38,14 +38,22 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var button = $.childFragment<Element>(fragment);
-  var div = $.sibling<Element>($.sibling<Text>(button, true));
-  var div1 = $.child<Element>(div);
-  var h2 = $.child<Element>(div1);
-  var node = $.sibling<Element>($.sibling<Text>(h2, true));
-  var div2 = $.sibling<Element>($.sibling<Text>(div1, true));
-  var h21 = $.child<Element>(div2);
-  var node2 = $.sibling($.sibling(h21, true));
+  var button = $.childFragment<HTMLButtonElement>(fragment);
+  assert(button.nodeName == 'BUTTON');
+  var div = $.sibling<HTMLDivElement>($.sibling<Text>(button, true));
+  assert(div.nodeName == 'DIV');
+  var div1 = $.child<HTMLDivElement>(div);
+  assert(div1.nodeName == 'DIV');
+  var h2 = $.child<HTMLHeadingElement>(div1);
+  assert(h2.nodeName == 'H2');
+  var node = $.sibling<Comment>($.sibling<Text>(h2, true));
+  assert(node.nodeName == '#comment');
+  var div2 = $.sibling<HTMLDivElement>($.sibling<Text>(div1, true));
+  assert(div2.nodeName == 'DIV');
+  var h21 = $.child<HTMLHeadingElement>(div2);
+  assert(h21.nodeName == 'H2');
+  var node2 = $.sibling<Comment>($.sibling<Text>(h21, true));
+  assert(node2.nodeName == '#comment');
 
   $.event<Event>('click', button, handleClick, false);
 
@@ -56,7 +64,8 @@ void App(Node $anchor, AppProperties $properties) {
       (thing) => '${thing.id}', ($anchor, thing, index) {
     // Init
     var fragment1 = $.comment($anchor);
-    var node1 = $.childFragment<Text>(fragment1, true);
+    var node1 = $.childFragment<Comment>(fragment1, true);
+    assert(node1.nodeName == '#comment');
 
     var thingProperties = ThingProperties.js();
     $.setGetter(thingProperties, 'current',
@@ -72,6 +81,7 @@ void App(Node $anchor, AppProperties $properties) {
     // Init
     var fragment2 = $.comment($anchor);
     var node3 = $.childFragment<Node>(fragment2);
+    assert(node3.nodeName == '#comment');
 
     var thing$properties = ThingProperties.js();
     $.setGetter(thing$properties, 'current',

@@ -45,27 +45,34 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var button = $.childFragment<Element>(fragment);
+  var button = $.childFragment<HTMLButtonElement>(fragment);
+  assert(button.nodeName == 'BUTTON');
   var node = $.sibling<Comment>($.sibling<Text>(button, true));
+  assert(node.nodeName == '#comment');
 
   $.event<Event>('click', button, handleClick, false);
 
   $.awaitBlock<String>(node, () => $.get<Future<String>>(future), ($anchor) {
     /* Init */
-    var p = $.open<Element>($anchor, true, _tmpl1);
+    var p = $.open<HTMLParagraphElement>($anchor, true, _tmpl1);
+    assert(p.nodeName == 'P');
 
     $.close($anchor, p);
   }, ($anchor, number) {
     /* Init */
-    var p1 = $.open<Element>($anchor, true, _tmpl2);
-    var text1 = $.child(p1);
+    var p1 = $.open<HTMLParagraphElement>($anchor, true, _tmpl2);
+    assert(p1.nodeName == 'P');
+    var text1 = $.child<Text>(p1);
+    assert(text1.nodeName == '#text');
 
     text1.nodeValue = 'The number is $number';
     $.close($anchor, p1);
   }, ($anchor, error) {
     /* Init */
-    var p2 = $.open<Element>($anchor, true, _tmpl3);
+    var p2 = $.open<HTMLParagraphElement>($anchor, true, _tmpl3);
+    assert(p2.nodeName == 'P');
     var text2 = $.space<Text>($.child<Text>(p2));
+    assert(text2.nodeName == '#text');
 
     /* Update */
     $.textEffect(text2, () => '$error');

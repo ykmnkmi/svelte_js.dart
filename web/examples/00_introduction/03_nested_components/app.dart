@@ -32,8 +32,10 @@ p.svelte-urs9w7 {
 
     // Init
     var fragment = $.openFragment($anchor, true, _fragment);
-    var p = $.childFragment<Element>(fragment);
-    var node = $.sibling<Node>($.sibling<Text>(p, true));
+    var p = $.childFragment<HTMLParagraphElement>(fragment);
+    assert(p.nodeName == 'P');
+    var node = $.sibling<Comment>($.sibling<Text>(p, true));
+    assert(node.nodeName == '#comment');
 
     Nested(node, NestedProperties());
     $.closeFragment($anchor, fragment);

@@ -26,11 +26,14 @@ void App(Node $anchor, AppProperties $properties) {
   // Init
   var fragment = $.comment($anchor);
   var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
 
   $.ifBlock(node, () => x > 10, ($anchor) {
     // Init
-    var p = $.open<Element>($anchor, true, _template1);
+    var p = $.open<HTMLParagraphElement>($anchor, true, _template1);
+    assert(p.nodeName == 'P');
     var text = $.child<Text>(p);
+    assert(text.nodeName == '#text');
 
     text.nodeValue = '$x is greater than 10';
     $.close($anchor, p);
@@ -38,16 +41,21 @@ void App(Node $anchor, AppProperties $properties) {
     // Init
     var fragment1 = $.comment($anchor);
     var node1 = $.childFragment<Comment>(fragment1);
+    assert(node1.nodeName == '#comment');
 
     $.ifBlock(node1, () => 5 > x, ($anchor) {
-      var p1 = $.open<Element>($anchor, true, _template3);
+      var p1 = $.open<HTMLParagraphElement>($anchor, true, _template3);
+      assert(p1.nodeName == 'P');
       var text1 = $.child<Text>(p1);
+      assert(text1.nodeName == '#text');
 
       text1.nodeValue = '$x is less than 5';
       $.close($anchor, p1);
     }, ($enchor) {
-      var p2 = $.open<Element>($anchor, true, _template4);
+      var p2 = $.open<HTMLParagraphElement>($anchor, true, _template4);
+      assert(p2.nodeName == 'P');
       var text2 = $.child<Text>(p2);
+      assert(text2.nodeName == '#text');
 
       text2.nodeValue = '$x is between 5 and 10';
       $.close($anchor, p2);

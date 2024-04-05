@@ -23,7 +23,8 @@ void App(Node $anchor, AppProperties $properties) {
   $.init();
 
   // Init
-  var img = $.open<Element>($anchor, true, _template);
+  var img = $.open<HTMLImageElement>($anchor, true, _template);
+  assert(img.nodeName == 'IMG');
 
   $.attr(img, 'src', src);
   $.attr(img, 'alt', '$name dancing');

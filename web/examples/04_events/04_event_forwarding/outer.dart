@@ -30,7 +30,8 @@ void Outer(Node $anchor, OuterProperties $properties) {
 
   // Init
   var fragment = $.comment($anchor);
-  var node = $.childFragment(fragment);
+  var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
 
   var $$events = $.forwardEvent<InnerEvents>('message', $properties);
   Inner(node, InnerProperties($$events: $$events));

@@ -22,8 +22,10 @@ void App(Node $anchor, AppProperties $properties) {
   $.init();
 
   // Init
-  var p = $.open<Node>($anchor, true, _template);
-  var node = $.child<Text>(p);
+  var p = $.open<HTMLParagraphElement>($anchor, true, _template);
+  assert(p.nodeName == 'P');
+  var node = $.child<Comment>(p);
+  assert(node.nodeName == '#comment');
 
   $.html(node, () => string, false);
   $.close($anchor, p);

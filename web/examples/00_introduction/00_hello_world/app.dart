@@ -22,8 +22,10 @@ void App(Node $anchor, AppProperties $properties) {
   $.init();
 
   // Init
-  var h1 = $.open<Element>($anchor, true, _template);
+  var h1 = $.open<HTMLHeadingElement>($anchor, true, _template);
+  assert(h1.nodeName == 'H1');
   var text = $.child<Text>(h1);
+  assert(h1.nodeName == '#text');
 
   text.nodeValue = 'Hello $name!';
   $.close($anchor, h1);

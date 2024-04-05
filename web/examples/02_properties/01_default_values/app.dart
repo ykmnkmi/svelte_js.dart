@@ -22,8 +22,10 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var node = $.childFragment<Node>(fragment);
-  var node1 = $.sibling<Node>($.sibling<Text>(node, true));
+  var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
+  var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
+  assert(node1.nodeName == '#comment');
 
   Nested(node, NestedProperties(answer: 42));
   Nested(node1, NestedProperties());

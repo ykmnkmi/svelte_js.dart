@@ -13,5 +13,6 @@ export 'package:svelte_js/src/dom/template.dart';
 export 'package:svelte_js/src/reactivity/effects.dart';
 export 'package:svelte_js/src/reactivity/properties.dart';
 export 'package:svelte_js/src/reactivity/sources.dart';
+export 'package:svelte_js/src/ref.dart';
 export 'package:svelte_js/src/render.dart';
 export 'package:svelte_js/src/runtime.dart';

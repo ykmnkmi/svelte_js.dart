@@ -38,12 +38,18 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var button = $.childFragment<Element>(fragment);
+  var button = $.childFragment<HTMLButtonElement>(fragment);
+  assert(button.nodeName == 'BUTTON');
   var text = $.child<Text>(button);
-  var p = $.sibling<Element>($.sibling<Text>(button, true));
+  assert(text.nodeName == '#text');
+  var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button, true));
+  assert(p.nodeName == 'P');
   var text1 = $.child<Text>(p);
-  var p1 = $.sibling<Element>($.sibling<Text>(p, true));
+  assert(text1.nodeName == '#text');
+  var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p, true));
+  assert(p.nodeName == 'P');
   var text2 = $.child<Text>(p1);
+  assert(text2.nodeName == '#text');
 
   // Update
   $.renderEffect((block, signal) {

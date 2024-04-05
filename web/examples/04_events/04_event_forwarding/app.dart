@@ -27,7 +27,8 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.comment($anchor);
-  var node = $.childFragment(fragment);
+  var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
 
   void $onmessage(CustomEvent event) {
     handleMessage(TypedEvent<Message>(event));

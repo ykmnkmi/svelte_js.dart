@@ -23,12 +23,14 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var input = $.childFragment<Element>(fragment);
+  var input = $.childFragment<HTMLInputElement>(fragment);
 
   $.removeInputAttributeDefaults(input);
 
-  var p = $.sibling<Element>($.sibling<Text>(input, true));
+  var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(input, true));
+  assert(p.nodeName == 'P');
   var text = $.child<Text>(p);
+  assert(text.nodeName == '#text');
 
   $.textEffect(text, () {
     return 'Hello, ${$.get<String>(name).isNotEmpty ? $.get<String>(name) : 'stranger'}!';

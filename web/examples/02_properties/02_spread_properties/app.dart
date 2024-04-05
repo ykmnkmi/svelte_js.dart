@@ -28,7 +28,8 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.comment($anchor);
-  var node = $.childFragment<Node>(fragment);
+  var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
 
   Info(node, $.spreadProperties<InfoProperties>(properties));
   $.closeFragment($anchor, fragment);

@@ -25,7 +25,8 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.comment($anchor);
-  var node = $.childFragment(fragment);
+  var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
 
   CustomButton(node,
       CustomButtonProperties($$events: CustomButtonEvents(click: handleClick)));

@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 final _template = $.template(
@@ -18,10 +17,10 @@ extension type InfoProperties._(JSObject _) implements JSObject {
     required String website,
   }) {
     return InfoProperties.js(
-      name: name.toExternalReference,
-      version: version.toExternalReference,
-      speed: speed.toExternalReference,
-      website: website.toExternalReference,
+      name: $.ref(name),
+      version: $.ref(version),
+      speed: $.ref(speed),
+      website: $.ref(website),
     );
   }
 
@@ -36,28 +35,28 @@ extension type InfoProperties._(JSObject _) implements JSObject {
   external ExternalDartReference get _name;
 
   String get name {
-    return unsafeCast<String>(_name.toDartObject);
+    return $.unref<String>(_name);
   }
 
   @JS('version')
   external ExternalDartReference get _version;
 
   int get version {
-    return unsafeCast<int>(_version.toDartObject);
+    return $.unref<int>(_version);
   }
 
   @JS('speed')
   external ExternalDartReference get _speed;
 
   String get speed {
-    return unsafeCast<String>(_speed.toDartObject);
+    return $.unref<String>(_speed);
   }
 
   @JS('website')
   external ExternalDartReference get _website;
 
   String get website {
-    return unsafeCast<String>(_website.toDartObject);
+    return $.unref<String>(_website);
   }
 }
 
@@ -72,21 +71,21 @@ void Info(Node $anchor, InfoProperties $properties) {
   var text1 = $.sibling<Text>(code, true);
   var a = $.sibling<Element>(text1);
   var a1 = $.sibling<Element>($.sibling<Text>(a, true));
-  var ahref = '';
-  var a1href = '';
+  var a$href = '';
+  var a1$href = '';
 
   $.renderEffect((block, signal) {
     $.text(text, $properties.name);
     $.text(text1,
         ' package is ${$properties.speed} fast. Download version ${$properties.version} from ');
 
-    if (ahref !=
-        (ahref = 'https://www.npmjs.com/package/${$properties.name}')) {
-      $.attr(a, 'href', ahref);
+    if (a$href !=
+        (a$href = 'https://www.npmjs.com/package/${$properties.name}')) {
+      $.attr(a, 'href', a$href);
     }
 
-    if (a1href != (a1href = $properties.website)) {
-      $.attr(a1, 'href', a1href);
+    if (a1$href != (a1$href = $properties.website)) {
+      $.attr(a1, 'href', a1$href);
     }
   });
 

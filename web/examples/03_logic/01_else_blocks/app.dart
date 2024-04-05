@@ -32,16 +32,19 @@ void App(Node $anchor, AppProperties $properties) {
   // Init
   var fragment = $.comment($anchor);
   var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
 
   $.ifBlock(node, () => $.get<User>(user).loggedIn, ($anchor) {
     // Init
-    var button = $.open<Element>($anchor, true, _template1);
+    var button = $.open<HTMLButtonElement>($anchor, true, _template1);
+    assert(button.nodeName == 'BUTTON');
 
     $.event<Event>('click', button, toggle, false);
     $.close($anchor, button);
   }, ($anchor) {
     // Init
-    var button1 = $.open<Element>($anchor, true, _template2);
+    var button1 = $.open<HTMLButtonElement>($anchor, true, _template2);
+    assert(button1.nodeName == 'BUTTON');
 
     $.event<Event>('click', button1, toggle, false);
     $.close($anchor, button1);

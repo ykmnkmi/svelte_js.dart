@@ -19,7 +19,8 @@ void Nested(Node $anchor, NestedProperties $properties) {
   $.init();
 
   // Init
-  var p = $.open<Element>($anchor, true, _template);
+  var p = $.open<HTMLParagraphElement>($anchor, true, _template);
+  assert(p.nodeName == 'P');
 
   $.close($anchor, p);
   $.pop();

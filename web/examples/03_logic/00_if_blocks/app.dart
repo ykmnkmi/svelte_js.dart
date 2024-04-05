@@ -33,11 +33,14 @@ void App(Node $anchor, AppProperties $properties) {
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
   var node = $.childFragment<Comment>(fragment);
+  assert(node.nodeName == '#comment');
   var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
+  assert(node1.nodeName == '#comment');
 
   $.ifBlock(node, () => $.get<User>(user).loggedIn, ($anchor) {
     // Init
-    var button = $.open<Element>($anchor, true, _template1);
+    var button = $.open<HTMLButtonElement>($anchor, true, _template1);
+    assert(button.nodeName == 'BUTTON');
 
     $.event<Event>('click', button, toggle, false);
     $.close($anchor, button);
@@ -45,7 +48,8 @@ void App(Node $anchor, AppProperties $properties) {
 
   $.ifBlock(node1, () => !$.get<User>(user).loggedIn, ($anchor) {
     // Init
-    var button1 = $.open<Element>($anchor, true, _template2);
+    var button1 = $.open<HTMLButtonElement>($anchor, true, _template2);
+    assert(button1.nodeName == 'BUTTON');
 
     $.event<Event>('click', button1, toggle, false);
     $.close($anchor, button1);

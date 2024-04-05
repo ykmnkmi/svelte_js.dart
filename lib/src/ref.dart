@@ -25,7 +25,8 @@ JSArray arrayRefCast<T>(List<T> list) {
 @optionalTypeArgs
 JSPromise futureRefCast<T>(Future<T> future) {
   if (isJS) {
-    return future.toJS;
+    var jsFuture = unsafeCast<Future<JSAny?>>(future);
+    return jsFuture.toJS;
   }
 
   var jsFuture = future // ..
@@ -53,7 +54,7 @@ T unref<T>(ExternalDartReference? reference) {
   }
 
   var object = unsafeCast<T>(reference?.toDartObject);
-  assert(isJS || object is! JSAny);
+  assert(object is! JSAny);
   return object;
 }
 

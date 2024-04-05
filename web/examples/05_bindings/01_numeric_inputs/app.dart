@@ -25,26 +25,34 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var label = $.childFragment<Element>(fragment);
-  var input = $.child<Element>(label);
+  var label = $.childFragment<HTMLLabelElement>(fragment);
+  assert(label.nodeName == 'LABEL');
+  var input = $.child<HTMLInputElement>(label);
+  assert(input.nodeName == 'INPUT');
 
   $.removeInputAttributeDefaults(input);
 
-  var input1 = $.sibling<Element>($.sibling<Text>(input, true));
+  var input1 = $.sibling<HTMLInputElement>($.sibling<Text>(input, true));
+  assert(input1.nodeName == 'INPUT');
 
   $.removeInputAttributeDefaults(input1);
 
-  var label1 = $.sibling<Element>($.sibling<Text>(label, true));
-  var input2 = $.child<Element>(label1);
+  var label1 = $.sibling<HTMLLabelElement>($.sibling<Text>(label, true));
+  assert(label1.nodeName == 'LABEL');
+  var input2 = $.child<HTMLInputElement>(label1);
+  assert(input2.nodeName == 'INPUT');
 
   $.removeInputAttributeDefaults(input2);
 
-  var input3 = $.sibling<Element>($.sibling<Text>(input2, true));
+  var input3 = $.sibling<HTMLInputElement>($.sibling<Text>(input2, true));
+  assert(input3.nodeName == 'INPUT');
 
   $.removeInputAttributeDefaults(input3);
 
-  var p = $.sibling<Element>($.sibling<Text>(label1, true));
+  var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(label1, true));
+  assert(p.nodeName == 'P');
   var text = $.child<Text>(p);
+  assert(text.nodeName == '#text');
 
   $.textEffect(text, () {
     return '${$.get<int>(a)} + ${$.get<int>(b)} = ${$.get<int>(a) + $.get<int>(b)}';

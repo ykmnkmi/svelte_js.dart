@@ -36,8 +36,10 @@ div.svelte-1c44y5p {
     $.init();
 
     // Init
-    var div = $.open<Element>($anchor, true, _template);
+    var div = $.open<HTMLDivElement>($anchor, true, _template);
+    assert(div.nodeName == 'DIV');
     var text = $.child<Text>(div);
+    assert(text.nodeName == '#text');
 
     // Update
     $.textEffect(text, () {

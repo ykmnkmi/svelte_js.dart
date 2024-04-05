@@ -49,7 +49,8 @@ button.svelte-hg07jm:hover {
     $.init();
 
     // Init
-    var button = $.open<Element>($anchor, true, _template);
+    var button = $.open<HTMLButtonElement>($anchor, true, _template);
+    assert(button.nodeName == 'BUTTON');
 
     $.evenBubblet('click', button, $properties);
 

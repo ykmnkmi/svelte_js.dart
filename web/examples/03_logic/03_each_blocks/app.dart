@@ -31,8 +31,10 @@ void App(Node $anchor, AppProperties $properties) {
 
   // Init
   var fragment = $.openFragment($anchor, true, _fragment);
-  var h1 = $.childFragment<Element>(fragment);
-  var ul = $.sibling<Element>($.sibling<Text>(h1, true));
+  var h1 = $.childFragment<HTMLHeadingElement>(fragment);
+  assert(h1.nodeName == 'H1');
+  var ul = $.sibling<HTMLUListElement>($.sibling<Text>(h1, true));
+  assert(ul.nodeName == 'UL');
 
   $.eachIndexedBlock<Cat>(ul, () => $.get<List<Cat>>(cats), 9,
       ($anchor, item, index) {
@@ -45,15 +47,18 @@ void App(Node $anchor, AppProperties $properties) {
     }
 
     // Init
-    var li = $.open<Element>($anchor, true, _eachBlock);
-    var a = $.child<Element>(li);
+    var li = $.open<HTMLLIElement>($anchor, true, _eachBlock);
+    assert(li.nodeName == 'LI');
+    var a = $.child<HTMLAnchorElement>(li);
+    assert(a.nodeName == 'A');
     var text = $.child<Text>(a);
-    var ahref = '';
+    assert(text.nodeName == '#text');
+    var a$href = '';
 
     // Update
     $.renderEffect((block, signal) {
-      if (ahref != (ahref = 'https://www.youtube.com/watch?v=${id()}')) {
-        $.attr(a, 'href', ahref);
+      if (a$href != (a$href = 'https://www.youtube.com/watch?v=${id()}')) {
+        $.attr(a, 'href', a$href);
       }
 
       $.text(text, '${index + 1}: ${name()}');

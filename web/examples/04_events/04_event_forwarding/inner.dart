@@ -39,7 +39,8 @@ void Inner(Node $anchor, InnerProperties $properties) {
   $.init();
 
   // Init
-  var button = $.open<Element>($anchor, true, _template);
+  var button = $.open<HTMLButtonElement>($anchor, true, _template);
+  assert(button.nodeName == 'BUTTON');
 
   $.event<Event>('click', button, sayHello, false);
   $.close($anchor, button);

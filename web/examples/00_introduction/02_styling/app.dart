@@ -28,7 +28,8 @@ p.svelte-urs9w7 {
     $.init();
 
     // Init
-    var p = $.open<Element>($anchor, true, _template);
+    var p = $.open<HTMLParagraphElement>($anchor, true, _template);
+    assert(p.nodeName == 'P');
 
     $.close($anchor, p);
     $.pop();

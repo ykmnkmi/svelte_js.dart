@@ -16,8 +16,8 @@ external void _ifBlock(
 void ifBlock(
   Comment anchor,
   bool Function() condition,
-  void Function(Node anchor) consequent,
-  void Function(Node anchor)? alternate,
+  void Function(Comment $$anchor) consequent,
+  void Function(Comment $$anchor)? alternate,
 ) {
   _ifBlock(anchor, condition.toJS, consequent.toJS, alternate?.toJS);
 }
