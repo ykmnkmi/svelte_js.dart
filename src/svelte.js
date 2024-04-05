@@ -2,7 +2,7 @@ import {
   // dom/blocks/*
   await as await_block, each_keyed, each_indexed, if as if_block, html,
   // dom/elements/*
-  remove_input_attr_defaults, attr_effect, attr, bind_value, event,
+  remove_input_attr_defaults, attr_effect, attr, bind_value, bind_checked, event,
   // dom/legacy/*
   bubble_event, init,
   // dom/operations.js
@@ -61,7 +61,7 @@ const set_getter = (object, key, getter) => {
 
 export default {
   await_block, each_keyed, each_indexed, if_block, html,
-  remove_input_attr_defaults, attr_effect, attr, bind_value, event,
+  remove_input_attr_defaults, attr_effect, attr, bind_value, bind_checked, event,
   /* bubble_event, */ forward_event, forward_events, event_bubble, init,
   child, child_frag, sibling,
   template, open, open_frag, space, comment, close, close_frag,

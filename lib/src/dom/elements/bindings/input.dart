@@ -23,3 +23,12 @@ void bindValue(HTMLInputElement input, String Function() getValue,
     void Function(String value) update) {
   _bindValue(input, getValue.toJS, update.toJS);
 }
+
+@JS('bind_checked')
+external void _bindChecked(HTMLInputElement input,
+    JSExportedDartFunction getValue, JSExportedDartFunction setValue);
+
+void bindChecked(HTMLInputElement input, bool Function() getValue,
+    void Function(bool value) update) {
+  _bindChecked(input, getValue.toJS, update.toJS);
+}
