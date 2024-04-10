@@ -4,9 +4,18 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
+import 'package:svelte_js/internal.dart' show Source;
 import 'package:web/web.dart';
 
-final _fragment = $.fragment('<button> </button> <p> </p> <p> </p>');
+void _handleClick(Event event, Source<int> count) {
+  $.set(count, $.get(count) + 1);
+}
+
+extension on HTMLButtonElement {
+  external set __click(JSArray values);
+}
+
+final _root = $.fragment('<button> </button> <p> </p> <p> </p>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,51 +23,39 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, true);
+final App = () {
+  $.delegate(['click']);
 
-  var doubled = $.mutableSource<int>();
-  var quadrupled = $.mutableSource<int>();
-  var count = $.mutableSource<int>(0);
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-  void handleClick(Event event) {
-    $.set<int>(count, $.get<int>(count) + 1);
-  }
+    var count = $.source(0);
+    var doubled = $.derived(() => $.get(count) * 2);
+    var quadrupled = $.derived(() => $.get(count) * 2);
+    var fragment = _root();
+    var button = $.firstChild<HTMLButtonElement>(fragment);
+    assert(button.nodeName == 'BUTTON');
 
-  $.legacyPreEffect<int>(() => $.get<int>(count), () {
-    $.set<int>(doubled, $.get<int>(count) * 2);
-  });
+    button.__click = <JSAny>[_handleClick.toJS, count].toJS;
 
-  $.legacyPreEffect(() => $.get<int>(doubled), () {
-    $.set<int>(quadrupled, $.get<int>(doubled) * 2);
-  });
+    var text = $.child<Text>(button);
+    assert(text.nodeName == '#text');
+    var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button, true));
+    assert(p.nodeName == 'P');
+    var text1 = $.child<Text>(p);
+    assert(text1.nodeName == '#text');
+    var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p, true));
+    assert(p.nodeName == 'P');
+    var text2 = $.child<Text>(p1);
+    assert(text2.nodeName == '#text');
 
-  $.legacyPreEffectReset();
-  $.init();
+    $.renderEffect(() {
+      $.setText(text, 'Count: ${$.get(count)}');
+      $.setText(text1, '${$.get(count)} * 2 = ${$.get(doubled)}');
+      $.setText(text2, '${$.get(doubled)} * 2 = ${$.get(quadrupled)}');
+    });
 
-  // Init
-  var fragment = $.openFragment($anchor, true, _fragment);
-  var button = $.childFragment<HTMLButtonElement>(fragment);
-  assert(button.nodeName == 'BUTTON');
-  var text = $.child<Text>(button);
-  assert(text.nodeName == '#text');
-  var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button, true));
-  assert(p.nodeName == 'P');
-  var text1 = $.child<Text>(p);
-  assert(text1.nodeName == '#text');
-  var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p, true));
-  assert(p.nodeName == 'P');
-  var text2 = $.child<Text>(p1);
-  assert(text2.nodeName == '#text');
-
-  // Update
-  $.renderEffect((block, signal) {
-    $.text(text, 'Count: ${$.get<int>(count)}');
-    $.text(text1, '${$.get<int>(count)} * 2 = ${$.get<int>(doubled)}');
-    $.text(text2, '${$.get<int>(doubled)} * 2 = ${$.get<int>(quadrupled)}');
-  });
-
-  $.event<Event>('click', button, handleClick, false);
-  $.closeFragment($anchor, fragment);
-  $.pop();
-}
+    $.append($$anchor, fragment);
+    $.pop();
+  };
+}();

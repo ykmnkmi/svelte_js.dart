@@ -3,31 +3,18 @@ library;
 
 import 'dart:js_interop';
 
-import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
 
-@JS('legacy_pre_effect')
-external Effect _legacyPreEffect(
-    JSExportedDartFunction dependency, JSExportedDartFunction function);
+@JS('user_effect')
+external void _userEffect(JSExportedDartFunction callback);
 
-Effect legacyPreEffect<T>(T Function() dependency, void Function() function) {
-  ExternalDartReference? jsDependency() {
-    return ref(dependency());
-  }
-
-  return _legacyPreEffect(jsDependency.toJS, function.toJS);
-}
-
-@JS('legacy_pre_effect_reset')
-external void _legacyPreEffectReset();
-
-void legacyPreEffectReset() {
-  _legacyPreEffectReset();
+void userEffect(void Function() callback) {
+  _userEffect(callback.toJS);
 }
 
 @JS('render_effect')
-external Effect _renderEffect(JSExportedDartFunction initialValue);
+external Effect _renderEffect(JSExportedDartFunction callback);
 
-Effect renderEffect(void Function(Block block, Signal signal) function) {
-  return _renderEffect(function.toJS);
+Effect renderEffect(void Function() callback) {
+  return _renderEffect(callback.toJS);
 }

@@ -4,9 +4,18 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
+import 'package:svelte_js/internal.dart' show Source;
 import 'package:web/web.dart';
 
-final _template = $.template('<button> </button>');
+void _handleClick(Event event, Source<int> count) {
+  $.set(count, $.get(count) + 1);
+}
+
+extension on HTMLButtonElement {
+  external set __click(JSArray values);
+}
+
+final _root = $.template('<button> </button>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,29 +23,26 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+final App = () {
+  $.delegate(['click']);
 
-  var count = $.mutableSource<int>(0);
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-  void handleClick(Event event) {
-    $.set<int>(count, $.get<int>(count) + 1);
-  }
+    var count = $.source(0);
+    var button = _root<HTMLButtonElement>();
+    assert(button.nodeName == 'BUTTON');
 
-  $.init();
+    button.__click = <JSAny>[_handleClick.toJS, count].toJS;
 
-  // Init
-  var button = $.open<HTMLButtonElement>($anchor, true, _template);
-  assert(button.nodeName == 'BUTTON');
-  var text = $.child<Text>(button);
-  assert(text.nodeName == '#text');
+    var text = $.child<Text>(button);
+    assert(text.nodeName == '#text');
 
-  // Update
-  $.textEffect(text, () {
-    return 'Clicked ${$.get<int>(count)} ${$.get<int>(count) == 1 ? 'time' : 'times'}';
-  });
+    $.renderEffect(() {
+      $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
+    });
 
-  $.event<Event>('click', button, handleClick, false);
-  $.close($anchor, button);
-  $.pop();
-}
+    $.append($$anchor, button);
+    $.pop();
+  };
+}();

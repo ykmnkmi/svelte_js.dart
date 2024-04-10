@@ -8,8 +8,7 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
-final _fragment =
-    $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
+final _root = $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -26,19 +25,17 @@ p.svelte-urs9w7 {
 }
 ''');
 
-  return (Node $anchor, AppProperties $properties) {
-    $.push($properties, false);
-    $.init();
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-    // Init
-    var fragment = $.openFragment($anchor, true, _fragment);
-    var p = $.childFragment<HTMLParagraphElement>(fragment);
+    var fragment = _root();
+    var p = $.firstChild<HTMLParagraphElement>(fragment);
     assert(p.nodeName == 'P');
     var node = $.sibling<Comment>($.sibling<Text>(p, true));
     assert(node.nodeName == '#comment');
 
     Nested(node, NestedProperties());
-    $.closeFragment($anchor, fragment);
+    $.append($$anchor, fragment);
     $.pop();
   };
 }();

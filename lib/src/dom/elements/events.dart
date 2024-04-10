@@ -3,23 +3,30 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:meta/meta.dart';
+import 'package:svelte_js/src/constants.dart';
+import 'package:svelte_js/src/ref.dart';
+import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
-@JS('event')
-external void _event(
-  JSString eventName,
-  Element dom,
-  JSFunction handler,
-  JSBoolean capture, [
-  JSBoolean passive,
-]);
+@optionalTypeArgs
+extension type TypedEvent<T>(CustomEvent _) implements CustomEvent {
+  T get detail {
+    return unref<T>(unsafeCast<ExternalDartReference?>(_.detail));
+  }
+}
 
-void event<T extends Event>(
-  String eventName,
-  Element dom,
-  void Function(T event) handler,
-  bool capture, [
-  bool passive = false,
-]) {
-  _event(eventName.toJS, dom, handler.toJS, capture.toJS, passive.toJS);
+@JS('delegate')
+external void _delegate(JSArray<JSString> events);
+
+void delegate(List<String> events) {
+  List<JSString> jsEvents;
+
+  if (isJS) {
+    jsEvents = unsafeCast<List<JSString>>(events);
+  } else {
+    jsEvents = <JSString>[for (var event in events) event.toJS];
+  }
+
+  _delegate(jsEvents.toJS);
 }

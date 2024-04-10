@@ -6,22 +6,7 @@ import 'dart:js_interop';
 import 'package:web/web.dart';
 
 @JS('remove_input_attr_defaults')
-external void _removeInputAttributeDefaults(Element dom);
+external void removeInputAttributeDefaults(Element element);
 
-void removeInputAttributeDefaults(Element dom) {
-  _removeInputAttributeDefaults(dom);
-}
-
-@JS('attr_effect')
-external void _attrEffect(Node dom, JSString attribute, JSFunction getValue);
-
-void attrEffect(Node dom, String attribute, String Function() value) {
-  _attrEffect(dom, attribute.toJS, value.toJS);
-}
-
-@JS('attr')
-external void _attr(Element dom, JSString attribute, JSString value);
-
-void attr(Element dom, String attribute, String value) {
-  _attr(dom, attribute.toJS, value.toJS);
-}
+@JS('set_attribute')
+external void setAttribute(Element element, String attribute, String value);

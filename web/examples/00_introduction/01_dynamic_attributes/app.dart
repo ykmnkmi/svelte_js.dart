@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template('<img>');
+final _root = $.template('<img>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,20 +14,16 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+void App(Node $$anchor, AppProperties $$properties) {
+  $.push($$properties, true);
 
   var src = '/tutorial/image.gif';
   var name = 'Rick Astley';
-
-  $.init();
-
-  // Init
-  var img = $.open<HTMLImageElement>($anchor, true, _template);
+  var img = _root<HTMLImageElement>();
   assert(img.nodeName == 'IMG');
 
-  $.attr(img, 'src', src);
-  $.attr(img, 'alt', '$name dancing');
-  $.close($anchor, img);
+  $.setAttribute(img, 'src', src);
+  $.setAttribute(img, 'alt', '$name dancing');
+  $.append($$anchor, img);
   $.pop();
 }
