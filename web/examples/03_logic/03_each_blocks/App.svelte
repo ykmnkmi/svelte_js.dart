@@ -1,7 +1,5 @@
 <script type="application/dart">
-  typedef Cat = ({String id, String name});
-
-	var cats = <Cat>[
+	var cats = [
 		(id: 'J---aiyznGQ', name: 'Keyboard Cat'),
 		(id: 'z_AbfPXTKms', name: 'Maru'),
 		(id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat')
@@ -11,10 +9,10 @@
 <h1>The Famous Cats of YouTube</h1>
 
 <ul>
-  {#each cats as { id, name }, i}
+  {#each cats as { id, name }, index}
     <li>
       <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v={id}">
-        {i + 1}: {name}
+        {index + 1}: {name}
       </a>
     </li>
   {/each}

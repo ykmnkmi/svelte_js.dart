@@ -5,6 +5,10 @@ import 'package:meta/meta.dart';
 import 'package:svelte_js/src/constants.dart';
 import 'package:svelte_js/src/unsafe_cast.dart';
 
+extension on JSArray {
+  external void operator []=(int index, ExternalDartReference? value);
+}
+
 @optionalTypeArgs
 JSArray arrayRefCast<T>(List<T> list) {
   if (isJS) {
@@ -56,8 +60,4 @@ T unref<T>(ExternalDartReference? reference) {
   var object = unsafeCast<T>(reference?.toDartObject);
   assert(object is! JSAny);
   return object;
-}
-
-extension on JSArray {
-  external void operator []=(int index, ExternalDartReference? value);
 }

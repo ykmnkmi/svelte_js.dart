@@ -6,21 +6,17 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template(
-    '<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>');
+final _root =
+    $.template('<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>');
 
 extension type ThingProperties._(JSObject _) implements JSObject {
-  factory ThingProperties({required String current}) {
-    return ThingProperties.js(current: $.ref(current));
-  }
-
-  external factory ThingProperties.js({ExternalDartReference? current});
+  external factory ThingProperties({ExternalDartReference? current});
 
   @JS('current')
   external ExternalDartReference get _current;
 
-  String get current {
-    return $.unref<String>(_current);
+  Object? get current {
+    return $.unref<Object?>(_current);
   }
 }
 
@@ -36,29 +32,25 @@ span.svelte-dgndg6 {
 		color: white;
 }''');
 
-  return (Node $anchor, ThingProperties $properties) {
-    $.push($properties, false);
+  return (Node $$anchor, ThingProperties $$properties) {
+    $.push($$properties, true);
 
-    var initial = $properties.current;
-
-    $.init();
-
-    // Init
-    var p = $.open<HTMLParagraphElement>($anchor, true, _template);
+    var initial = $$properties.current;
+    var p = _root<HTMLParagraphElement>();
     assert(p.nodeName == 'P');
     var span = $.child<HTMLSpanElement>(p);
     assert(span.nodeName == 'SPAN');
-    $.attr(span, 'style', 'background-color: $initial');
+
+    $.setAttribute(span, 'style', 'background-color: $initial');
 
     var span1 = $.sibling<HTMLSpanElement>($.sibling<Text>(span, true));
     assert(span1.nodeName == 'SPAN');
 
-    // Update
-    $.attrEffect(span1, 'style', () {
-      return 'background-color: ${$properties.current}';
+    $.renderEffect(() {
+      $.setAttribute(span1, 'style', 'background-color: ${$$properties.current}');
     });
 
-    $.close($anchor, p);
+    $.append($$anchor, p);
     $.pop();
   };
 }();

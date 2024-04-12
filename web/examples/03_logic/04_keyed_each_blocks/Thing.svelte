@@ -1,6 +1,6 @@
 <script type="application/dart">
 	// `current` is updated whenever the prop value changes...
-	external String current;
+	var current = $property();
 
 	// ...but `initial` is fixed upon initialisation
 	var initial = current;

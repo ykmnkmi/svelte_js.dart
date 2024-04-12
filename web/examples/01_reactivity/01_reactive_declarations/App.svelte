@@ -1,8 +1,8 @@
 <script type="application/dart">
 	var count = $state(1);
 
-	let doubled = $derived(count * 2);
-	let quadrupled = $derived(doubled * 2);
+	var doubled = $derived(count * 2);	
+	var quadrupled = $derived(doubled * 2);
 
 	void handleClick() {
 		count += 1;

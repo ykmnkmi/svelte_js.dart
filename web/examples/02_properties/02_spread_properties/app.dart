@@ -14,24 +14,20 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+void App(Node $$anchor, AppProperties $$properties) {
+  $.push($$properties, true);
 
-  var properties = InfoProperties(
-    name: 'svelte',
-    version: 3,
-    speed: 'blazing',
-    website: 'https://svelte.dev',
-  );
+  var properties = JSObject();
+  $.setProperty(properties, 'name', 'svelte');
+  $.setProperty(properties, 'version', 4);
+  $.setProperty(properties, 'speed', 'blazing');
+  $.setProperty(properties, 'website', 'https://svelte.dev');
 
-  $.init();
-
-  // Init
-  var fragment = $.comment($anchor);
-  var node = $.childFragment<Comment>(fragment);
+  var fragment = $.comment();
+  var node = $.firstChild<Comment>(fragment);
   assert(node.nodeName == '#comment');
 
-  Info(node, $.spreadProperties<InfoProperties>(properties));
-  $.closeFragment($anchor, fragment);
+  Info(node, $.spreadProperties(properties));
+  $.append($$anchor, fragment);
   $.pop();
 }

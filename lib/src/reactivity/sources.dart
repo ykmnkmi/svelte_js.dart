@@ -14,14 +14,21 @@ Source<T> source<T>([T? value]) {
   return _source<T>(ref(value));
 }
 
+@JS('mutable_source')
+external Source<T> _mutableSource<T>(ExternalDartReference? value);
+
+Source<T> mutableSource<T>([T? value]) {
+  return _mutableSource<T>(ref(value));
+}
+
 @JS('mutate')
 external ExternalDartReference? _mutate(
   Source source,
   ExternalDartReference? value,
 );
 
-V mutate<T, V>(Source<T> signal, V value) {
-  return unref<V>(_mutate(signal, ref(value)));
+T mutate<T>(Source signal, T value) {
+  return unref<T>(_mutate(signal, ref(value)));
 }
 
 @JS('set')

@@ -1,5 +1,5 @@
 <script type="application/dart">
-	external int answer;
+	var answer = $property();
 </script>
 
 <p>The answer is {answer}</p>

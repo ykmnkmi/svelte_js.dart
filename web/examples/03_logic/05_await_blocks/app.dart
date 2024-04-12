@@ -6,10 +6,14 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _tmpl1 = $.template('<p>...waiting</p>');
-final _tmpl2 = $.template('<p> </p>');
-final _tmpl3 = $.template('<p style="color: red"> </p>');
-final _fragment = $.fragment('<button>generate random number</button> <!>');
+extension on HTMLButtonElement {
+  external set __click(JSExportedDartFunction handler);
+}
+
+final _root1 = $.template('<p>...waiting</p>');
+final _root2 = $.template('<p> </p>');
+final _root3 = $.template('<p style="color: red"> </p>');
+final _root = $.fragment('<button>generate random number</button> <!>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -17,68 +21,67 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+final App = () {
+  $.delegate(['click']);
 
-  Future<String> getRandomNumber() async {
-    var responsePromise =
-        window.fetch('https://svelte.dev/tutorial/random-number'.toJS);
-    // var responsePromise = window.fetch('/tutorial/random-number'.toJS);
-    var response = await responsePromise.toDart;
-    var textPromise = response.text();
-    var text = await textPromise.toDart;
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, false);
 
-    if (response.ok) {
-      return text.toDart;
+    Future<String> getRandomNumber() async {
+      var responsePromise = window.fetch('https://svelte.dev/tutorial/random-number'.toJS);
+      var response = await responsePromise.toDart;
+      var textPromise = response.text();
+      var text = await textPromise.toDart;
+
+      if (response.ok) {
+        return text.toDart;
+      }
+
+      throw Exception(text.toDart);
     }
 
-    throw Exception(text.toDart);
-  }
+    var future = $.source(getRandomNumber());
 
-  var future = $.mutableSource<Future<String>>(getRandomNumber());
+    void handleClick(Event event) {
+      $.set(future, getRandomNumber());
+    }
 
-  void handleClick(Event event) {
-    $.set<Future<String>>(future, getRandomNumber());
-  }
+    var fragment = _root();
+    var button = $.firstChild<HTMLButtonElement>(fragment);
+    assert(button.nodeName == 'BUTTON');
 
-  $.init();
+    button.__click = handleClick.toJS;
 
-  // Init
-  var fragment = $.openFragment($anchor, true, _fragment);
-  var button = $.childFragment<HTMLButtonElement>(fragment);
-  assert(button.nodeName == 'BUTTON');
-  var node = $.sibling<Comment>($.sibling<Text>(button, true));
-  assert(node.nodeName == '#comment');
+    var node = $.sibling<Comment>($.sibling<Text>(button, true));
+    assert(node.nodeName == '#comment');
 
-  $.event<Event>('click', button, handleClick, false);
+    $.awaitBlock(node, () => $.get(future), ($$anchor) {
+      var p = _root1<HTMLParagraphElement>();
+      assert(p.nodeName == 'P');
 
-  $.awaitBlock<String>(node, () => $.get<Future<String>>(future), ($anchor) {
-    /* Init */
-    var p = $.open<HTMLParagraphElement>($anchor, true, _tmpl1);
-    assert(p.nodeName == 'P');
+      $.append($$anchor, p);
+    }, ($$anchor, number) {
+      var p1 = _root2<HTMLParagraphElement>();
+      assert(p1.nodeName == 'P');
+      var text1 = $.child<Text>(p1);
+      assert(text1.nodeName == '#text');
 
-    $.close($anchor, p);
-  }, ($anchor, number) {
-    /* Init */
-    var p1 = $.open<HTMLParagraphElement>($anchor, true, _tmpl2);
-    assert(p1.nodeName == 'P');
-    var text1 = $.child<Text>(p1);
-    assert(text1.nodeName == '#text');
+      text1.nodeValue = 'The number is $number';
+      $.append($$anchor, p1);
+    }, ($anchor, error) {
+      var p2 = _root3<HTMLParagraphElement>();
+      assert(p2.nodeName == 'P');
+      var text2 = $.child<Text>(p2);
+      assert(text2.nodeName == '#text');
 
-    text1.nodeValue = 'The number is $number';
-    $.close($anchor, p1);
-  }, ($anchor, error) {
-    /* Init */
-    var p2 = $.open<HTMLParagraphElement>($anchor, true, _tmpl3);
-    assert(p2.nodeName == 'P');
-    var text2 = $.space<Text>($.child<Text>(p2));
-    assert(text2.nodeName == '#text');
+      $.renderEffect(() {
+        $.setText(text2, '$error');
+      });
 
-    /* Update */
-    $.textEffect(text2, () => '$error');
-    $.close($anchor, p2);
-  });
+      $.append($anchor, p2);
+    });
 
-  $.closeFragment($anchor, fragment);
-  $.pop();
-}
+    $.append($$anchor, fragment);
+    $.pop();
+  };
+}();

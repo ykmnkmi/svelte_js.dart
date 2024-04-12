@@ -8,9 +8,13 @@ import 'package:web/web.dart';
 
 import 'user.dart';
 
-final _template1 = $.template('<button>Log out</button>');
-final _template2 = $.template('<button>Log in</button>');
-final _fragment = $.fragment('<!> <!>');
+extension on HTMLButtonElement {
+  external set __click(JSExportedDartFunction handler);
+}
+
+final _root1 = $.template('<button>Log out</button>');
+final _root2 = $.template('<button>Log in</button>');
+final _root = $.fragment('<!> <!>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -18,43 +22,42 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+final App = () {
+  $.delegate(['click']);
 
-  var user = $.mutableSource<User>(User(loggedIn: false));
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-  void toggle(Event event) {
-    $.mutate<User, bool>(
-        user, $.get<User>(user).loggedIn = !$.get<User>(user).loggedIn);
-  }
+    var user = $.source(User(loggedIn: false));
 
-  $.init();
+    void toggle(Event event) {
+      $.mutate(user, $.get(user).loggedIn = !$.get(user).loggedIn);
+    }
 
-  // Init
-  var fragment = $.openFragment($anchor, true, _fragment);
-  var node = $.childFragment<Comment>(fragment);
-  assert(node.nodeName == '#comment');
-  var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
-  assert(node1.nodeName == '#comment');
+    var fragment = _root();
+    var node = $.firstChild<Comment>(fragment);
+    assert(node.nodeName == '#comment');
 
-  $.ifBlock(node, () => $.get<User>(user).loggedIn, ($anchor) {
-    // Init
-    var button = $.open<HTMLButtonElement>($anchor, true, _template1);
-    assert(button.nodeName == 'BUTTON');
+    $.ifBlock(node, () => $.get(user).loggedIn, ($$anchor) {
+      var button = _root1<HTMLButtonElement>();
+      assert(button.nodeName == 'BUTTON');
 
-    $.event<Event>('click', button, toggle, false);
-    $.close($anchor, button);
-  }, null);
+      button.__click = toggle.toJS;
+      $.append($$anchor, button);
+    });
 
-  $.ifBlock(node1, () => !$.get<User>(user).loggedIn, ($anchor) {
-    // Init
-    var button1 = $.open<HTMLButtonElement>($anchor, true, _template2);
-    assert(button1.nodeName == 'BUTTON');
+    var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
+    assert(node1.nodeName == '#comment');
 
-    $.event<Event>('click', button1, toggle, false);
-    $.close($anchor, button1);
-  }, null);
+    $.ifBlock(node1, () => !$.get(user).loggedIn, ($$anchor) {
+      var button1 = _root2<HTMLButtonElement>();
+      assert(button1.nodeName == 'BUTTON');
 
-  $.closeFragment($anchor, fragment);
-  $.pop();
-}
+      button1.__click = toggle.toJS;
+      $.append($$anchor, button1);
+    });
+
+    $.append($$anchor, fragment);
+    $.pop();
+  };
+}();

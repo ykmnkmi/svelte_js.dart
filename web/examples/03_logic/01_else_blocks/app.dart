@@ -8,8 +8,12 @@ import 'package:web/web.dart';
 
 import 'user.dart';
 
-final _template1 = $.template('<button>Log out</button>');
-final _template2 = $.template('<button>Log in</button>');
+extension on HTMLButtonElement {
+  external set __click(JSExportedDartFunction handler);
+}
+
+final _root1 = $.template('<button>Log out</button>');
+final _root2 = $.template('<button>Log in</button>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -17,39 +21,37 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+final App = () {
+  $.delegate(['click']);
 
-  var user = $.mutableSource<User>(User(loggedIn: false));
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-  void toggle(Event event) {
-    $.mutate<User, bool>(
-        user, $.get<User>(user).loggedIn = !$.get<User>(user).loggedIn);
-  }
+    var user = $.source(User(loggedIn: false));
 
-  $.init();
+    void toggle(Event event) {
+      $.mutate(user, $.get(user).loggedIn = !$.get(user).loggedIn);
+    }
 
-  // Init
-  var fragment = $.comment($anchor);
-  var node = $.childFragment<Comment>(fragment);
-  assert(node.nodeName == '#comment');
+    var fragment = $.comment();
+    var node = $.firstChild<Comment>(fragment);
+    assert(node.nodeName == '#comment');
 
-  $.ifBlock(node, () => $.get<User>(user).loggedIn, ($anchor) {
-    // Init
-    var button = $.open<HTMLButtonElement>($anchor, true, _template1);
-    assert(button.nodeName == 'BUTTON');
+    $.ifBlock(node, () => $.get(user).loggedIn, ($$anchor) {
+      var button = _root1<HTMLButtonElement>();
+      assert(button.nodeName == 'BUTTON');
 
-    $.event<Event>('click', button, toggle, false);
-    $.close($anchor, button);
-  }, ($anchor) {
-    // Init
-    var button1 = $.open<HTMLButtonElement>($anchor, true, _template2);
-    assert(button1.nodeName == 'BUTTON');
+      button.__click = toggle.toJS;
+      $.append($$anchor, button);
+    }, ($$anchor) {
+      var button1 = _root2<HTMLButtonElement>();
+      assert(button1.nodeName == 'BUTTON');
 
-    $.event<Event>('click', button1, toggle, false);
-    $.close($anchor, button1);
-  });
+      button1.__click = toggle.toJS;
+      $.append($$anchor, button1);
+    });
 
-  $.closeFragment($anchor, fragment);
-  $.pop();
-}
+    $.append($$anchor, fragment);
+    $.pop();
+  };
+}();

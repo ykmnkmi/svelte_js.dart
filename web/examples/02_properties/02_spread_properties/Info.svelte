@@ -1,11 +1,11 @@
 <script type="application/dart">
-	external var name;
+	var name = $property();
 
-	external var version;
+	var version = $property();
 
-	external var speed;
+	var speed = $property();
   
-	external var website;
+	var website = $property();
 </script>
 
 <p>

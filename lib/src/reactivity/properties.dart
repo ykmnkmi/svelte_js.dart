@@ -7,27 +7,33 @@ import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/unsafe_cast.dart';
 
 @JS('spread_props')
-external T _spreadProperties<T extends JSObject>(T object, [JSObject rest]);
+external T _spreadProperties<T extends JSObject>(
+  JSObject first, [
+  JSObject second,
+]);
 
-T spreadProperties<T extends JSObject>(T object, [JSObject? rest]) {
-  if (rest == null) {
-    return _spreadProperties<T>(object);
+T spreadProperties<T extends JSObject>(JSObject first, [JSObject? second]) {
+  if (second == null) {
+    return _spreadProperties<T>(first);
   }
 
-  return _spreadProperties<T>(object, rest);
+  return _spreadProperties<T>(first, second);
 }
 
 @JS('prop')
-external JSFunction _prop<T extends JSObject>(
-    T properties, JSString key, JSNumber flags);
+external JSFunction _prop(
+  JSObject properties,
+  String key,
+  int flags,
+  ExternalDartReference? value,
+);
 
-R Function() prop<T extends JSObject, R>(
-    JSObject properties, String key, int flag) {
-  var jsFunction = _prop(properties, key.toJS, flag.toJS);
+T Function() prop<T>(JSObject properties, String key, int flags, T fallback) {
+  var jsFunction = _prop(properties, key, flags, ref(fallback));
 
   return () {
-    var result = jsFunction.callAsFunction(null);
-    var resultRef = unsafeCast<ExternalDartReference?>(result);
-    return unref<R>(resultRef);
+    var jsResult = jsFunction.callAsFunction();
+    var resultRef = unsafeCast<ExternalDartReference?>(jsResult);
+    return unref<T>(resultRef);
   };
 }

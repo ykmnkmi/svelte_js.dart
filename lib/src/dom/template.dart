@@ -24,5 +24,8 @@ Fragment fragment(String html) {
   return Fragment(_template(html, 1));
 }
 
+@JS('comment')
+external DocumentFragment comment();
+
 @JS('append')
 external void append(Node anchor, Node node);

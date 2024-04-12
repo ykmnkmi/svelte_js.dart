@@ -1,7 +1,7 @@
 <script type="application/dart">
 	import 'user.dart';
 
-	var user = User(loggedIn: false);
+	var user = $state(User(loggedIn: false));
 
 	void toggle() {
 		user.loggedIn = !user.loggedIn;
@@ -9,7 +9,7 @@
 </script>
 
 {#if user.loggedIn}
-	<button on:click={toggle}> Log out </button>
+	<button onclick={toggle}> Log out </button>
 {:else}
-	<button on:click={toggle}> Log in </button>
+	<button onclick={toggle}> Log in </button>
 {/if}

@@ -4,15 +4,10 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/internal.dart' show Source;
 import 'package:web/web.dart';
 
-void _handleClick(Event event, Source<int> count) {
-  $.set(count, $.get(count) + 1);
-}
-
 extension on HTMLButtonElement {
-  external set __click(JSArray values);
+  external set __click(JSExportedDartFunction handler);
 }
 
 final _root = $.template('<button> </button>');
@@ -38,10 +33,14 @@ final App = () {
       }
     });
 
+    void handleClick(Event event) {
+      $.set(count, $.get(count) + 1);
+    }
+
     var button = _root<HTMLButtonElement>();
     assert(button.nodeName == 'BUTTON');
 
-    button.__click = <JSAny>[_handleClick.toJS, count].toJS;
+    button.__click = handleClick.toJS;
 
     var text = $.child<Text>(button);
     assert(text.nodeName == '#text');

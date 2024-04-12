@@ -8,70 +8,67 @@ import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
 @JS('each_keyed')
-external void _eachKeyed(
+external void _eachKeyedBlock(
   Node anchor,
+  int flags,
   JSExportedDartFunction collection,
-  JSNumber flags,
-  JSExportedDartFunction? key,
+  JSExportedDartFunction key,
   JSExportedDartFunction render,
   JSExportedDartFunction? fallback,
 );
 
 void eachKeyedBlock<T>(
   Node anchor,
-  List<T> Function() collection,
   int flags,
-  String Function(T item)? key,
-  void Function(Node? anchor, Value<T> item, int index) render,
-  void Function(Node $anchor)? fallback,
-) {
+  List<T> Function() collection,
+  String Function(T item) key,
+  void Function(Node anchor, Value<T> item, int index) render, [
+  void Function(Node anchor)? fallback,
+]) {
   JSArray jsCollection() {
     return arrayRefCast<T>(collection());
   }
 
-  JSExportedDartFunction? jsKey;
-
-  if (key != null) {
-    JSString map(ExternalDartReference? item, JSNumber index, JSArray list) {
-      var value = key(unref<T>(item));
-      return value.toJS;
-    }
-
-    jsKey = map.toJS;
+  String jsKey(ExternalDartReference? item, int index, JSArray list) {
+    var value = key(unref<T>(item));
+    return value;
   }
 
-  void jsRender(Node? anchor, Value<T> item, JSNumber index) {
-    render(anchor, item, index.toDartInt);
-  }
-
-  _eachKeyed(anchor, jsCollection.toJS, flags.toJS, jsKey, jsRender.toJS,
-      fallback?.toJS);
+  _eachKeyedBlock(
+    anchor,
+    flags,
+    jsCollection.toJS,
+    jsKey.toJS,
+    render.toJS,
+    fallback?.toJS,
+  );
 }
 
 @JS('each_indexed')
-external void _eachIndexed(
+external void _eachIndexedBlock(
   Node anchor,
+  int flags,
   JSExportedDartFunction collection,
-  JSNumber flags,
   JSExportedDartFunction render,
   JSExportedDartFunction? fallback,
 );
 
 void eachIndexedBlock<T>(
   Node anchor,
-  List<T> Function() collection,
   int flags,
-  void Function(Node? anchor, Value<T> item, int index) render,
-  void Function(Node $anchor)? fallback,
-) {
+  List<T> Function() collection,
+  void Function(Node anchor, Value<T> item, int index) render, [
+  void Function(Node anchor)? fallback,
+]) {
   JSArray jsCollection() {
     return arrayRefCast<T>(collection());
   }
 
-  void jsRender(Node? anchor, Value<T> item, JSNumber index) {
-    render(anchor, item, index.toDartInt);
-  }
-
-  _eachIndexed(
-      anchor, jsCollection.toJS, flags.toJS, jsRender.toJS, fallback?.toJS);
+  _eachIndexedBlock(
+    anchor,
+    flags,
+    jsCollection.toJS,
+    render.toJS,
+    fallback?.toJS,
+  );
 }

@@ -12,14 +12,14 @@
 		throw Exception(text);
 	}
 
-	var future = $.mutableSource<Future<String>>(getRandomNumber());
+	var future = $state(getRandomNumber());
 
 	void handleClick() {
 		future = getRandomNumber();
 	}
 </script>
 
-<button on:click={handleClick}> generate random number </button>
+<button onclick={handleClick}>generate random number</button>
 
 {#await future}
 	<p>...waiting</p>

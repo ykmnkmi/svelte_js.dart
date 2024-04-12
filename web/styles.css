@@ -17,10 +17,15 @@ body {
   margin: 0;
 }
 
+main {
+  flex: 1;
+}
+
+code,
+button,
 input,
-textarea,
 select,
-button {
+textarea {
   font-family: inherit;
 }
 
@@ -29,6 +34,8 @@ a {
   text-underline-offset: 0.15em;
 }
 
-main {
-  flex: 1;
+code {
+  background-color: #F0F0F0;
+  border-radius: 0.5em;
+  padding: 0em 0.4em 0.1em;
 }

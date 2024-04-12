@@ -15,7 +15,7 @@
 	}
 </script>
 
-<button on:click={handleClick}>
+<button onclick={handleClick}>
 	Clicked {count}
 	{count == 1 ? 'time' : 'times'}
 </button>

@@ -6,25 +6,10 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template(
-    '<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>');
+final _root = $.template('<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>');
 
 extension type InfoProperties._(JSObject _) implements JSObject {
-  factory InfoProperties({
-    required String name,
-    required int version,
-    required String speed,
-    required String website,
-  }) {
-    return InfoProperties.js(
-      name: $.ref(name),
-      version: $.ref(version),
-      speed: $.ref(speed),
-      website: $.ref(website),
-    );
-  }
-
-  external factory InfoProperties.js({
+  external factory InfoProperties({
     ExternalDartReference? name,
     ExternalDartReference? version,
     ExternalDartReference? speed,
@@ -60,35 +45,29 @@ extension type InfoProperties._(JSObject _) implements JSObject {
   }
 }
 
-void Info(Node $anchor, InfoProperties $properties) {
-  $.push($properties, false);
-  $.init();
+void Info(Node $$anchor, InfoProperties $$properties) {
+  $.push($$properties, true);
 
-  // Init
-  var p = $.open<Element>($anchor, true, _template);
-  var code = $.sibling<Element>($.child<Text>(p));
-  var text = $.space<Text>($.child<Text>(code));
+  var p = _root<HTMLParagraphElement>();
+  assert(p.nodeName == 'P');
+  var code = $.sibling<HTMLElement>($.child<Text>(p));
+  assert(code.nodeName == 'CODE');
+  var text = $.child<Text>(code);
+  assert(text.nodeName == '#text');
   var text1 = $.sibling<Text>(code, true);
-  var a = $.sibling<Element>(text1);
-  var a1 = $.sibling<Element>($.sibling<Text>(a, true));
-  var a$href = '';
-  var a1$href = '';
+  assert(text1.nodeName == '#text');
+  var a = $.sibling<HTMLAnchorElement>(text1);
+  assert(a.nodeName == 'A');
+  var a1 = $.sibling<HTMLAnchorElement>($.sibling<Text>(a, true));
+  assert(a1.nodeName == 'A');
 
-  $.renderEffect((block, signal) {
-    $.text(text, $properties.name);
-    $.text(text1,
-        ' package is ${$properties.speed} fast. Download version ${$properties.version} from ');
-
-    if (a$href !=
-        (a$href = 'https://www.npmjs.com/package/${$properties.name}')) {
-      $.attr(a, 'href', a$href);
-    }
-
-    if (a1$href != (a1$href = $properties.website)) {
-      $.attr(a1, 'href', a1$href);
-    }
+  $.renderEffect(() {
+    $.setText(text, $$properties.name);
+    $.setText(text1, ' package is ${$$properties.speed} fast. Download version ${$$properties.version} from ');
+    $.setAttribute(a, 'href', 'https://www.npmjs.com/package/${$$properties.name}');
+    $.setAttribute(a1, 'href', $$properties.website);
   });
 
-  $.close($anchor, p);
+  $.append($$anchor, p);
   $.pop();
 }

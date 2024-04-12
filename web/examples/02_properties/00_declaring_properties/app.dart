@@ -14,16 +14,14 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
-  $.init();
+void App(Node $$anchor, AppProperties $$properties) {
+  $.push($$properties, true);
 
-  // Init
-  var fragment = $.comment($anchor);
-  var node = $.childFragment<Comment>(fragment);
+  var fragment = $.comment();
+  var node = $.firstChild<Comment>(fragment);
   assert(node.nodeName == '#comment');
 
-  Nested(node, NestedProperties(answer: 42));
-  $.closeFragment($anchor, fragment);
+  Nested(node, NestedProperties(answer: $.ref(42)));
+  $.append($$anchor, fragment);
   $.pop();
 }
