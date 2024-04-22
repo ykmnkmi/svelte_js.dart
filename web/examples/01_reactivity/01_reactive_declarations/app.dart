@@ -28,23 +28,23 @@ final App = () {
     var doubled = $.derived(() => $.get(count) * 2);
     var quadrupled = $.derived(() => $.get(count) * 2);
 
-    void handleClick(Event event) {
+    void handleClick() {
       $.set(count, $.get(count) + 1);
     }
 
     var fragment = _root();
-    var button = $.firstChild<HTMLButtonElement>(fragment);
+    var button = $.child<HTMLButtonElement>(fragment);
     assert(button.nodeName == 'BUTTON');
 
-    button.__click = handleClick.toJS;
+    button.__click = $.wrap(handleClick);
 
     var text = $.child<Text>(button);
     assert(text.nodeName == '#text');
-    var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button, true));
+    var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button));
     assert(p.nodeName == 'P');
     var text1 = $.child<Text>(p);
     assert(text1.nodeName == '#text');
-    var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p, true));
+    var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p));
     assert(p.nodeName == 'P');
     var text2 = $.child<Text>(p1);
     assert(text2.nodeName == '#text');

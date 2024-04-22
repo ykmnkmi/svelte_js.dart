@@ -5,8 +5,8 @@ import 'dart:js_interop';
 
 import 'package:web/web.dart';
 
-extension type Template(JSFunction _) implements JSFunction {
-  external T call<T extends Node>();
+extension type Template<T extends Node>(JSFunction _) implements JSFunction {
+  external T call();
 }
 
 extension type Fragment(JSFunction _) implements JSFunction {
@@ -16,8 +16,8 @@ extension type Fragment(JSFunction _) implements JSFunction {
 @JS('template')
 external JSFunction _template(String html, [int flags]);
 
-Template template(String html) {
-  return Template(_template(html));
+Template<T> template<T extends Node>(String html) {
+  return Template<T>(_template(html));
 }
 
 Fragment fragment(String html) {

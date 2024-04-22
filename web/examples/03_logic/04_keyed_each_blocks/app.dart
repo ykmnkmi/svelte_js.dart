@@ -32,31 +32,31 @@ final App = () {
       (id: 2, color: 'indigo'),
       (id: 3, color: 'deeppink'),
       (id: 4, color: 'salmon'),
-      (id: 5, color: 'gold')
+      (id: 5, color: 'gold'),
     ]);
 
-    void handleClick(Event event) {
+    void handleClick() {
       $.set(things, $.get(things).sublist(1));
     }
 
     var fragment = _root();
-    var button = $.firstChild<HTMLButtonElement>(fragment);
+    var button = $.child<HTMLButtonElement>(fragment);
     assert(button.nodeName == 'BUTTON');
 
-    button.__click = handleClick.toJS;
+    button.__click = $.wrap(handleClick);
 
-    var div = $.sibling<HTMLDivElement>($.sibling<Text>(button, true));
+    var div = $.sibling<HTMLDivElement>($.sibling<Text>(button));
     assert(div.nodeName == 'DIV');
     var div1 = $.child<HTMLDivElement>(div);
     assert(div1.nodeName == 'DIV');
     var h2 = $.child<HTMLHeadingElement>(div1);
     assert(h2.nodeName == 'H2');
-    var node = $.sibling<Comment>($.sibling<Text>(h2, true));
+    var node = $.sibling<Comment>($.sibling<Text>(h2));
     assert(node.nodeName == '#comment');
 
-    $.eachKeyedBlock(node, 69, () => $.get(things), (thing) => '${thing.id}', ($$anchor, thing, index) {
+    $.eachBlock(node, 69, () => $.get(things), (thing, index) => '${thing.id}', ($$anchor, thing, index) {
       var fragment1 = $.comment();
-      var node1 = $.firstChild<Comment>(fragment1, true);
+      var node1 = $.child<Comment>(fragment1);
       assert(node1.nodeName == '#comment');
 
       var thingProperties = ThingProperties();
@@ -66,16 +66,16 @@ final App = () {
       $.append($$anchor, fragment1);
     });
 
-    var div2 = $.sibling<HTMLDivElement>($.sibling<Text>(div1, true));
+    var div2 = $.sibling<HTMLDivElement>($.sibling<Text>(div1));
     assert(div2.nodeName == 'DIV');
     var h21 = $.child<HTMLHeadingElement>(div2);
     assert(h21.nodeName == 'H2');
-    var node2 = $.sibling<Comment>($.sibling<Text>(h21, true));
+    var node2 = $.sibling<Comment>($.sibling<Text>(h21));
     assert(node2.nodeName == '#comment');
 
-    $.eachIndexedBlock(node2, 65, () => $.get(things), ($$anchor, thing, $$index) {
+    $.eachBlock(node2, 65, () => $.get(things), $.index, ($$anchor, thing, $$index) {
       var fragment2 = $.comment();
-      var node3 = $.firstChild<Comment>(fragment2);
+      var node3 = $.child<Comment>(fragment2);
       assert(node3.nodeName == '#comment');
 
       var thing$properties = ThingProperties();

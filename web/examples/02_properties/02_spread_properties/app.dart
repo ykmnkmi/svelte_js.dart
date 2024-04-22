@@ -19,15 +19,15 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   var properties = JSObject();
   $.setProperty(properties, 'name', 'svelte');
-  $.setProperty(properties, 'version', 4);
+  $.setProperty(properties, 'version', 5);
   $.setProperty(properties, 'speed', 'blazing');
   $.setProperty(properties, 'website', 'https://svelte.dev');
 
   var fragment = $.comment();
-  var node = $.firstChild<Comment>(fragment);
+  var node = $.child<Comment>(fragment);
   assert(node.nodeName == '#comment');
 
-  Info(node, $.spreadProperties(properties));
+  Info(node, $.spreadProperties<InfoProperties>(properties));
   $.append($$anchor, fragment);
   $.pop();
 }

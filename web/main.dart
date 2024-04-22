@@ -23,10 +23,10 @@ import 'examples/03_logic/02_else_if_blocks/app.dart' as else_if_blocks;
 import 'examples/03_logic/03_each_blocks/app.dart' as each_blocks;
 import 'examples/03_logic/04_keyed_each_blocks/app.dart' as keyed_each_blocks;
 import 'examples/03_logic/05_await_blocks/app.dart' as await_blocks;
-// import 'examples/04_events/00_dom_events/app.dart' as dom_events;
-// import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
-// import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
-// import 'examples/04_events/03_component_events/app.dart' as component_events;
+import 'examples/04_events/00_dom_events/app.dart' as dom_events;
+import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
+import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
+import 'examples/04_events/03_component_events/app.dart' as component_events;
 // import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
 // import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
 // import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
@@ -52,10 +52,10 @@ ComponentReference? mountComponent(String name, Node target) {
     'each_blocks' => mount(each_blocks.App, target: target),
     'keyed_each_blocks' => mount(keyed_each_blocks.App, target: target),
     'await_blocks' => mount(await_blocks.App, target: target),
-    // 'dom_events' => mount(dom_events.App, target: target),
-    // 'inline_handlers' => mount(inline_handlers.App, target: target),
-    // 'event_modifiers' => mount(event_modifiers.App, target: target),
-    // 'component_events' => mount(component_events.App, target: target),
+    'dom_events' => mount(dom_events.App, target: target),
+    'inline_handlers' => mount(inline_handlers.App, target: target),
+    'event_modifiers' => mount(event_modifiers.App, target: target),
+    'component_events' => mount(component_events.App, target: target),
     // 'event_forwarding' => mount(event_forwarding.App, target: target),
     // 'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
     // 'text_inputs' => mount(text_inputs.App, target: target),

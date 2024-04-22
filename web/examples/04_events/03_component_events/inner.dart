@@ -4,45 +4,40 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-import 'message.dart';
-
-final _template = $.template('<button>Click to say hello</button>');
-
-extension type InnerEvents._(JSObject _) implements JSObject {
-  factory InnerEvents({void Function(CustomEvent event)? message}) {
-    return InnerEvents.js(message: message?.toJS);
-  }
-
-  external InnerEvents.js({JSFunction? message});
+extension on HTMLButtonElement {
+  external set __click(JSExportedDartFunction handler);
 }
+
+final _root = $.template<HTMLButtonElement>('<button>Click to say hello</button>');
 
 extension type InnerProperties._(JSObject _) implements JSObject {
-  factory InnerProperties({InnerEvents? $$events}) {
-    return InnerProperties.js($$events: $$events);
-  }
+  external factory InnerProperties({ExternalDartReference? message});
 
-  external factory InnerProperties.js({InnerEvents? $$events});
+  @JS('message')
+  external ExternalDartReference? _message;
+
+  void Function(({String text})) get message {
+    return $.unref<void Function(({String text}))>(_message);
+  }
 }
 
-void Inner(Node $anchor, InnerProperties $properties) {
-  $.push($properties, false);
+final Inner = () {
+  $.delegate(['click']);
 
-  var dispatch = createEventDispatcher();
+  return (Node $$anchor, InnerProperties $$properties) {
+    $.push($$properties, true);
 
-  void sayHello(Event event) {
-    dispatch('message', Message(text: 'Hello!'));
-  }
+    void sayHello(Event event) {
+      $$properties.message((text: 'Hello!'));
+    }
 
-  $.init();
+    var button = _root();
+    assert(button.nodeName == 'BUTTON');
 
-  // Init
-  var button = $.open<HTMLButtonElement>($anchor, true, _template);
-  assert(button.nodeName == 'BUTTON');
-
-  $.event<Event>('click', button, sayHello, false);
-  $.close($anchor, button);
-  $.pop();
-}
+    button.__click = $.wrap(sayHello);
+    $.append($$anchor, button);
+    $.pop();
+  };
+}();

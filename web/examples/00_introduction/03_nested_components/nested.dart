@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.template("<p>...don't affect this element</p>");
+final _root = $.template<HTMLParagraphElement>("<p>...don't affect this element</p>");
 
 extension type NestedProperties._(JSObject _) implements JSObject {
   factory NestedProperties() {
@@ -17,7 +17,7 @@ extension type NestedProperties._(JSObject _) implements JSObject {
 void Nested(Node $$anchor, NestedProperties $$properties) {
   $.push($$properties, true);
 
-  var p = _root<HTMLParagraphElement>();
+  var p = _root();
   assert(p.nodeName == 'P');
 
   $.append($$anchor, p);

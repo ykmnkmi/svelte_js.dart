@@ -1,11 +1,11 @@
 <script type="application/dart">
-	var name = $property();
+	var name = $property<String>();
 
-	var version = $property();
+	var version = $property<int>();
 
-	var speed = $property();
+	var speed = $property<String>();
   
-	var website = $property();
+	var website = $property<String>();
 </script>
 
 <p>

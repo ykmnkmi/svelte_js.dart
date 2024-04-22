@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _eachBlock = $.template('<li><a target="_blank" rel="noreferrer"> </a></li>');
+final _eachBlock = $.template<HTMLLIElement>('<li><a target="_blank" rel="noreferrer"> </a></li>');
 final _root = $.fragment('<h1>The Famous Cats of YouTube</h1> <ul></ul>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
@@ -25,12 +25,12 @@ void App(Node $$anchor, AppProperties $$properties) {
   ];
 
   var fragment = _root();
-  var h1 = $.firstChild<HTMLHeadingElement>(fragment);
+  var h1 = $.child<HTMLHeadingElement>(fragment);
   assert(h1.nodeName == 'H1');
-  var ul = $.sibling<HTMLUListElement>($.sibling<Text>(h1, true));
+  var ul = $.sibling<HTMLUListElement>($.sibling<Text>(h1));
   assert(ul.nodeName == 'UL');
 
-  $.eachIndexedBlock(ul, 73, () => cats, ($$anchor, $$item, index) {
+  $.eachBlock(ul, 73, () => cats, $.index, ($$anchor, $$item, index) {
     String id() {
       return $.get($$item).id;
     }
@@ -39,7 +39,7 @@ void App(Node $$anchor, AppProperties $$properties) {
       return $.get($$item).name;
     }
 
-    var li = _eachBlock<HTMLLIElement>();
+    var li = _eachBlock();
     assert(li.nodeName == 'LI');
     var a = $.child<HTMLAnchorElement>(li);
     assert(a.nodeName == 'A');

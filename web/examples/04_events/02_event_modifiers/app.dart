@@ -6,7 +6,11 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template('<button>Click me</button>');
+extension on HTMLButtonElement {
+  external set __click(JSExportedDartFunction handler);
+}
+
+final _root = $.template<HTMLButtonElement>('<button>Click me</button>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,20 +18,30 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+final App = () {
+  $.delegate(['click']);
 
-  void handleMousemove(Event event) {
-    window.alert('no more alerts');
-  }
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-  $.init();
+    void Function() once(void Function()? handler) {
+      return () {
+        if (handler != null) {
+          handler!();
+          handler = null;
+        }
+      };
+    }
 
-  // Init
-  var button = $.open<HTMLButtonElement>($anchor, true, _template);
-  assert(button.nodeName == 'BUTTON');
+    void handleClick() {
+      window.alert('no more alerts');
+    }
 
-  $.event<Event>('click', button, $.once<Event>(handleMousemove), false);
-  $.close($anchor, button);
-  $.pop();
-}
+    var button = _root();
+    assert(button.nodeName == 'BUTTON');
+
+    button.__click = $.wrap(once(handleClick));
+    $.append($$anchor, button);
+    $.pop();
+  };
+}();

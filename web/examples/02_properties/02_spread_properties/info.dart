@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.template('<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>');
+final _root = $.template<HTMLParagraphElement>('<p>The <code> </code> <a>npm</a> and <a>learn more here</a>.</p>');
 
 extension type InfoProperties._(JSObject _) implements JSObject {
   external factory InfoProperties({
@@ -48,17 +48,17 @@ extension type InfoProperties._(JSObject _) implements JSObject {
 void Info(Node $$anchor, InfoProperties $$properties) {
   $.push($$properties, true);
 
-  var p = _root<HTMLParagraphElement>();
+  var p = _root();
   assert(p.nodeName == 'P');
   var code = $.sibling<HTMLElement>($.child<Text>(p));
   assert(code.nodeName == 'CODE');
   var text = $.child<Text>(code);
   assert(text.nodeName == '#text');
-  var text1 = $.sibling<Text>(code, true);
+  var text1 = $.sibling<Text>(code);
   assert(text1.nodeName == '#text');
   var a = $.sibling<HTMLAnchorElement>(text1);
   assert(a.nodeName == 'A');
-  var a1 = $.sibling<HTMLAnchorElement>($.sibling<Text>(a, true));
+  var a1 = $.sibling<HTMLAnchorElement>($.sibling<Text>(a));
   assert(a1.nodeName == 'A');
 
   $.renderEffect(() {

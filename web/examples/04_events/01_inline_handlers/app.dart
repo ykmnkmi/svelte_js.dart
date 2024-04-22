@@ -6,7 +6,11 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template('<div class="svelte-1c44y5p"> </div>');
+extension on HTMLDivElement {
+  external set __mousemove(JSExportedDartFunction handler);
+}
+
+final _root = $.template<HTMLDivElement>('<div class="svelte-1c44y5p"> </div>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -21,28 +25,29 @@ div.svelte-1c44y5p {
   height: 100%;
 }''');
 
-  return (Node $anchor, AppProperties $properties) {
-    $.push($properties, false);
+  $.delegate(['mousemove']);
 
-    var point = $.mutableSource<List<int>>(<int>[0, 0]);
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-    $.init();
+    var point = $.mutableSource(<int>[0, 0]);
 
-    // Init
-    var div = $.open<HTMLDivElement>($anchor, true, _template);
+    var div = _root();
     assert(div.nodeName == 'DIV');
+
+    div.__mousemove = $.wrap((MouseEvent event) {
+      $.mutate(point, $.get(point)[0] = event.clientX);
+	    $.mutate(point, $.get(point)[1] = event.clientY);
+    });
+
     var text = $.child<Text>(div);
     assert(text.nodeName == '#text');
 
-    // Update
-    $.textEffect(text, () {
-      return 'The mouse position is ${$.get<List<int>>(point)[0]} x ${$.get<List<int>>(point)[1]}';
+    $.renderEffect(() {
+      $.setText(text, 'The mouse position is ${$.get(point)[0]} x ${$.get(point)[1]}');
     });
 
-    $.event<MouseEvent>('mousemove', div, (MouseEvent event) {
-      $.set<List<int>>(point, <int>[event.clientX, event.clientY]);
-    }, false);
-    $.close($anchor, div);
+    $.append($$anchor, div);
     $.pop();
   };
 }();

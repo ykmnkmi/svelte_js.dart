@@ -10,9 +10,9 @@ extension on HTMLButtonElement {
   external set __click(JSExportedDartFunction handler);
 }
 
-final _root1 = $.template('<p>...waiting</p>');
-final _root2 = $.template('<p> </p>');
-final _root3 = $.template('<p style="color: red"> </p>');
+final _root1 = $.template<HTMLParagraphElement>('<p>...waiting</p>');
+final _root2 = $.template<HTMLParagraphElement>('<p> </p>');
+final _root3 = $.template<HTMLParagraphElement>('<p style="color: red"> </p>');
 final _root = $.fragment('<button>generate random number</button> <!>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
@@ -25,7 +25,7 @@ final App = () {
   $.delegate(['click']);
 
   return (Node $$anchor, AppProperties $$properties) {
-    $.push($$properties, false);
+    $.push($$properties, true);
 
     Future<String> getRandomNumber() async {
       var responsePromise = window.fetch('https://svelte.dev/tutorial/random-number'.toJS);
@@ -42,34 +42,34 @@ final App = () {
 
     var future = $.source(getRandomNumber());
 
-    void handleClick(Event event) {
+    void handleClick() {
       $.set(future, getRandomNumber());
     }
 
     var fragment = _root();
-    var button = $.firstChild<HTMLButtonElement>(fragment);
+    var button = $.child<HTMLButtonElement>(fragment);
     assert(button.nodeName == 'BUTTON');
 
-    button.__click = handleClick.toJS;
+    button.__click = $.wrap(handleClick);
 
-    var node = $.sibling<Comment>($.sibling<Text>(button, true));
+    var node = $.sibling<Comment>($.sibling<Text>(button));
     assert(node.nodeName == '#comment');
 
     $.awaitBlock(node, () => $.get(future), ($$anchor) {
-      var p = _root1<HTMLParagraphElement>();
+      var p = _root1();
       assert(p.nodeName == 'P');
 
       $.append($$anchor, p);
     }, ($$anchor, number) {
-      var p1 = _root2<HTMLParagraphElement>();
+      var p1 = _root2();
       assert(p1.nodeName == 'P');
       var text1 = $.child<Text>(p1);
       assert(text1.nodeName == '#text');
 
       text1.nodeValue = 'The number is $number';
       $.append($$anchor, p1);
-    }, ($anchor, error) {
-      var p2 = _root3<HTMLParagraphElement>();
+    }, ($$anchor, error) {
+      var p2 = _root3();
       assert(p2.nodeName == 'P');
       var text2 = $.child<Text>(p2);
       assert(text2.nodeName == '#text');
@@ -78,7 +78,7 @@ final App = () {
         $.setText(text2, '$error');
       });
 
-      $.append($anchor, p2);
+      $.append($$anchor, p2);
     });
 
     $.append($$anchor, fragment);

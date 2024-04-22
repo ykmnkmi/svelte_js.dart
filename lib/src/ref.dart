@@ -52,7 +52,7 @@ ExternalDartReference? ref(Object? object) {
 
 @tryInline
 @optionalTypeArgs
-T unref<T>(ExternalDartReference? reference) {
+T unref<T extends Object?>(ExternalDartReference? reference) {
   if (isJS) {
     return unsafeCast<T>(reference);
   }

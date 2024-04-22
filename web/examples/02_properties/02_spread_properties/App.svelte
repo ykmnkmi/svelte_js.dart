@@ -3,7 +3,7 @@
 
 	var properties = $object(
 		name: 'svelte',
-		version: 3,
+		version: 5,
 		speed: 'blazing',
 		website: 'https://svelte.dev'
 	);

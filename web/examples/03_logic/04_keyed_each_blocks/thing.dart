@@ -6,8 +6,8 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root =
-    $.template('<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>');
+final _root = $.template<HTMLParagraphElement>(
+    '<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>');
 
 extension type ThingProperties._(JSObject _) implements JSObject {
   external factory ThingProperties({ExternalDartReference? current});
@@ -15,8 +15,8 @@ extension type ThingProperties._(JSObject _) implements JSObject {
   @JS('current')
   external ExternalDartReference get _current;
 
-  Object? get current {
-    return $.unref<Object?>(_current);
+  String get current {
+    return $.unref<String>(_current);
   }
 }
 
@@ -36,14 +36,14 @@ span.svelte-dgndg6 {
     $.push($$properties, true);
 
     var initial = $$properties.current;
-    var p = _root<HTMLParagraphElement>();
+    var p = _root();
     assert(p.nodeName == 'P');
     var span = $.child<HTMLSpanElement>(p);
     assert(span.nodeName == 'SPAN');
 
     $.setAttribute(span, 'style', 'background-color: $initial');
 
-    var span1 = $.sibling<HTMLSpanElement>($.sibling<Text>(span, true));
+    var span1 = $.sibling<HTMLSpanElement>($.sibling<Text>(span));
     assert(span1.nodeName == 'SPAN');
 
     $.renderEffect(() {

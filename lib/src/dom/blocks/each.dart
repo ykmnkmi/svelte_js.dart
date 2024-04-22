@@ -7,8 +7,12 @@ import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
-@JS('each_keyed')
-external void _eachKeyedBlock(
+String index<T extends Object?>(T item, int index) {
+  return '$index';
+}
+
+@JS('each')
+external void _each(
   Node anchor,
   int flags,
   JSExportedDartFunction collection,
@@ -17,11 +21,11 @@ external void _eachKeyedBlock(
   JSExportedDartFunction? fallback,
 );
 
-void eachKeyedBlock<T>(
+void eachBlock<T extends Object?>(
   Node anchor,
   int flags,
   List<T> Function() collection,
-  String Function(T item) key,
+  String Function(T item, int index) key,
   void Function(Node anchor, Value<T> item, int index) render, [
   void Function(Node anchor)? fallback,
 ]) {
@@ -29,45 +33,15 @@ void eachKeyedBlock<T>(
     return arrayRefCast<T>(collection());
   }
 
-  String jsKey(ExternalDartReference? item, int index, JSArray list) {
-    var value = key(unref<T>(item));
-    return value;
+  String jsKey(ExternalDartReference? item, int index) {
+    return key(unref<T>(item), index);
   }
 
-  _eachKeyedBlock(
+  _each(
     anchor,
     flags,
     jsCollection.toJS,
     jsKey.toJS,
-    render.toJS,
-    fallback?.toJS,
-  );
-}
-
-@JS('each_indexed')
-external void _eachIndexedBlock(
-  Node anchor,
-  int flags,
-  JSExportedDartFunction collection,
-  JSExportedDartFunction render,
-  JSExportedDartFunction? fallback,
-);
-
-void eachIndexedBlock<T>(
-  Node anchor,
-  int flags,
-  List<T> Function() collection,
-  void Function(Node anchor, Value<T> item, int index) render, [
-  void Function(Node anchor)? fallback,
-]) {
-  JSArray jsCollection() {
-    return arrayRefCast<T>(collection());
-  }
-
-  _eachIndexedBlock(
-    anchor,
-    flags,
-    jsCollection.toJS,
     render.toJS,
     fallback?.toJS,
   );

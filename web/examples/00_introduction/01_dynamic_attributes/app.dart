@@ -6,7 +6,7 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.template('<img>');
+final _root = $.template<HTMLImageElement>('<img>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -19,7 +19,7 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   var src = '/tutorial/image.gif';
   var name = 'Rick Astley';
-  var img = _root<HTMLImageElement>();
+  var img = _root();
   assert(img.nodeName == 'IMG');
 
   $.setAttribute(img, 'src', src);

@@ -8,16 +8,16 @@ import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
 
 @JS('source')
-external Source<T> _source<T>(ExternalDartReference? value);
+external Source<T> _source<T extends Object?>(ExternalDartReference? value);
 
-Source<T> source<T>([T? value]) {
+Source<T> source<T extends Object?>([T? value]) {
   return _source<T>(ref(value));
 }
 
 @JS('mutable_source')
-external Source<T> _mutableSource<T>(ExternalDartReference? value);
+external Source<T> _mutableSource<T extends Object?>(ExternalDartReference? value);
 
-Source<T> mutableSource<T>([T? value]) {
+Source<T> mutableSource<T extends Object?>([T? value]) {
   return _mutableSource<T>(ref(value));
 }
 
@@ -27,7 +27,7 @@ external ExternalDartReference? _mutate(
   ExternalDartReference? value,
 );
 
-T mutate<T>(Source signal, T value) {
+T mutate<T extends Object?>(Source signal, T value) {
   return unref<T>(_mutate(signal, ref(value)));
 }
 
@@ -38,6 +38,6 @@ external ExternalDartReference? _set(
 );
 
 @optionalTypeArgs
-T set<T>(Source<T> source, T value) {
+T set<T extends Object?>(Source<T> source, T value) {
   return unref<T>(_set(source, ref(value)));
 }

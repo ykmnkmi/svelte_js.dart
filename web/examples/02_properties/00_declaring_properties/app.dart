@@ -18,7 +18,7 @@ void App(Node $$anchor, AppProperties $$properties) {
   $.push($$properties, true);
 
   var fragment = $.comment();
-  var node = $.firstChild<Comment>(fragment);
+  var node = $.child<Comment>(fragment);
   assert(node.nodeName == '#comment');
 
   Nested(node, NestedProperties(answer: $.ref(42)));

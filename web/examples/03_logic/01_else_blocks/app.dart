@@ -12,8 +12,8 @@ extension on HTMLButtonElement {
   external set __click(JSExportedDartFunction handler);
 }
 
-final _root1 = $.template('<button>Log out</button>');
-final _root2 = $.template('<button>Log in</button>');
+final _root1 = $.template<HTMLButtonElement>('<button>Log out</button>');
+final _root2 = $.template<HTMLButtonElement>('<button>Log in</button>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -29,25 +29,25 @@ final App = () {
 
     var user = $.source(User(loggedIn: false));
 
-    void toggle(Event event) {
+    void toggle() {
       $.mutate(user, $.get(user).loggedIn = !$.get(user).loggedIn);
     }
 
     var fragment = $.comment();
-    var node = $.firstChild<Comment>(fragment);
+    var node = $.child<Comment>(fragment);
     assert(node.nodeName == '#comment');
 
     $.ifBlock(node, () => $.get(user).loggedIn, ($$anchor) {
-      var button = _root1<HTMLButtonElement>();
+      var button = _root1();
       assert(button.nodeName == 'BUTTON');
 
-      button.__click = toggle.toJS;
+      button.__click = $.wrap(toggle);
       $.append($$anchor, button);
     }, ($$anchor) {
-      var button1 = _root2<HTMLButtonElement>();
+      var button1 = _root2();
       assert(button1.nodeName == 'BUTTON');
 
-      button1.__click = toggle.toJS;
+      button1.__click = $.wrap(toggle);
       $.append($$anchor, button1);
     });
 

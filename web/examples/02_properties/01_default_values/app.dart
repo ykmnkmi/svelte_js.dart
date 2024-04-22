@@ -20,12 +20,14 @@ void App(Node $$anchor, AppProperties $$properties) {
   $.push($$properties, true);
 
   var fragment = _root();
-  var node = $.firstChild<Comment>(fragment);
+  var node = $.child<Comment>(fragment);
   assert(node.nodeName == '#comment');
-  var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
-  assert(node1.nodeName == '#comment');
 
   Nested(node, NestedProperties(answer: $.ref(42)));
+
+  var node1 = $.sibling<Comment>($.sibling<Text>(node));
+  assert(node1.nodeName == '#comment');
+
   Nested(node1, NestedProperties());
   $.append($$anchor, fragment);
   $.pop();

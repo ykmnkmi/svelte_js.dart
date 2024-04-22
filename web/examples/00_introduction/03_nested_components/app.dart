@@ -29,9 +29,9 @@ p.svelte-urs9w7 {
     $.push($$properties, true);
 
     var fragment = _root();
-    var p = $.firstChild<HTMLParagraphElement>(fragment);
+    var p = $.child<HTMLParagraphElement>(fragment);
     assert(p.nodeName == 'P');
-    var node = $.sibling<Comment>($.sibling<Text>(p, true));
+    var node = $.sibling<Comment>($.sibling<Text>(p));
     assert(node.nodeName == '#comment');
 
     Nested(node, NestedProperties());

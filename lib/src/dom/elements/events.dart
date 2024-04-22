@@ -30,3 +30,17 @@ void delegate(List<String> events) {
 
   _delegate(jsEvents.toJS);
 }
+
+JSExportedDartFunction wrap(Function callback) {
+  if (callback is void Function(Event)) {
+    return callback.toJS;
+  }
+
+  if (callback is void Function()) {
+    return (Event event) {
+      callback();
+    }.toJS;
+  }
+
+  throw ArgumentError('Unsupported callback type: $callback');
+}
