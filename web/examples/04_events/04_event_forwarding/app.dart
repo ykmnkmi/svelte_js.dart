@@ -4,10 +4,8 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
-import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-import 'message.dart';
 import 'outer.dart';
 
 extension type AppProperties._(JSObject _) implements JSObject {
@@ -16,26 +14,20 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+void App(Node $$anchor, AppProperties $$properties) {
+  $.push($$properties, true);
 
-  void handleMessage(TypedEvent<Message> event) {
-    window.alert(event.detail.text);
+  void handleMessage(({String text}) message) {
+    window.alert(message.text);
   }
 
-  $.init();
-
-  // Init
-  var fragment = $.comment($anchor);
-  var node = $.childFragment<Comment>(fragment);
+  var fragment = $.comment();
+  var node = $.child<Comment>(fragment);
   assert(node.nodeName == '#comment');
 
-  void $onmessage(CustomEvent event) {
-    handleMessage(TypedEvent<Message>(event));
-  }
-
-  var $$outerEvents = OuterEvents(message: $onmessage);
-  Outer(node, OuterProperties($$events: $$outerEvents));
-  $.closeFragment($anchor, fragment);
+  var $$outerProperties = OuterProperties();
+  $.setProperty($$outerProperties, 'message', handleMessage);
+  Outer(node, $$outerProperties);
+  $.append($$anchor, fragment);
   $.pop();
 }

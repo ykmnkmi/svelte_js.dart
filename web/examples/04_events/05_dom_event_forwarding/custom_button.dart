@@ -6,22 +6,21 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _template = $.template('<button class="svelte-hg07jm">Click me</button>');
-
-extension type CustomButtonEvents._(JSObject _) implements JSObject {
-  factory CustomButtonEvents({void Function(Event event)? click}) {
-    return CustomButtonEvents.js(click: click?.toJS);
-  }
-
-  external CustomButtonEvents.js({JSFunction? click});
+extension on HTMLButtonElement {
+  external set __click(JSExportedDartFunction handler);
 }
 
-extension type CustomButtonProperties._(JSObject _) implements JSObject {
-  factory CustomButtonProperties({CustomButtonEvents? $$events}) {
-    return CustomButtonProperties.js($$events: $$events);
-  }
+final _template = $.template<HTMLButtonElement>('<button class="svelte-hg07jm">Click me</button>');
 
-  external factory CustomButtonProperties.js({CustomButtonEvents? $$events});
+extension type CustomButtonProperties._(JSObject _) implements JSObject {
+  external factory CustomButtonProperties({ExternalDartReference? onclick});
+
+  @JS('onclick')
+  external ExternalDartReference? _onclick;
+
+  void Function() get onclick {
+    return $.unref<void Function()>(_onclick);
+  }
 }
 
 final CustomButton = () {
@@ -38,23 +37,26 @@ button.svelte-hg07jm {
   background-size: 400%;
   transition: background 300ms ease-in-out;
 }
+
 button.svelte-hg07jm:hover {
   background-position: 0;
   color: #aaa;
 }
 ''');
 
-  return (Node $anchor, CustomButtonProperties $properties) {
-    $.push($properties, false);
-    $.init();
+  $.delegate(['click']);
 
-    // Init
-    var button = $.open<HTMLButtonElement>($anchor, true, _template);
+  return (Node $$anchor, CustomButtonProperties $$properties) {
+    $.push($$properties, true);
+
+    var button = _template();
     assert(button.nodeName == 'BUTTON');
 
-    $.evenBubblet('click', button, $properties);
+    button.__click = $.wrap((Event event) {
+      $$properties.onclick();
+    });
 
-    $.close($anchor, button);
+    $.append($$anchor, button);
     $.pop();
   };
 }();

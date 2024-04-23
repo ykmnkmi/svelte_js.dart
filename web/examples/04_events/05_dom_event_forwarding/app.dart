@@ -14,22 +14,22 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
+final App = () {
+  $.delegate(['click']);
 
-  void handleClick(Event event) {
-    window.alert('clicked');
-  }
+  return (Node $$anchor, AppProperties $$properties) {
+    $.push($$properties, true);
 
-  $.init();
+    void handleClick() {
+      window.alert('clicked');
+    }
 
-  // Init
-  var fragment = $.comment($anchor);
-  var node = $.childFragment<Comment>(fragment);
-  assert(node.nodeName == '#comment');
+    var fragment = $.comment();
+    var node = $.child<Comment>(fragment);
+    assert(node.nodeName == '#comment');
 
-  CustomButton(node,
-      CustomButtonProperties($$events: CustomButtonEvents(click: handleClick)));
-  $.closeFragment($anchor, fragment);
-  $.pop();
-}
+    CustomButton(node, CustomButtonProperties(onclick: $.ref(handleClick)));
+    $.append($$anchor, fragment);
+    $.pop();
+  };
+}();

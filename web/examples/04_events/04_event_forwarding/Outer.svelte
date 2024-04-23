@@ -1,5 +1,7 @@
 <script type="application/dart">
 	import 'Inner.svelte';
+
+	var properties = $properties();
 </script>
 
-<Inner on:message />
+<Inner {...properties} />

@@ -9,7 +9,7 @@ import {
   template, comment, append,                 // dom/template.js
   derived,                                   // reactivity/deriveds.js
   user_effect, render_effect,                // reactivity/effects.js
-  spread_props, prop,                        // reactivity/props.js
+  rest_props, spread_props, prop,            // reactivity/props.js
   source, mutate, set,                       // reactivity/sources.js
   set_text, append_styles,                   // render.js
   get, push, pop,                            // runtime.js
@@ -19,7 +19,21 @@ import {
   mount, unmount,                            // render.js
 } from 'svelte';
 
+const getter = (value) => {
+  return () => value;
+};
+
+const set_getter = (object, key, get) => {
+  Object.defineProperty(object, key, { get });
+};
+
+const set_property = (object, key, value) => {
+  object[key] = value;
+};
+
 export default {
+  getter, set_getter, set_property,
+
   await_block,
   each,
   html,
@@ -30,8 +44,9 @@ export default {
   template, comment, append,
   derived,
   user_effect, render_effect,
-  spread_props, prop,
+  rest_props, spread_props, prop,
   source, mutate, set,
   set_text, mount, unmount, append_styles,
   get, push, pop,
+
 };

@@ -1,4 +1,8 @@
-<button on:click> Click me </button>
+<script type="application/dart">
+	var onclick = $property<void Function()>();
+</script>
+
+<button {onclick}>Click me</button>
 
 <style>
 	button {
@@ -13,6 +17,7 @@
 		background-size: 400%;
 		transition: background 300ms ease-in-out;
 	}
+
 	button:hover {
 		background-position: 0;
 		color: #aaa;

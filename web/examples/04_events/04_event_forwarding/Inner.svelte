@@ -1,13 +1,9 @@
 <script type="application/dart">
-	import 'package:svelte_js/svelte_js.dart' show createEventDispatcher;
-
-	import 'message.dart';
-
-	var dispatch = createEventDispatcher();
+	var message = $property<void Function(({String text}))>();
 
 	void sayHello() {
-		dispatch('message', Message(text: 'Hello!'));
+		message((text: 'Hello!'));
 	}
 </script>
 
-<button on:click={sayHello}>Click to say hello</button>
+<button onclick={sayHello}>Click to say hello</button>

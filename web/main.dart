@@ -27,8 +27,8 @@ import 'examples/04_events/00_dom_events/app.dart' as dom_events;
 import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
 import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
 import 'examples/04_events/03_component_events/app.dart' as component_events;
-// import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
-// import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
+import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
+import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
 // import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
 // import 'examples/05_bindings/01_numeric_inputs/app.dart' as numeric_inputs;
 // import 'examples/05_bindings/02_checkbox_inputs/app.dart' as checkbox_inputs;
@@ -56,8 +56,8 @@ ComponentReference? mountComponent(String name, Node target) {
     'inline_handlers' => mount(inline_handlers.App, target: target),
     'event_modifiers' => mount(event_modifiers.App, target: target),
     'component_events' => mount(component_events.App, target: target),
-    // 'event_forwarding' => mount(event_forwarding.App, target: target),
-    // 'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
+    'event_forwarding' => mount(event_forwarding.App, target: target),
+    'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
     // 'text_inputs' => mount(text_inputs.App, target: target),
     // 'numeric_inputs' => mount(numeric_inputs.App, target: target),
     // 'checkbox_inputs' => mount(checkbox_inputs.App, target: target),

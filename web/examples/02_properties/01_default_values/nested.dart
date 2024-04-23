@@ -22,7 +22,7 @@ extension type NestedProperties._(JSObject _) implements JSObject {
 void Nested(Node $$anchor, NestedProperties $$properties) {
   $.push($$properties, true);
 
-  var answer = $.prop<Object?>($$properties, 'answer', 3, 'a mystery');
+  var answer = $.property<Object?>($$properties, 'answer', 3, 'a mystery');
   var p = _root();
   assert(p.nodeName == 'P');
   var text = $.child<Text>(p);

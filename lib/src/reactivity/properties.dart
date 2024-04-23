@@ -6,13 +6,24 @@ import 'dart:js_interop';
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/unsafe_cast.dart';
 
-@JS('spread_props')
-external T _spreadProperties<T extends JSObject>(
-  JSObject first, [
-  JSObject second,
-]);
+@JS('rest_props')
+external T _restProperties<T extends JSObject>(
+  JSObject properties,
+  JSArray exclude,
+);
 
-T spreadProperties<T extends JSObject>(JSObject first, [JSObject? second]) {
+T restProperties<T extends JSObject>(
+  JSObject properties,
+  List<String> exclude,
+) {
+  var jsExclude = arrayRefCast<String>(exclude);
+  return _restProperties<T>(properties, jsExclude);
+}
+
+@JS('spread_props')
+external T _spreadProperties<T extends JSObject>(JSAny first, [JSAny second]);
+
+T spreadProperties<T extends JSObject>(JSAny first, [JSAny? second]) {
   if (second == null) {
     return _spreadProperties<T>(first);
   }
@@ -21,15 +32,20 @@ T spreadProperties<T extends JSObject>(JSObject first, [JSObject? second]) {
 }
 
 @JS('prop')
-external JSFunction _prop(
+external JSFunction _property(
   JSObject properties,
   String key,
   int flags,
   ExternalDartReference? value,
 );
 
-T Function() prop<T>(JSObject properties, String key, int flags, T fallback) {
-  var jsFunction = _prop(properties, key, flags, ref(fallback));
+T Function() property<T>(
+  JSObject properties,
+  String key,
+  int flags,
+  T fallback,
+) {
+  var jsFunction = _property(properties, key, flags, ref(fallback));
 
   return () {
     var jsResult = jsFunction.callAsFunction();

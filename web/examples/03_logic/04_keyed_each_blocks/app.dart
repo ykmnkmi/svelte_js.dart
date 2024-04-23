@@ -60,7 +60,7 @@ final App = () {
       assert(node1.nodeName == '#comment');
 
       var thingProperties = ThingProperties();
-      $.setGetter(thingProperties, 'current', () => $.get(thing).color);
+      $.setGetter(thingProperties, 'current', () => $.ref($.get(thing).color));
       Thing(node1, thingProperties);
 
       $.append($$anchor, fragment1);
@@ -79,7 +79,7 @@ final App = () {
       assert(node3.nodeName == '#comment');
 
       var thing$properties = ThingProperties();
-      $.setGetter(thing$properties, 'current', () => $.get(thing).color);
+      $.setGetter(thing$properties, 'current', () => $.ref($.get(thing).color));
       Thing(node3, thing$properties);
 
       $.append($$anchor, fragment2);

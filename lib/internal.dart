@@ -7,7 +7,7 @@ export 'package:svelte_js/src/dom/elements/bindings/input.dart';
 export 'package:svelte_js/src/dom/elements/events.dart';
 export 'package:svelte_js/src/dom/operations.dart';
 export 'package:svelte_js/src/dom/template.dart';
-export 'package:svelte_js/src/js_object.dart';
+export 'package:svelte_js/src/interop.dart';
 export 'package:svelte_js/src/reactivity/deriveds.dart';
 export 'package:svelte_js/src/reactivity/effects.dart';
 export 'package:svelte_js/src/reactivity/properties.dart';
