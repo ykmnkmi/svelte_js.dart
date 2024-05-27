@@ -6,10 +6,6 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-extension on HTMLButtonElement {
-  external set __click(JSExportedDartFunction handler);
-}
-
 final _root = $.template<HTMLButtonElement>('<button> </button>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
@@ -18,38 +14,32 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final App = () {
-  $.delegate(['click']);
+void App(Node $$anchor, AppProperties $$properties) {
+  $.push($$properties, true);
 
-  return (Node $$anchor, AppProperties $$properties) {
-    $.push($$properties, true);
+  var count = $.source(0);
 
-    var count = $.source(0);
-
-    $.userEffect(() {
-      if ($.get(count) >= 10) {
-        window.alert('count is dangerously high!');
-        $.set(count, 9);
-      }
-    });
-
-    void handleClick() {
-      $.set(count, $.get(count) + 1);
+  $.userEffect(() {
+    if ($.get(count) >= 10) {
+      window.alert('count is dangerously high!');
+      $.set(count, 9);
     }
+  });
 
-    var button = _root();
-    assert(button.nodeName == 'BUTTON');
+  void handleClick() {
+    $.set(count, $.get(count) + 1);
+  }
 
-    button.__click = $.wrap(handleClick);
+  var button = _root();
+  assert(button.nodeName == 'BUTTON');
+  var text = $.child<Text>(button);
+  assert(text.nodeName == '#text');
 
-    var text = $.child<Text>(button);
-    assert(text.nodeName == '#text');
+  $.renderEffect(() {
+    $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
+  });
 
-    $.renderEffect(() {
-      $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
-    });
-
-    $.append($$anchor, button);
-    $.pop();
-  };
-}();
+  $.event('click', button, (Event event) => handleClick(), false);
+  $.append($$anchor, button);
+  $.pop();
+}

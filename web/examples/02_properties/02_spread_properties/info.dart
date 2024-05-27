@@ -46,8 +46,6 @@ extension type InfoProperties._(JSObject _) implements JSObject {
 }
 
 void Info(Node $$anchor, InfoProperties $$properties) {
-  $.push($$properties, true);
-
   var p = _root();
   assert(p.nodeName == 'P');
   var code = $.sibling<HTMLElement>($.child<Text>(p));
@@ -69,5 +67,4 @@ void Info(Node $$anchor, InfoProperties $$properties) {
   });
 
   $.append($$anchor, p);
-  $.pop();
 }

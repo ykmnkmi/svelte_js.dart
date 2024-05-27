@@ -15,8 +15,6 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, true);
-
   var name = 'world';
   var h1 = _root();
   assert(h1.nodeName == 'H1');
@@ -25,5 +23,4 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   text.nodeValue = 'Hello $name!';
   $.append($$anchor, h1);
-  $.pop();
 }

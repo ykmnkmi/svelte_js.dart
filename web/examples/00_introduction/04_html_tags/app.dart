@@ -15,15 +15,12 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, true);
-
   var string = "here's some <strong>HTML!!!</strong>";
   var p = _root();
   assert(p.nodeName == 'P');
   var node = $.child<Comment>(p);
   assert(node.nodeName == '#comment');
 
-  $.html(node, () => string, false);
+  $.html(node, () => string, false, false);
   $.append($$anchor, p);
-  $.pop();
 }

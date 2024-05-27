@@ -15,8 +15,6 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, true);
-
   var properties = JSObject();
   $.setProperty(properties, 'name', 'svelte');
   $.setProperty(properties, 'version', 5);
@@ -29,5 +27,4 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   Info(node, $.spreadProperties<InfoProperties>(properties));
   $.append($$anchor, fragment);
-  $.pop();
 }

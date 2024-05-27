@@ -6,10 +6,6 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-extension on HTMLButtonElement {
-  external set __click(JSExportedDartFunction handler);
-}
-
 final _root = $.fragment('<button> </button> <p> </p> <p> </p>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
@@ -18,44 +14,35 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final App = () {
-  $.delegate(['click']);
+void App(Node $$anchor, AppProperties $$properties) {
+  var count = $.source(0);
+  var doubled = $.derived(() => $.get(count) * 2);
+  var quadrupled = $.derived(() => $.get(count) * 2);
 
-  return (Node $$anchor, AppProperties $$properties) {
-    $.push($$properties, true);
+  void handleClick() {
+    $.set(count, $.get(count) + 1);
+  }
 
-    var count = $.source(0);
-    var doubled = $.derived(() => $.get(count) * 2);
-    var quadrupled = $.derived(() => $.get(count) * 2);
+  var fragment = _root();
+  var button = $.child<HTMLButtonElement>(fragment);
+  assert(button.nodeName == 'BUTTON');
+  var text = $.child<Text>(button);
+  assert(text.nodeName == '#text');
+  var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button, true));
+  assert(p.nodeName == 'P');
+  var text1 = $.child<Text>(p);
+  assert(text1.nodeName == '#text');
+  var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p, true));
+  assert(p.nodeName == 'P');
+  var text2 = $.child<Text>(p1);
+  assert(text2.nodeName == '#text');
 
-    void handleClick() {
-      $.set(count, $.get(count) + 1);
-    }
+  $.renderEffect(() {
+    $.setText(text, 'Count: ${$.get(count)}');
+    $.setText(text1, '${$.get(count)} * 2 = ${$.get(doubled)}');
+    $.setText(text2, '${$.get(doubled)} * 2 = ${$.get(quadrupled)}');
+  });
 
-    var fragment = _root();
-    var button = $.child<HTMLButtonElement>(fragment);
-    assert(button.nodeName == 'BUTTON');
-
-    button.__click = $.wrap(handleClick);
-
-    var text = $.child<Text>(button);
-    assert(text.nodeName == '#text');
-    var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button));
-    assert(p.nodeName == 'P');
-    var text1 = $.child<Text>(p);
-    assert(text1.nodeName == '#text');
-    var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p));
-    assert(p.nodeName == 'P');
-    var text2 = $.child<Text>(p1);
-    assert(text2.nodeName == '#text');
-
-    $.renderEffect(() {
-      $.setText(text, 'Count: ${$.get(count)}');
-      $.setText(text1, '${$.get(count)} * 2 = ${$.get(doubled)}');
-      $.setText(text2, '${$.get(doubled)} * 2 = ${$.get(quadrupled)}');
-    });
-
-    $.append($$anchor, fragment);
-    $.pop();
-  };
-}();
+  $.event('click', button, (Event event) => handleClick(), false);
+  $.append($$anchor, fragment);
+}

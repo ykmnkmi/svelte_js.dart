@@ -6,10 +6,6 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-extension on HTMLButtonElement {
-  external set __click(JSExportedDartFunction handler);
-}
-
 final _root = $.template<HTMLButtonElement>('<button> </button>');
 
 extension type AppProperties._(JSObject _) implements JSObject {
@@ -18,31 +14,22 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final App = () {
-  $.delegate(['click']);
+void App(Node $$anchor, AppProperties $$properties) {
+  var count = $.source(0);
 
-  return (Node $$anchor, AppProperties $$properties) {
-    $.push($$properties, true);
+  void handleClick() {
+    $.set(count, $.get(count) + 1);
+  }
 
-    var count = $.source(0);
+  var button = _root();
+  assert(button.nodeName == 'BUTTON');
+  var text = $.child<Text>(button);
+  assert(text.nodeName == '#text');
 
-    void handleClick() {
-      $.set(count, $.get(count) + 1);
-    }
+  $.renderEffect(() {
+    $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
+  });
 
-    var button = _root();
-    assert(button.nodeName == 'BUTTON');
-
-    button.__click = $.wrap(handleClick);
-
-    var text = $.child<Text>(button);
-    assert(text.nodeName == '#text');
-
-    $.renderEffect(() {
-      $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
-    });
-
-    $.append($$anchor, button);
-    $.pop();
-  };
-}();
+  $.event('click', button, (Event event) => handleClick(), false);
+  $.append($$anchor, button);
+}

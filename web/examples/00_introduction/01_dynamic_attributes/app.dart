@@ -15,8 +15,6 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, true);
-
   var src = '/tutorial/image.gif';
   var name = 'Rick Astley';
   var img = _root();
@@ -25,5 +23,4 @@ void App(Node $$anchor, AppProperties $$properties) {
   $.setAttribute(img, 'src', src);
   $.setAttribute(img, 'alt', '$name dancing');
   $.append($$anchor, img);
-  $.pop();
 }

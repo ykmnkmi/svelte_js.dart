@@ -16,7 +16,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final App = () {
+final _app = () {
   $.appendStyles(null, 'svelte-urs9w7', '''
 p.svelte-urs9w7 {
   color: purple;
@@ -26,16 +26,17 @@ p.svelte-urs9w7 {
 ''');
 
   return (Node $$anchor, AppProperties $$properties) {
-    $.push($$properties, true);
-
     var fragment = _root();
     var p = $.child<HTMLParagraphElement>(fragment);
     assert(p.nodeName == 'P');
-    var node = $.sibling<Comment>($.sibling<Text>(p));
+    var node = $.sibling<Comment>($.sibling<Text>(p, true));
     assert(node.nodeName == '#comment');
 
     Nested(node, NestedProperties());
     $.append($$anchor, fragment);
-    $.pop();
   };
 }();
+
+void App(Node $$anchor, AppProperties $$props) {
+  _app($$anchor, $$props);
+}
