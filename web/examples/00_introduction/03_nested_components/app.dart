@@ -8,7 +8,8 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
-final _root = $.fragment('<p class="svelte-urs9w7">These styles...</p> <!>');
+final _root = $.fragment('''
+<p class="svelte-urs9w7">These styles...</p> <!>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -16,27 +17,20 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final _app = () {
+void App(Node $$anchor, AppProperties $$properties) {
+  var fragment = _root();
+  var p = $.firstChild<HTMLParagraphElement>(fragment);
+  assert(p.nodeName == 'P');
+  var node = $.sibling<Comment>($.sibling<Text>(p, true));
+  assert(node.nodeName == '#comment');
+
+  Nested(node, NestedProperties());
+  $.append($$anchor, fragment);
   $.appendStyles(null, 'svelte-urs9w7', '''
-p.svelte-urs9w7 {
-  color: purple;
-  font-family: 'Comic Sans MS', cursive;
-  font-size: 2em;
-}
+\tp.svelte-urs9w7 {
+\t\tcolor: purple;
+\t\tfont-family: 'Comic Sans MS', cursive;
+\t\tfont-size: 2em;
+\t}
 ''');
-
-  return (Node $$anchor, AppProperties $$properties) {
-    var fragment = _root();
-    var p = $.child<HTMLParagraphElement>(fragment);
-    assert(p.nodeName == 'P');
-    var node = $.sibling<Comment>($.sibling<Text>(p, true));
-    assert(node.nodeName == '#comment');
-
-    Nested(node, NestedProperties());
-    $.append($$anchor, fragment);
-  };
-}();
-
-void App(Node $$anchor, AppProperties $$props) {
-  _app($$anchor, $$props);
 }

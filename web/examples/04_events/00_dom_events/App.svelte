@@ -7,7 +7,7 @@
 	}
 </script>
 
-<div onmousemove={handleMousemove}>
+<div on:mousemove={handleMousemove}>
 	The mouse position is {point[0]} x {point[1]}
 </div>
 

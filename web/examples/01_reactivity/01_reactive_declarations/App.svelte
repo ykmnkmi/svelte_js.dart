@@ -1,15 +1,16 @@
 <script type="application/dart">
-	var count = $state(1);
+	var count = 1;
 
-	var doubled = $derived(count * 2);	
-	var quadrupled = $derived(doubled * 2);
+	// the `$:` means 're-run whenever these values change'
+	$: doubled = count * 2;	
+	$: quadrupled = doubled * 2;
 
 	void handleClick() {
 		count += 1;
 	}
 </script>
 
-<button onclick={handleClick}>
+<button on:click={handleClick}>
 	Count: {count}
 </button>
 

@@ -8,17 +8,18 @@ import 'package:web/web.dart';
 
 import 'nested.dart';
 
+final _root = $.fragment('''
+<!> <!>''');
+
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
     return AppProperties._(JSObject());
   }
 }
 
-final _root = $.fragment('<!> <!>');
-
 void App(Node $$anchor, AppProperties $$properties) {
   var fragment = _root();
-  var node = $.child<Comment>(fragment);
+  var node = $.firstChild<Comment>(fragment);
   assert(node.nodeName == '#comment');
 
   Nested(node, NestedProperties(answer: $.ref(42)));

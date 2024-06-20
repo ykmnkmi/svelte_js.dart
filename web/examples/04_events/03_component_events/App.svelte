@@ -1,11 +1,12 @@
 <script type="application/dart">
+	import 'package:svelte_js/svelte_js.dart';
 	import 'package:web/web.dart';
 
 	import 'Inner.svelte';
 
-	void handleMessage(({String text}) message) {
-		window.alert(message.text);
+	void handleMessage(ComponentEvent<({String text})> event) {
+		window.alert(event.detail.text);
 	}
 </script>
 
-<Inner message={handleMessage} />
+<Inner on:message={handleMessage} />

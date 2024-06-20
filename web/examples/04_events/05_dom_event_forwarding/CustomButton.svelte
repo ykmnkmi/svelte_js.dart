@@ -1,8 +1,4 @@
-<script type="application/dart">
-	var onclick = $property<void Function()>();
-</script>
-
-<button {onclick}>Click me</button>
+<button on:click>Click me</button>
 
 <style>
 	button {

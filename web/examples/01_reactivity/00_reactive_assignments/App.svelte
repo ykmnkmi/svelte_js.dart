@@ -1,12 +1,12 @@
 <script type="application/dart">
-	var count = $state(0);
+	var count = 0;
 
 	void handleClick() {
 		count += 1;
 	}
 </script>
 
-<button onclick={handleClick}>
+<button on:click={handleClick}>
 	Clicked {count}
 	{count == 1 ? 'time' : 'times'}
 </button>

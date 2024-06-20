@@ -2,7 +2,7 @@
 	var point = <int>[0, 0];
 </script>
 
-<div onmousemove={(MouseEvent event) {
+<div on:mousemove={(MouseEvent event) {
 	point[0] = event.clientX;
 	point[1] = event.clientY;
 }}>

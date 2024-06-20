@@ -6,7 +6,8 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.template<HTMLButtonElement>('<button> </button>');
+final _root = $.template<HTMLButtonElement>('''
+<button> </button>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -15,31 +16,33 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, true);
+  $.push($$properties, false);
 
-  var count = $.source(0);
+  var count = $.mutableSource(0);
 
-  $.userEffect(() {
+  void handleClick() {
+    $.set(count, $.get(count) + 1);
+  }
+
+  $.legacyPreEffect(() => $.get(count), () {
     if ($.get(count) >= 10) {
       window.alert('count is dangerously high!');
       $.set(count, 9);
     }
   });
 
-  void handleClick() {
-    $.set(count, $.get(count) + 1);
-  }
+  $.legacyPreEffectReset();
 
   var button = _root();
   assert(button.nodeName == 'BUTTON');
   var text = $.child<Text>(button);
   assert(text.nodeName == '#text');
 
-  $.renderEffect(() {
+  $.templateEffect(() {
     $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
   });
 
-  $.event('click', button, (Event event) => handleClick(), false);
+  $.event('click', button, (event) => handleClick(), false);
   $.append($$anchor, button);
   $.pop();
 }

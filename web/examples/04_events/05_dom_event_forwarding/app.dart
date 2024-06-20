@@ -2,6 +2,7 @@
 library;
 
 import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
@@ -14,22 +15,21 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-final App = () {
-  $.delegate(['click']);
+void App(Node $$anchor, AppProperties $$properties) {
+  void handleClick() {
+    window.alert('clicked');
+  }
 
-  return (Node $$anchor, AppProperties $$properties) {
-    $.push($$properties, true);
+  var fragment = $.comment();
+  var node = $.firstChild<Text>(fragment);
+  assert(node.nodeName == '#text');
 
-    void handleClick() {
-      window.alert('clicked');
-    }
+  void $click(Event event) {
+    handleClick();
+  }
 
-    var fragment = $.comment();
-    var node = $.child<Comment>(fragment);
-    assert(node.nodeName == '#comment');
-
-    CustomButton(node, CustomButtonProperties(onclick: $.ref(handleClick)));
-    $.append($$anchor, fragment);
-    $.pop();
-  };
-}();
+  var $$events = JSObject();
+  $$events.setProperty('click'.toJS, $click.toJS);
+  CustomButton(node, CustomButtonProperties($$events: $$events));
+  $.append($$anchor, fragment);
+}

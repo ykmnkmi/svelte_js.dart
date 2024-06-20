@@ -6,7 +6,8 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.template<HTMLImageElement>('<img>');
+final _root = $.template<HTMLImageElement>('''
+<img>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {

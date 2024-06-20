@@ -6,7 +6,8 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.template<HTMLHeadingElement>('<h1> </h1>');
+final _root = $.template<HTMLHeadingElement>('''
+<h1> </h1>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {

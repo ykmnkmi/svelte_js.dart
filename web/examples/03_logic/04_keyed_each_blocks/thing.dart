@@ -20,37 +20,32 @@ extension type ThingProperties._(JSObject _) implements JSObject {
   }
 }
 
-final Thing = () {
+void Thing(Node $$anchor, ThingProperties $$properties) {
+  var current = $.property<dynamic>($$properties, 'current');
+  var initial = current();
+  var p = _root();
+  assert(p.nodeName == 'P');
+  var span = $.child<HTMLSpanElement>(p);
+  assert(span.nodeName == 'SPAN');
+
+  $.setAttribute(span, 'style', 'background-color: ${$.stringify(initial)}');
+
+  var span1 = $.sibling<HTMLSpanElement>($.sibling<Text>(span));
+  assert(span1.nodeName == 'SPAN');
+
+  $.templateEffect(() {
+    $.setAttribute(span1, 'style', 'background-color: ${$.stringify(current())}');
+  });
+
+  $.append($$anchor, p);
   $.appendStyles(null, 'svelte-dgndg6', '''
-span.svelte-dgndg6 {
-		display: inline-block;
-		padding: 0.2em 0.5em;
-		margin: 0 0.2em 0.2em 0;
-		width: 4em;
-		text-align: center;
-		border-radius: 0.2em;
-		color: white;
-}''');
-
-  return (Node $$anchor, ThingProperties $$properties) {
-    $.push($$properties, true);
-
-    var initial = $$properties.current;
-    var p = _root();
-    assert(p.nodeName == 'P');
-    var span = $.child<HTMLSpanElement>(p);
-    assert(span.nodeName == 'SPAN');
-
-    $.setAttribute(span, 'style', 'background-color: $initial');
-
-    var span1 = $.sibling<HTMLSpanElement>($.sibling<Text>(span));
-    assert(span1.nodeName == 'SPAN');
-
-    $.renderEffect(() {
-      $.setAttribute(span1, 'style', 'background-color: ${$$properties.current}');
-    });
-
-    $.append($$anchor, p);
-    $.pop();
-  };
-}();
+\tspan.svelte-dgndg6 {
+\t\tdisplay: inline-block;
+\t\tpadding: 0.2em 0.5em;
+\t\tmargin: 0 0.2em 0.2em 0;
+\t\twidth: 4em;
+\t\ttext-align: center;
+\t\tborder-radius: 0.2em;
+\t\tcolor: white;
+\t}''');
+}

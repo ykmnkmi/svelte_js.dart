@@ -3,24 +3,21 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:web/web.dart';
 
 @JS('set_text')
 external void setText(Text text, String value);
 
+@tryInline
 String stringify(Object? value) {
-  if (value == null) {
-    return '';
-  }
-
-  return value is String ? value : '$value';
+  return value == null ? '' : '$value';
 }
 
+@anonymous
 extension type _Mount._(JSObject _) implements JSObject {
-  external factory _Mount({Node target});
-
-  external Node target;
+  external factory _Mount({Node? anchor, Node target});
 }
 
 @optionalTypeArgs
@@ -39,9 +36,10 @@ external ComponentReference _mount(
 
 ComponentReference mount<T extends JSObject>(
   Component<T> component, {
+  Node? anchor,
   required Node target,
 }) {
-  return _mount(component.toJS, _Mount(target: target));
+  return _mount(component.toJS, _Mount(anchor: anchor, target: target));
 }
 
 @JS('unmount')

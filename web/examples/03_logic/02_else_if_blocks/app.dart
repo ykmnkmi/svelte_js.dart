@@ -6,9 +6,12 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root1 = $.template<HTMLParagraphElement>('<p> </p>');
-final _root3 = $.template<HTMLParagraphElement>('<p> </p>');
-final _root4 = $.template<HTMLParagraphElement>('<p> </p>');
+final _root1 = $.template<HTMLParagraphElement>('''
+<p> </p>''');
+final _root3 = $.template<HTMLParagraphElement>('''
+<p> </p>''');
+final _root4 = $.template<HTMLParagraphElement>('''
+<p> </p>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -17,12 +20,10 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, true);
-
   var x = 7;
   var fragment = $.comment();
-  var node = $.child<Comment>(fragment);
-  assert(node.nodeName == '#comment');
+  var node = $.firstChild<Text>(fragment);
+  assert(node.nodeName == '#text');
 
   $.ifBlock(node, () => x > 10, ($$anchor) {
     var p = _root1();
@@ -34,8 +35,8 @@ void App(Node $$anchor, AppProperties $$properties) {
     $.append($$anchor, p);
   }, ($$anchor) {
     var fragment1 = $.comment();
-    var node1 = $.child<Comment>(fragment1);
-    assert(node1.nodeName == '#comment');
+    var node1 = $.firstChild<Text>(fragment1);
+    assert(node1.nodeName == '#text');
 
     $.ifBlock(node1, () => 5 > x, ($$anchor) {
       var p1 = _root3();
@@ -59,5 +60,4 @@ void App(Node $$anchor, AppProperties $$properties) {
   });
 
   $.append($$anchor, fragment);
-  $.pop();
 }

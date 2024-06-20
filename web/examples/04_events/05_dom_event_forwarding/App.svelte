@@ -8,4 +8,4 @@
 	}
 </script>
 
-<CustomButton onclick={handleClick} />
+<CustomButton on:click={handleClick} />

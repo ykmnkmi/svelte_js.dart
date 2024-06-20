@@ -4,40 +4,31 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
+import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
-extension on HTMLButtonElement {
-  external set __click(JSExportedDartFunction handler);
-}
-
-final _root = $.template<HTMLButtonElement>('<button>Click to say hello</button>');
+final _root = $.template<HTMLButtonElement>('''
+<button>Click to say hello</button>''');
 
 extension type InnerProperties._(JSObject _) implements JSObject {
-  external factory InnerProperties({ExternalDartReference? message});
-
-  @JS('message')
-  external ExternalDartReference? _message;
-
-  void Function(({String text})) get message {
-    return $.unref<void Function(({String text}))>(_message);
-  }
+  external factory InnerProperties({JSObject? $$events});
 }
 
-final Inner = () {
-  $.delegate(['click']);
+void Inner(Node $$anchor, InnerProperties $$properties) {
+  $.push($$properties, false);
 
-  return (Node $$anchor, InnerProperties $$properties) {
-    $.push($$properties, true);
+  var dispatch = createEventDispatcher();
 
-    void sayHello(Event event) {
-      $$properties.message((text: 'Hello!'));
-    }
+  void sayHello() {
+    dispatch('message', (text: 'Hello!'));
+  }
 
-    var button = _root();
-    assert(button.nodeName == 'BUTTON');
+  $.init();
 
-    button.__click = $.wrap(sayHello);
-    $.append($$anchor, button);
-    $.pop();
-  };
-}();
+  var button = _root();
+  assert(button.nodeName == 'BUTTON');
+
+  $.event('click', button, (event) => sayHello(), false);
+  $.append($$anchor, button);
+  $.pop();
+}

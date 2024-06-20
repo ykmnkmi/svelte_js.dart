@@ -6,7 +6,8 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _fragment = $.fragment('<input placeholder="Enter your name"> <p> </p>');
+final _root = $.fragment('''
+<input placeholder="Enter your name"> <p> </p>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -14,16 +15,10 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $anchor, AppProperties $properties) {
-  $.push($properties, false);
-
-  var name = $.mutableSource<String>('');
-
-  $.init();
-
-  // Init
-  var fragment = $.openFragment($anchor, true, _fragment);
-  var input = $.childFragment<HTMLInputElement>(fragment);
+void App(Node $$anchor, AppProperties $properties) {
+  var name = $.mutableSource('');
+  var fragment = _root();
+  var input = $.firstChild<HTMLInputElement>(fragment);
 
   $.removeInputAttributeDefaults(input);
 
@@ -32,12 +27,10 @@ void App(Node $anchor, AppProperties $properties) {
   var text = $.child<Text>(p);
   assert(text.nodeName == '#text');
 
-  $.textEffect(text, () {
-    return 'Hello, ${$.get<String>(name).isNotEmpty ? $.get<String>(name) : 'stranger'}!';
+  $.templateEffect(() {
+    $.setText(text, 'Hello, ${$.get(name).isNotEmpty ? $.get(name) : 'stranger'}!');
   });
 
-  $.bindValue(input, () => $.get<String>(name),
-      ($value) => $.set<String>(name, $value));
-  $.closeFragment($anchor, fragment);
-  $.pop();
+  $.bindValue(input, () => $.get(name), ($$value) => $.set(name, $$value));
+  $.append($$anchor, fragment);
 }

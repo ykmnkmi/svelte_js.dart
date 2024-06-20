@@ -3,6 +3,7 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:meta/meta.dart';
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/unsafe_cast.dart';
 
@@ -21,31 +22,41 @@ T restProperties<T extends JSObject>(
 }
 
 @JS('spread_props')
-external T _spreadProperties<T extends JSObject>(JSAny first, [JSAny second]);
+external T _spreadProperties<T extends JSObject>(JSAny properties);
 
-T spreadProperties<T extends JSObject>(JSAny first, [JSAny? second]) {
-  if (second == null) {
-    return _spreadProperties<T>(first);
-  }
-
-  return _spreadProperties<T>(first, second);
+T spreadProperties<T extends JSObject>(JSAny properties) {
+  return _spreadProperties<T>(properties);
 }
 
 @JS('prop')
-external JSFunction _property(
+external JSFunction _property(JSObject properties, String key);
+
+@optionalTypeArgs
+T Function() property<T>(JSObject properties, String key) {
+  var jsFunction = _property(properties, key);
+
+  return () {
+    var jsResult = jsFunction.callAsFunction();
+    var resultRef = unsafeCast<ExternalDartReference?>(jsResult);
+    return unref<T>(resultRef);
+  };
+}
+
+@JS('prop')
+external JSFunction _propertyWithDefault(
   JSObject properties,
   String key,
   int flags,
-  ExternalDartReference? value,
+  ExternalDartReference? fallback,
 );
 
-T Function() property<T>(
+T Function() propertyWithDefault<T>(
   JSObject properties,
   String key,
   int flags,
   T fallback,
 ) {
-  var jsFunction = _property(properties, key, flags, ref(fallback));
+  var jsFunction = _propertyWithDefault(properties, key, flags, ref(fallback));
 
   return () {
     var jsResult = jsFunction.callAsFunction();
