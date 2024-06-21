@@ -5,7 +5,8 @@ import {
   if as if_block,                 // dom/blocks/if.js
   remove_input_attr_defaults,     // dom/elements/attributes.js
   set_attribute,
-  bind_value, bind_checked,       // dom/elements/bindings.js
+  bind_value, bind_group,         // dom/elements/bindings.js
+  bind_checked,
   event,                          // dom/elements/events.js
   init,                           // dom/legacy/lifecycle.js
   bubble_event,                   // dom/legacy/misc.js
@@ -46,7 +47,7 @@ export default {
   html,
   if_block,
   remove_input_attr_defaults, set_attribute,
-  bind_value, bind_checked,
+  bind_value, bind_group, bind_checked,
   event,
   init,
   bubble_event,

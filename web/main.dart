@@ -38,6 +38,7 @@ import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwar
 import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
 import 'examples/05_bindings/01_numeric_inputs/app.dart' as numeric_inputs;
 import 'examples/05_bindings/02_checkbox_inputs/app.dart' as checkbox_inputs;
+import 'examples/05_bindings/03_group_inputs/app.dart' as group_inputs;
 
 ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
@@ -73,6 +74,7 @@ ComponentReference? mountComponent(String name, Node target) {
     'text_inputs' => mount(text_inputs.App, target: target),
     'numeric_inputs' => mount(numeric_inputs.App, target: target),
     'checkbox_inputs' => mount(checkbox_inputs.App, target: target),
+    'group_inputs' => mount(group_inputs.App, target: target),
     _ => null,
   };
 }

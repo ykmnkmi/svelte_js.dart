@@ -3,7 +3,7 @@ targets:
     builders:
       build_web_compilers:entrypoint:
         generate_for:
-          - web/*.dart
+          - web/main.dart
         options:
           native_null_assertions: true
           dart2js_args:

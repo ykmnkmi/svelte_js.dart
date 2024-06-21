@@ -3,6 +3,7 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:svelte_js/src/array_conversion.dart';
 import 'package:web/web.dart';
 
 @JS('bind_value')
@@ -34,6 +35,48 @@ void bindValue(
   void Function(String value) update,
 ) {
   _bindValue(input, getValue.toJS, update.toJS);
+}
+
+@JS('bind_group')
+external void _bindGroup(
+  JSArray<HTMLInputElement> inputs,
+  JSArray<JSNumber> groupIndex,
+  HTMLInputElement input,
+  JSFunction getValue,
+  JSFunction update,
+);
+
+void bindIntGroup(
+  List<HTMLInputElement> inputs,
+  List<int> groupIndex,
+  HTMLInputElement input,
+  int Function() getValue,
+  void Function(int value) update,
+) {
+  var inputsJSRef = inputs.toJSProxyOrRef;
+  _bindGroup(inputsJSRef, groupIndex.toJS, input, getValue.toJS, update.toJS);
+}
+
+void bindStringGroup(
+  List<HTMLInputElement> inputs,
+  List<int> groupIndex,
+  HTMLInputElement input,
+  List<String> Function() getValue,
+  void Function(List<String> value) update,
+) {
+  var jsGroupIndex = groupIndex.toJS;
+
+  JSArray<JSString> jsGetValue() {
+    var values = getValue();
+    return values.toJS;
+  }
+
+  void jsUpdate(JSArray<JSString> jsValues) {
+    update(jsValues.toDart);
+  }
+
+  var inputsJSRef = inputs.toJSProxyOrRef;
+  _bindGroup(inputsJSRef, jsGroupIndex, input, jsGetValue.toJS, jsUpdate.toJS);
 }
 
 @JS('bind_checked')
