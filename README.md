@@ -3,6 +3,7 @@ Testing Svelte 5 (Svelte 4 syntax) JS bindings and ~~compiler~~ with new Dart
 JS & WASM interopability.
 
 Hard to implement:
+- Passing a Dart List reference to the JS side to fill it with data.
 - ...
 
 Currently, all Dart code in the examples is not yet generated, compiler is not

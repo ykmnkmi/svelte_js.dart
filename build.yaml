@@ -5,9 +5,9 @@ targets:
         generate_for:
           - web/main.dart
         options:
-          native_null_assertions: true
+          native_null_assertions: false
           dart2js_args:
-            - -O0
+            # - -O0
             # - --disable-inlining
             # - --disable-type-inference
             # - --disable-rti-optimizations

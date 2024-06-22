@@ -47,18 +47,17 @@ external void _bindGroup(
 );
 
 void bindIntGroup(
-  List<HTMLInputElement> inputs,
+  JSArray<HTMLInputElement> inputs,
   List<int> groupIndex,
   HTMLInputElement input,
   int Function() getValue,
   void Function(int value) update,
 ) {
-  var inputsJSRef = inputs.toJSProxyOrRef;
-  _bindGroup(inputsJSRef, groupIndex.toJS, input, getValue.toJS, update.toJS);
+  _bindGroup(inputs, groupIndex.toJS, input, getValue.toJS, update.toJS);
 }
 
 void bindStringGroup(
-  List<HTMLInputElement> inputs,
+  JSArray<HTMLInputElement> inputs,
   List<int> groupIndex,
   HTMLInputElement input,
   List<String> Function() getValue,
@@ -75,8 +74,7 @@ void bindStringGroup(
     update(jsValues.toDart);
   }
 
-  var inputsJSRef = inputs.toJSProxyOrRef;
-  _bindGroup(inputsJSRef, jsGroupIndex, input, jsGetValue.toJS, jsUpdate.toJS);
+  _bindGroup(inputs, jsGroupIndex, input, jsGetValue.toJS, jsUpdate.toJS);
 }
 
 @JS('bind_checked')

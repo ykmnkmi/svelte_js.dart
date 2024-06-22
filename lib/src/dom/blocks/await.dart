@@ -8,11 +8,11 @@ import 'package:web/web.dart';
 
 @JS('await_block')
 external void _awaitBlock(
-  Comment anchor,
-  JSExportedDartFunction input,
-  JSExportedDartFunction? onLoading,
-  JSExportedDartFunction? onValue,
-  JSExportedDartFunction? onError,
+  Node anchor,
+  JSFunction input,
+  JSFunction? onLoading,
+  JSFunction? onValue,
+  JSFunction? onError,
 );
 
 void awaitBlock<T>(
@@ -26,7 +26,7 @@ void awaitBlock<T>(
     return futureRefCast<T>(input());
   }
 
-  JSExportedDartFunction? jsOnValue;
+  JSFunction? jsOnValue;
 
   if (onValue != null) {
     jsOnValue = (Node anchor, ExternalDartReference? value) {
@@ -34,7 +34,7 @@ void awaitBlock<T>(
     }.toJS;
   }
 
-  JSExportedDartFunction? jsOnError;
+  JSFunction? jsOnError;
 
   if (onError != null) {
     jsOnError = (Node anchor, JSObject wrappedError) {

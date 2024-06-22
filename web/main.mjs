@@ -10,42 +10,6 @@ let buildArgsList;
 export const instantiate = async (modulePromise, importObjectPromise) => {
     let dartInstance;
 
-    function stringFromDartString(string) {
-        const totalLength = dartInstance.exports.$stringLength(string);
-        let result = '';
-        let index = 0;
-        while (index < totalLength) {
-          let chunkLength = Math.min(totalLength - index, 0xFFFF);
-          const array = new Array(chunkLength);
-          for (let i = 0; i < chunkLength; i++) {
-              array[i] = dartInstance.exports.$stringRead(string, index++);
-          }
-          result += String.fromCharCode(...array);
-        }
-        return result;
-    }
-
-    function stringToDartString(string) {
-        const length = string.length;
-        let range = 0;
-        for (let i = 0; i < length; i++) {
-            range |= string.codePointAt(i);
-        }
-        if (range < 256) {
-            const dartString = dartInstance.exports.$stringAllocate1(length);
-            for (let i = 0; i < length; i++) {
-                dartInstance.exports.$stringWrite1(dartString, i, string.codePointAt(i));
-            }
-            return dartString;
-        } else {
-            const dartString = dartInstance.exports.$stringAllocate2(length);
-            for (let i = 0; i < length; i++) {
-                dartInstance.exports.$stringWrite2(dartString, i, string.charCodeAt(i));
-            }
-            return dartString;
-        }
-    }
-
     // Prints to the console
     function printToConsole(value) {
       if (typeof dartPrint == "function") {
@@ -95,75 +59,18 @@ export const instantiate = async (modulePromise, importObjectPromise) => {
     // Imports
     const dart2wasm = {
 
-_1: () => globalThis.Array.prototype,
-_2: () => globalThis.Symbol.isConcatSpreadable,
-_3: f => finalizeWrapper(f,() => dartInstance.exports._3(f)),
-_4: f => finalizeWrapper(f,x0 => dartInstance.exports._4(f,x0)),
-_5: f => finalizeWrapper(f,x0 => dartInstance.exports._5(f,x0)),
-_6: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._6(f,x0,x1)),
-_7: f => finalizeWrapper(f,x0 => dartInstance.exports._7(f,x0)),
-_8: f => finalizeWrapper(f,x0 => dartInstance.exports._8(f,x0)),
-_9:     (wrapper, getIndex, setIndex, hasIndex, deleteIndex) => new Proxy(wrapper, {
-      'get': function (target, prop, receiver) {
-        if (typeof prop == 'string') {
-          const numProp = Number(prop);
-          if (Number.isInteger(numProp)) {
-            const args = new Array();
-            args.push(numProp);
-            return Reflect.apply(getIndex, wrapper, args);
-          }
-        }
-        return Reflect.get(target, prop, receiver);
-      },
-      'set': function (target, prop, value, receiver) {
-        if (typeof prop == 'string') {
-          const numProp = Number(prop);
-          if (Number.isInteger(numProp)) {
-            const args = new Array();
-            args.push(numProp, value);
-            Reflect.apply(setIndex, wrapper, args);
-            return true;
-          }
-        }
-        // Note that handler set is required to return a bool (whether it
-        // succeeded or not), so `[]=` won't return the value set.
-        return Reflect.set(target, prop, value, receiver);
-      },
-      'has': function (target, prop) {
-        if (typeof prop == 'string') {
-          const numProp = Number(prop);
-          if (Number.isInteger(numProp)) {
-            const args = new Array();
-            args.push(numProp);
-            // Array-like objects are assumed to have indices as properties.
-            return Reflect.apply(hasIndex, wrapper, args);
-          }
-        }
-        return Reflect.has(target, prop);
-      },
-      'deleteProperty': function (target, prop) {
-        if (typeof prop == 'string') {
-          const numProp = Number(prop);
-          if (Number.isInteger(numProp)) {
-            const args = new Array();
-            args.push(numProp);
-            return Reflect.apply(deleteIndex, wrapper, args);
-          }
-        }
-        return Reflect.deleteProperty(target, prop);
-      }
-    }),
-_11: x0 => new Array(x0),
-_12: x0 => new Promise(x0),
-_16: (o,s) => o[s],
-_17: (o,s,v) => o[s] = v,
-_18: f => finalizeWrapper(f,x0 => dartInstance.exports._18(f,x0)),
+_11: () => new Array(),
+_12: x0 => new Array(x0),
+_13: x0 => new Promise(x0),
+_17: (o,s) => o[s],
+_18: (o,s,v) => o[s] = v,
 _19: f => finalizeWrapper(f,x0 => dartInstance.exports._19(f,x0)),
-_20: (x0,x1,x2) => x0.call(x1,x2),
-_21: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._21(f,x0,x1)),
-_44: () => Symbol("jsBoxedDartObjectProperty"),
-_48: v => stringToDartString(v.toString()),
-_64: () => {
+_20: f => finalizeWrapper(f,x0 => dartInstance.exports._20(f,x0)),
+_21: (x0,x1,x2) => x0.call(x1,x2),
+_22: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._22(f,x0,x1)),
+_45: () => Symbol("jsBoxedDartObjectProperty"),
+_49: v => v.toString(),
+_65: () => {
           let stackString = new Error().stack.toString();
           let frames = stackString.split('\n');
           let drop = 2;
@@ -172,334 +79,364 @@ _64: () => {
           }
           return frames.slice(drop).join('\n');
         },
-_84: s => stringToDartString(JSON.stringify(stringFromDartString(s))),
-_85: s => printToConsole(stringFromDartString(s)),
-_88: (a, i) => a.push(i),
-_95: (a, s) => a.join(s),
-_96: (a, s, e) => a.slice(s, e),
-_99: a => a.length,
-_101: (a, i) => a[i],
-_102: (a, i, v) => a[i] = v,
-_104: a => a.join(''),
-_114: (s, p, i) => s.indexOf(p, i),
-_116: (o, offsetInBytes, lengthInBytes) => {
+_85: s => JSON.stringify(s),
+_86: s => printToConsole(s),
+_87: (a, i) => a.push(i),
+_94: (a, s) => a.join(s),
+_95: (a, s, e) => a.slice(s, e),
+_98: a => a.length,
+_100: (a, i) => a[i],
+_101: (a, i, v) => a[i] = v,
+_103: (o, offsetInBytes, lengthInBytes) => {
       var dst = new ArrayBuffer(lengthInBytes);
       new Uint8Array(dst).set(new Uint8Array(o, offsetInBytes, lengthInBytes));
       return new DataView(dst);
     },
-_117: (o, start, length) => new Uint8Array(o.buffer, o.byteOffset + start, length),
-_118: (o, start, length) => new Int8Array(o.buffer, o.byteOffset + start, length),
-_119: (o, start, length) => new Uint8ClampedArray(o.buffer, o.byteOffset + start, length),
-_120: (o, start, length) => new Uint16Array(o.buffer, o.byteOffset + start, length),
-_121: (o, start, length) => new Int16Array(o.buffer, o.byteOffset + start, length),
-_122: (o, start, length) => new Uint32Array(o.buffer, o.byteOffset + start, length),
-_123: (o, start, length) => new Int32Array(o.buffer, o.byteOffset + start, length),
-_126: (o, start, length) => new Float32Array(o.buffer, o.byteOffset + start, length),
-_127: (o, start, length) => new Float64Array(o.buffer, o.byteOffset + start, length),
-_132: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
-_134: o => o.buffer,
-_135: o => o.byteOffset,
-_136: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
-_137: (b, o) => new DataView(b, o),
-_139: Function.prototype.call.bind(DataView.prototype.getUint8),
-_140: Function.prototype.call.bind(DataView.prototype.setUint8),
-_141: Function.prototype.call.bind(DataView.prototype.getInt8),
-_142: Function.prototype.call.bind(DataView.prototype.setInt8),
-_143: Function.prototype.call.bind(DataView.prototype.getUint16),
-_144: Function.prototype.call.bind(DataView.prototype.setUint16),
-_145: Function.prototype.call.bind(DataView.prototype.getInt16),
-_146: Function.prototype.call.bind(DataView.prototype.setInt16),
-_147: Function.prototype.call.bind(DataView.prototype.getUint32),
-_148: Function.prototype.call.bind(DataView.prototype.setUint32),
-_149: Function.prototype.call.bind(DataView.prototype.getInt32),
-_150: Function.prototype.call.bind(DataView.prototype.setInt32),
-_155: Function.prototype.call.bind(DataView.prototype.getFloat32),
-_157: Function.prototype.call.bind(DataView.prototype.getFloat64),
-_181: (c) =>
+_104: (o, start, length) => new Uint8Array(o.buffer, o.byteOffset + start, length),
+_105: (o, start, length) => new Int8Array(o.buffer, o.byteOffset + start, length),
+_106: (o, start, length) => new Uint8ClampedArray(o.buffer, o.byteOffset + start, length),
+_107: (o, start, length) => new Uint16Array(o.buffer, o.byteOffset + start, length),
+_108: (o, start, length) => new Int16Array(o.buffer, o.byteOffset + start, length),
+_109: (o, start, length) => new Uint32Array(o.buffer, o.byteOffset + start, length),
+_110: (o, start, length) => new Int32Array(o.buffer, o.byteOffset + start, length),
+_113: (o, start, length) => new Float32Array(o.buffer, o.byteOffset + start, length),
+_114: (o, start, length) => new Float64Array(o.buffer, o.byteOffset + start, length),
+_117: (o) => new DataView(o.buffer, o.byteOffset, o.byteLength),
+_119: o => o.buffer,
+_120: o => o.byteOffset,
+_121: Function.prototype.call.bind(Object.getOwnPropertyDescriptor(DataView.prototype, 'byteLength').get),
+_122: (b, o) => new DataView(b, o),
+_124: Function.prototype.call.bind(DataView.prototype.getUint8),
+_125: Function.prototype.call.bind(DataView.prototype.setUint8),
+_126: Function.prototype.call.bind(DataView.prototype.getInt8),
+_127: Function.prototype.call.bind(DataView.prototype.setInt8),
+_128: Function.prototype.call.bind(DataView.prototype.getUint16),
+_129: Function.prototype.call.bind(DataView.prototype.setUint16),
+_130: Function.prototype.call.bind(DataView.prototype.getInt16),
+_131: Function.prototype.call.bind(DataView.prototype.setInt16),
+_132: Function.prototype.call.bind(DataView.prototype.getUint32),
+_133: Function.prototype.call.bind(DataView.prototype.setUint32),
+_134: Function.prototype.call.bind(DataView.prototype.getInt32),
+_135: Function.prototype.call.bind(DataView.prototype.setInt32),
+_140: Function.prototype.call.bind(DataView.prototype.getFloat32),
+_142: Function.prototype.call.bind(DataView.prototype.getFloat64),
+_166: (c) =>
               queueMicrotask(() => dartInstance.exports.$invokeCallback(c)),
-_201: x0 => ({$$events: x0}),
-_202: (x0,x1) => globalThis.$$.push(x0,x1),
-_203: () => globalThis.$$.init(),
-_204: x0 => x0.call(),
-_205: (x0,x1) => globalThis.$$.append(x0,x1),
-_206: () => globalThis.$$.pop(),
-_207: x0 => ({$$events: x0}),
-_208: () => globalThis.$$.comment(),
-_209: x0 => globalThis.$$.child(x0),
-_210: (x0,x1) => globalThis.$$.bubble_event(x0,x1),
-_211: f => finalizeWrapper(f,x0 => dartInstance.exports._211(f,x0)),
-_212: (x0,x1) => globalThis.$$.append(x0,x1),
-_213: (x0,x1) => x0.alert(x1),
+_186: x0 => ({$$events: x0}),
+_187: (x0,x1) => globalThis.$$.push(x0,x1),
+_188: () => globalThis.$$.init(),
+_189: x0 => x0.call(),
+_190: (x0,x1) => globalThis.$$.append(x0,x1),
+_191: () => globalThis.$$.pop(),
+_192: x0 => ({$$events: x0}),
+_193: () => globalThis.$$.comment(),
+_194: x0 => globalThis.$$.child(x0),
+_195: (x0,x1) => globalThis.$$.bubble_event(x0,x1),
+_196: f => finalizeWrapper(f,x0 => dartInstance.exports._196(f,x0)),
+_197: (x0,x1) => globalThis.$$.append(x0,x1),
+_198: (x0,x1) => x0.alert(x1),
+_199: () => globalThis.$$.comment(),
+_200: x0 => globalThis.$$.first_child(x0),
+_201: f => finalizeWrapper(f,x0 => dartInstance.exports._201(f,x0)),
+_202: (x0,x1) => globalThis.$$.append(x0,x1),
+_203: (x0,x1) => x0.querySelector(x1),
+_204: (x0,x1) => x0.querySelector(x1),
+_205: (x0,x1) => x0.querySelector(x1),
+_206: x0 => globalThis.$$.unmount(x0),
+_207: f => finalizeWrapper(f,x0 => dartInstance.exports._207(f,x0)),
+_208: (x0,x1,x2) => x0.addEventListener(x1,x2),
+_209: x0 => new Event(x0),
+_210: x0 => x0.call(),
+_211: x0 => x0.call(),
+_212: (x0,x1) => globalThis.$$.template(x0,x1),
+_213: x0 => globalThis.$$.template(x0),
 _214: () => globalThis.$$.comment(),
-_215: x0 => globalThis.$$.first_child(x0),
-_216: f => finalizeWrapper(f,x0 => dartInstance.exports._216(f,x0)),
-_217: (x0,x1) => globalThis.$$.append(x0,x1),
-_218: (x0,x1) => x0.querySelector(x1),
-_219: (x0,x1) => x0.querySelector(x1),
-_220: (x0,x1) => x0.querySelector(x1),
-_221: x0 => globalThis.$$.unmount(x0),
-_222: f => finalizeWrapper(f,x0 => dartInstance.exports._222(f,x0)),
-_223: (x0,x1,x2) => x0.addEventListener(x1,x2),
-_224: x0 => new Event(x0),
-_225: x0 => x0.call(),
-_226: x0 => x0.call(),
-_227: (x0,x1) => globalThis.$$.template(x0,x1),
-_228: x0 => globalThis.$$.template(x0),
-_229: () => globalThis.$$.comment(),
-_230: (x0,x1) => globalThis.$$.append(x0,x1),
-_231: x0 => ({$$events: x0}),
-_232: (x0,x1) => globalThis.$$.bubble_event(x0,x1),
+_215: (x0,x1) => globalThis.$$.append(x0,x1),
+_216: x0 => ({$$events: x0}),
+_217: (x0,x1) => globalThis.$$.bubble_event(x0,x1),
+_218: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
+_219: x0 => globalThis.$$.first_child(x0),
+_220: f => finalizeWrapper(f,x0 => dartInstance.exports._220(f,x0)),
+_221: x0 => ({$$events: x0}),
+_222: (x0,x1) => globalThis.$$.push(x0,x1),
+_223: () => globalThis.$$.init(),
+_224: () => globalThis.$$.pop(),
+_225: x0 => globalThis.$$.first_child(x0),
+_226: f => finalizeWrapper(f,x0 => dartInstance.exports._226(f,x0)),
+_229: x0 => globalThis.$$.child(x0),
+_230: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
+_231: x0 => globalThis.$$.sibling(x0),
+_232: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
 _233: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
-_234: x0 => globalThis.$$.first_child(x0),
-_235: f => finalizeWrapper(f,x0 => dartInstance.exports._235(f,x0)),
-_236: x0 => ({$$events: x0}),
-_237: (x0,x1) => globalThis.$$.push(x0,x1),
-_238: () => globalThis.$$.init(),
-_239: () => globalThis.$$.pop(),
-_240: x0 => globalThis.$$.first_child(x0),
-_241: f => finalizeWrapper(f,x0 => dartInstance.exports._241(f,x0)),
-_244: x0 => globalThis.$$.child(x0),
-_245: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_246: x0 => globalThis.$$.sibling(x0),
-_247: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_248: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
-_249: x0 => globalThis.$$.child(x0),
-_250: x0 => globalThis.$$.child(x0),
-_251: x0 => globalThis.$$.child(x0),
+_234: x0 => globalThis.$$.child(x0),
+_235: x0 => globalThis.$$.child(x0),
+_236: x0 => globalThis.$$.child(x0),
+_237: x0 => globalThis.$$.child(x0),
+_238: () => ({}),
+_239: x0 => globalThis.$$.child(x0),
+_240: x0 => globalThis.$$.child(x0),
+_241: (x0,x1,x2,x3) => ({name: x0,version: x1,speed: x2,website: x3}),
+_246: x0 => globalThis.$$.child(x0),
+_247: x0 => globalThis.$$.child(x0),
+_248: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_249: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_250: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
+_251: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
 _252: x0 => globalThis.$$.child(x0),
-_253: () => ({}),
-_254: x0 => globalThis.$$.child(x0),
+_253: x0 => ({answer: x0}),
 _255: x0 => globalThis.$$.child(x0),
-_256: (x0,x1,x2,x3) => ({name: x0,version: x1,speed: x2,website: x3}),
-_261: x0 => globalThis.$$.child(x0),
-_262: x0 => globalThis.$$.child(x0),
-_263: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_256: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_257: x0 => globalThis.$$.first_child(x0),
+_258: (x0,x1) => globalThis.$$.sibling(x0,x1),
+_259: () => ({}),
+_260: x0 => ({answer: x0}),
+_263: x0 => globalThis.$$.child(x0),
 _264: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_265: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_266: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_267: x0 => globalThis.$$.child(x0),
-_268: x0 => ({answer: x0}),
-_270: x0 => globalThis.$$.child(x0),
-_271: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_272: x0 => globalThis.$$.first_child(x0),
-_273: (x0,x1) => globalThis.$$.sibling(x0,x1),
-_274: () => ({}),
-_275: x0 => ({answer: x0}),
-_278: x0 => globalThis.$$.child(x0),
+_265: x0 => globalThis.$$.first_child(x0),
+_266: x0 => globalThis.$$.first_child(x0),
+_267: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
+_268: (x0,x1) => globalThis.$$.push(x0,x1),
+_269: () => globalThis.$$.init(),
+_270: x0 => globalThis.$$.first_child(x0),
+_271: x0 => globalThis.$$.child(x0),
+_272: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_273: x0 => globalThis.$$.child(x0),
+_274: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_275: x0 => globalThis.$$.child(x0),
+_276: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_277: x0 => globalThis.$$.child(x0),
+_278: x0 => globalThis.$$.remove_input_attr_defaults(x0),
 _279: (x0,x1) => globalThis.$$.set_text(x0,x1),
 _280: x0 => globalThis.$$.first_child(x0),
-_281: x0 => globalThis.$$.first_child(x0),
-_282: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
-_283: (x0,x1) => globalThis.$$.push(x0,x1),
-_284: () => globalThis.$$.init(),
+_281: x0 => globalThis.$$.child(x0),
+_282: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_283: () => globalThis.$$.pop(),
+_284: (x0,x1) => x0.__value = x1,
 _285: x0 => globalThis.$$.first_child(x0),
 _286: x0 => globalThis.$$.child(x0),
 _287: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_288: x0 => globalThis.$$.child(x0),
-_289: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_290: x0 => globalThis.$$.child(x0),
+_288: x0 => globalThis.$$.first_child(x0),
+_289: x0 => globalThis.$$.child(x0),
+_290: x0 => globalThis.$$.remove_input_attr_defaults(x0),
 _291: x0 => globalThis.$$.remove_input_attr_defaults(x0),
 _292: x0 => globalThis.$$.child(x0),
 _293: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_294: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_295: x0 => globalThis.$$.first_child(x0),
-_296: x0 => globalThis.$$.child(x0),
-_297: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_298: () => globalThis.$$.pop(),
-_299: (x0,x1) => x0.__value = x1,
-_300: x0 => globalThis.$$.first_child(x0),
+_294: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_295: x0 => globalThis.$$.child(x0),
+_296: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_297: x0 => globalThis.$$.first_child(x0),
+_298: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_299: x0 => globalThis.$$.child(x0),
+_300: (x0,x1) => globalThis.$$.set_text(x0,x1),
 _301: x0 => globalThis.$$.child(x0),
-_302: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_303: x0 => globalThis.$$.first_child(x0),
+_302: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_303: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
 _304: x0 => globalThis.$$.child(x0),
-_305: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_306: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_307: x0 => globalThis.$$.child(x0),
-_308: x0 => globalThis.$$.remove_input_attr_defaults(x0),
-_309: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_305: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_306: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
+_307: (x0,x1) => x0.fetch(x1),
+_308: x0 => x0.text(),
+_309: x0 => globalThis.$$.child(x0),
 _310: x0 => globalThis.$$.child(x0),
-_311: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_312: x0 => globalThis.$$.first_child(x0),
-_313: x0 => globalThis.$$.remove_input_attr_defaults(x0),
+_311: x0 => globalThis.$$.child(x0),
+_312: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_313: x0 => globalThis.$$.first_child(x0),
 _314: x0 => globalThis.$$.child(x0),
-_315: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_316: x0 => globalThis.$$.child(x0),
+_315: x0 => globalThis.$$.child(x0),
+_316: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
 _317: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_318: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
+_318: x0 => globalThis.$$.first_child(x0),
 _319: x0 => globalThis.$$.child(x0),
-_320: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_321: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
-_322: (x0,x1) => x0.fetch(x1),
-_323: x0 => x0.text(),
-_324: x0 => globalThis.$$.child(x0),
-_325: x0 => globalThis.$$.child(x0),
-_326: x0 => globalThis.$$.child(x0),
-_327: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_328: x0 => globalThis.$$.first_child(x0),
-_329: x0 => globalThis.$$.child(x0),
-_330: x0 => globalThis.$$.child(x0),
-_331: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_332: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_333: x0 => globalThis.$$.first_child(x0),
+_320: x0 => globalThis.$$.first_child(x0),
+_321: x0 => globalThis.$$.child(x0),
+_322: x0 => globalThis.$$.child(x0),
+_323: x0 => globalThis.$$.first_child(x0),
+_324: x0 => globalThis.$$.first_child(x0),
+_325: (x0,x1) => globalThis.$$.push(x0,x1),
+_326: () => globalThis.$$.legacy_pre_effect_reset(),
+_327: x0 => globalThis.$$.child(x0),
+_328: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_329: () => globalThis.$$.pop(),
+_330: (x0,x1) => globalThis.$$.push(x0,x1),
+_331: () => globalThis.$$.legacy_pre_effect_reset(),
+_332: x0 => globalThis.$$.first_child(x0),
+_333: x0 => globalThis.$$.child(x0),
 _334: x0 => globalThis.$$.child(x0),
-_335: x0 => globalThis.$$.first_child(x0),
-_336: x0 => globalThis.$$.child(x0),
-_337: x0 => globalThis.$$.child(x0),
-_338: x0 => globalThis.$$.first_child(x0),
-_339: x0 => globalThis.$$.first_child(x0),
-_340: (x0,x1) => globalThis.$$.push(x0,x1),
-_341: () => globalThis.$$.legacy_pre_effect_reset(),
+_335: x0 => globalThis.$$.child(x0),
+_336: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_337: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_338: (x0,x1) => globalThis.$$.set_text(x0,x1),
+_339: () => globalThis.$$.pop(),
+_340: x0 => globalThis.$$.child(x0),
+_341: (x0,x1) => globalThis.$$.set_text(x0,x1),
 _342: x0 => globalThis.$$.child(x0),
-_343: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_344: () => globalThis.$$.pop(),
-_345: (x0,x1) => globalThis.$$.push(x0,x1),
-_346: () => globalThis.$$.legacy_pre_effect_reset(),
-_347: x0 => globalThis.$$.first_child(x0),
-_348: x0 => globalThis.$$.child(x0),
-_349: x0 => globalThis.$$.child(x0),
-_350: x0 => globalThis.$$.child(x0),
-_351: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_352: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_353: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_354: () => globalThis.$$.pop(),
-_355: x0 => globalThis.$$.child(x0),
-_356: (x0,x1) => globalThis.$$.set_text(x0,x1),
-_357: x0 => globalThis.$$.child(x0),
-_358: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
-_359: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_360: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
-_361: x0 => globalThis.$$.child(x0),
-_365: (x0,x1,x2) => globalThis.$$.bind_value(x0,x1,x2),
-_366: f => finalizeWrapper(f,() => dartInstance.exports._366(f)),
-_367: f => finalizeWrapper(f,x0 => dartInstance.exports._367(f,x0)),
-_370: f => finalizeWrapper(f,() => dartInstance.exports._370(f)),
-_371: f => finalizeWrapper(f,x0 => dartInstance.exports._371(f,x0)),
-_372: (x0,x1,x2,x3,x4) => globalThis.$$.bind_group(x0,x1,x2,x3,x4),
-_373: f => finalizeWrapper(f,() => dartInstance.exports._373(f)),
-_374: f => finalizeWrapper(f,x0 => dartInstance.exports._374(f,x0)),
-_375: f => finalizeWrapper(f,() => dartInstance.exports._375(f)),
-_376: f => finalizeWrapper(f,x0 => dartInstance.exports._376(f,x0)),
-_377: (x0,x1,x2) => globalThis.$$.bind_checked(x0,x1,x2),
-_378: f => finalizeWrapper(f,() => dartInstance.exports._378(f)),
-_379: f => finalizeWrapper(f,x0 => dartInstance.exports._379(f,x0)),
-_382: (x0,x1,x2,x3,x4) => globalThis.$$.if_block(x0,x1,x2,x3,x4),
-_383: f => finalizeWrapper(f,() => dartInstance.exports._383(f)),
-_384: f => finalizeWrapper(f,x0 => dartInstance.exports._384(f,x0)),
-_385: f => finalizeWrapper(f,x0 => dartInstance.exports._385(f,x0)),
-_386: (x0,x1,x2,x3) => globalThis.$$.html(x0,x1,x2,x3),
-_387: f => finalizeWrapper(f,() => dartInstance.exports._387(f)),
-_388: (x0,x1,x2,x3,x4,x5) => globalThis.$$.each(x0,x1,x2,x3,x4,x5),
-_389: f => finalizeWrapper(f,() => dartInstance.exports._389(f)),
-_390: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._390(f,x0,x1)),
-_391: f => finalizeWrapper(f,(x0,x1,x2) => dartInstance.exports._391(f,x0,x1,x2)),
-_393: (x0,x1,x2,x3,x4) => globalThis.$$.await_block(x0,x1,x2,x3,x4),
-_394: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._394(f,x0,x1)),
-_395: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._395(f,x0,x1)),
-_396: f => finalizeWrapper(f,() => dartInstance.exports._396(f)),
-_397: f => finalizeWrapper(f,x0 => dartInstance.exports._397(f,x0)),
-_398: x0 => x0.error,
-_412: (x0,x1) => ({anchor: x0,target: x1}),
-_413: (x0,x1) => globalThis.$$.mount(x0,x1),
-_414: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._414(f,x0,x1)),
-_417: () => globalThis.$$.createEventDispatcher(),
-_418: (x0,x1) => ({bubbles: x0,cancelable: x1}),
-_419: (x0,x1,x2,x3,x4) => x0.call(x1,x2,x3,x4),
-_420: (x0,x1,x2,x3,x4) => globalThis.$$.event(x0,x1,x2,x3,x4),
-_421: f => finalizeWrapper(f,x0 => dartInstance.exports._421(f,x0)),
-_434: o => o === undefined,
-_435: o => typeof o === 'boolean',
-_436: o => typeof o === 'number',
-_438: o => typeof o === 'string',
-_441: o => o instanceof Int8Array,
-_442: o => o instanceof Uint8Array,
-_443: o => o instanceof Uint8ClampedArray,
-_444: o => o instanceof Int16Array,
-_445: o => o instanceof Uint16Array,
-_446: o => o instanceof Int32Array,
-_447: o => o instanceof Uint32Array,
-_448: o => o instanceof Float32Array,
-_449: o => o instanceof Float64Array,
-_450: o => o instanceof ArrayBuffer,
-_451: o => o instanceof DataView,
-_452: o => o instanceof Array,
-_453: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
-_457: (l, r) => l === r,
-_458: o => o,
+_343: (x0,x1,x2) => globalThis.$$.append_styles(x0,x1,x2),
+_344: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
+_345: (x0,x1,x2) => globalThis.$$.set_attribute(x0,x1,x2),
+_346: x0 => globalThis.$$.child(x0),
+_350: (x0,x1,x2) => globalThis.$$.bind_value(x0,x1,x2),
+_351: f => finalizeWrapper(f,() => dartInstance.exports._351(f)),
+_352: f => finalizeWrapper(f,x0 => dartInstance.exports._352(f,x0)),
+_355: f => finalizeWrapper(f,() => dartInstance.exports._355(f)),
+_356: f => finalizeWrapper(f,x0 => dartInstance.exports._356(f,x0)),
+_357: (x0,x1,x2,x3,x4) => globalThis.$$.bind_group(x0,x1,x2,x3,x4),
+_358: f => finalizeWrapper(f,() => dartInstance.exports._358(f)),
+_359: f => finalizeWrapper(f,x0 => dartInstance.exports._359(f,x0)),
+_360: f => finalizeWrapper(f,() => dartInstance.exports._360(f)),
+_361: f => finalizeWrapper(f,x0 => dartInstance.exports._361(f,x0)),
+_362: (x0,x1,x2) => globalThis.$$.bind_checked(x0,x1,x2),
+_363: f => finalizeWrapper(f,() => dartInstance.exports._363(f)),
+_364: f => finalizeWrapper(f,x0 => dartInstance.exports._364(f,x0)),
+_367: (x0,x1,x2,x3,x4) => globalThis.$$.if_block(x0,x1,x2,x3,x4),
+_368: f => finalizeWrapper(f,() => dartInstance.exports._368(f)),
+_369: f => finalizeWrapper(f,x0 => dartInstance.exports._369(f,x0)),
+_370: f => finalizeWrapper(f,x0 => dartInstance.exports._370(f,x0)),
+_371: (x0,x1,x2,x3) => globalThis.$$.html(x0,x1,x2,x3),
+_372: f => finalizeWrapper(f,() => dartInstance.exports._372(f)),
+_373: (x0,x1,x2,x3,x4,x5) => globalThis.$$.each(x0,x1,x2,x3,x4,x5),
+_374: f => finalizeWrapper(f,() => dartInstance.exports._374(f)),
+_375: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._375(f,x0,x1)),
+_376: f => finalizeWrapper(f,(x0,x1,x2) => dartInstance.exports._376(f,x0,x1,x2)),
+_378: (x0,x1,x2,x3,x4) => globalThis.$$.await_block(x0,x1,x2,x3,x4),
+_379: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._379(f,x0,x1)),
+_380: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._380(f,x0,x1)),
+_381: f => finalizeWrapper(f,() => dartInstance.exports._381(f)),
+_382: f => finalizeWrapper(f,x0 => dartInstance.exports._382(f,x0)),
+_383: x0 => x0.error,
+_397: (x0,x1) => ({anchor: x0,target: x1}),
+_398: (x0,x1) => globalThis.$$.mount(x0,x1),
+_399: f => finalizeWrapper(f,(x0,x1) => dartInstance.exports._399(f,x0,x1)),
+_402: () => globalThis.$$.createEventDispatcher(),
+_403: (x0,x1) => ({bubbles: x0,cancelable: x1}),
+_404: (x0,x1,x2,x3,x4) => x0.call(x1,x2,x3,x4),
+_405: (x0,x1,x2,x3,x4) => globalThis.$$.event(x0,x1,x2,x3,x4),
+_406: f => finalizeWrapper(f,x0 => dartInstance.exports._406(f,x0)),
+_407: a => a.join(''),
+_417: (s, p, i) => s.indexOf(p, i),
+_435: o => o === undefined,
+_436: o => typeof o === 'boolean',
+_437: o => typeof o === 'number',
+_439: o => typeof o === 'string',
+_442: o => o instanceof Int8Array,
+_443: o => o instanceof Uint8Array,
+_444: o => o instanceof Uint8ClampedArray,
+_445: o => o instanceof Int16Array,
+_446: o => o instanceof Uint16Array,
+_447: o => o instanceof Int32Array,
+_448: o => o instanceof Uint32Array,
+_449: o => o instanceof Float32Array,
+_450: o => o instanceof Float64Array,
+_451: o => o instanceof ArrayBuffer,
+_452: o => o instanceof DataView,
+_453: o => o instanceof Array,
+_454: o => typeof o === 'function' && o[jsWrappedDartFunctionSymbol] === true,
+_458: (l, r) => l === r,
 _459: o => o,
 _460: o => o,
-_461: b => !!b,
-_462: o => o.length,
-_465: (o, i) => o[i],
-_466: f => f.dartFunction,
-_467: l => arrayFromDartList(Int8Array, l),
-_468: l => arrayFromDartList(Uint8Array, l),
-_469: l => arrayFromDartList(Uint8ClampedArray, l),
-_470: l => arrayFromDartList(Int16Array, l),
-_471: l => arrayFromDartList(Uint16Array, l),
-_472: l => arrayFromDartList(Int32Array, l),
-_473: l => arrayFromDartList(Uint32Array, l),
-_474: l => arrayFromDartList(Float32Array, l),
-_475: l => arrayFromDartList(Float64Array, l),
-_476: (data, length) => {
+_461: o => o,
+_462: b => !!b,
+_463: o => o.length,
+_466: (o, i) => o[i],
+_467: f => f.dartFunction,
+_468: l => arrayFromDartList(Int8Array, l),
+_469: l => arrayFromDartList(Uint8Array, l),
+_470: l => arrayFromDartList(Uint8ClampedArray, l),
+_471: l => arrayFromDartList(Int16Array, l),
+_472: l => arrayFromDartList(Uint16Array, l),
+_473: l => arrayFromDartList(Int32Array, l),
+_474: l => arrayFromDartList(Uint32Array, l),
+_475: l => arrayFromDartList(Float32Array, l),
+_476: l => arrayFromDartList(Float64Array, l),
+_477: (data, length) => {
           const view = new DataView(new ArrayBuffer(length));
           for (let i = 0; i < length; i++) {
               view.setUint8(i, dartInstance.exports.$byteDataGetUint8(data, i));
           }
           return view;
         },
-_477: l => arrayFromDartList(Array, l),
-_478: stringFromDartString,
-_479: stringToDartString,
-_480: () => ({}),
-_482: l => new Array(l),
-_483: () => globalThis,
-_484: (constructor, args) => {
+_478: l => arrayFromDartList(Array, l),
+_479:     (s, length) => {
+        let result = '';
+        let index = 0;
+        while (index < length) {
+          let chunkLength = Math.min(length - index, 0xFFFF);
+          const array = new Array(chunkLength);
+          for (let i = 0; i < chunkLength; i++) {
+              array[i] = dartInstance.exports.$stringRead(s, index++);
+          }
+          result += String.fromCharCode(...array);
+        }
+        return result;
+    }
+    ,
+_480:     (s, length) => {
+      let range = 0;
+      for (let i = 0; i < length; i++) {
+        range |= s.codePointAt(i);
+      }
+      if (range < 256) {
+        const dartString = dartInstance.exports.$stringAllocate1(length);
+        for (let i = 0; i < length; i++) {
+            dartInstance.exports.$stringWrite1(dartString, i, s.codePointAt(i));
+        }
+        return dartString;
+      } else {
+        const dartString = dartInstance.exports.$stringAllocate2(length);
+        for (let i = 0; i < length; i++) {
+            dartInstance.exports.$stringWrite2(dartString, i, s.charCodeAt(i));
+        }
+        return dartString;
+      }
+    }
+    ,
+_481: () => ({}),
+_483: l => new Array(l),
+_484: () => globalThis,
+_485: (constructor, args) => {
       const factoryFunction = constructor.bind.apply(
           constructor, [null, ...args]);
       return new factoryFunction();
     },
-_486: (o, p) => o[p],
-_488: (o, m, a) => o[m].apply(o, a),
-_490: o => String(o),
-_491: (p, s, f) => p.then(s, f),
-_510: (o, p) => o[p],
-_511: (o, p, v) => o[p] = v,
-_513: x0 => x0.length,
-_515: (x0,x1,x2) => x0[x1] = x2,
-_516: (x0,x1) => x0[x1],
-_517: (x0,x1,x2) => x0[x1] = x2,
-_518: x0 => globalThis.$$.get(x0),
-_522: x0 => globalThis.$$.mutable_source(x0),
-_523: (x0,x1) => globalThis.$$.mutate(x0,x1),
-_524: (x0,x1) => globalThis.$$.set(x0,x1),
-_527: (x0,x1) => globalThis.$$.legacy_pre_effect(x0,x1),
-_528: f => finalizeWrapper(f,() => dartInstance.exports._528(f)),
+_487: (o, p) => o[p],
+_491: o => String(o),
+_492: (p, s, f) => p.then(s, f),
+_511: (o, p) => o[p],
+_512: (o, p, v) => o[p] = v,
+_514: x0 => x0.length,
+_516: (x0,x1,x2) => x0[x1] = x2,
+_517: (x0,x1) => x0[x1],
+_518: (x0,x1,x2) => x0[x1] = x2,
+_519: x0 => globalThis.$$.get(x0),
+_523: x0 => globalThis.$$.mutable_source(x0),
+_524: (x0,x1) => globalThis.$$.mutate(x0,x1),
+_525: (x0,x1) => globalThis.$$.set(x0,x1),
+_528: (x0,x1) => globalThis.$$.legacy_pre_effect(x0,x1),
 _529: f => finalizeWrapper(f,() => dartInstance.exports._529(f)),
-_531: x0 => globalThis.$$.template_effect(x0),
-_532: f => finalizeWrapper(f,() => dartInstance.exports._532(f)),
-_536: x0 => globalThis.$$.spread_props(x0),
-_537: (x0,x1) => globalThis.$$.prop(x0,x1),
-_538: x0 => x0.call(),
-_539: (x0,x1,x2,x3) => globalThis.$$.prop(x0,x1,x2,x3),
-_542: (x0,x1,x2) => globalThis.$$.set_getter(x0,x1,x2),
-_543: f => finalizeWrapper(f,() => dartInstance.exports._543(f)),
-_1077: (x0,x1) => x0.hash = x1,
-_1675: (x0,x1) => x0.value = x1,
-_1705: (x0,x1) => x0.disabled = x1,
-_1761: (x0,x1) => x0.value = x1,
-_1762: x0 => x0.value,
-_2343: () => globalThis.window,
-_2403: x0 => x0.location,
-_2704: (x0,x1) => x0.hash = x1,
-_2705: x0 => x0.hash,
-_7202: x0 => x0.detail,
-_7300: x0 => x0.nodeName,
-_7311: (x0,x1) => x0.nodeValue = x1,
-_7318: () => globalThis.document,
-_8020: x0 => x0.clientX,
-_8021: x0 => x0.clientY,
-_8907: x0 => x0.ok,
-_13184: (x0,x1,x2) => x0[x1] = x2
+_530: f => finalizeWrapper(f,() => dartInstance.exports._530(f)),
+_532: x0 => globalThis.$$.template_effect(x0),
+_533: f => finalizeWrapper(f,() => dartInstance.exports._533(f)),
+_537: x0 => globalThis.$$.spread_props(x0),
+_538: (x0,x1) => globalThis.$$.prop(x0,x1),
+_539: x0 => x0.call(),
+_540: (x0,x1,x2,x3) => globalThis.$$.prop(x0,x1,x2,x3),
+_543: (x0,x1,x2) => globalThis.$$.set_getter(x0,x1,x2),
+_544: f => finalizeWrapper(f,() => dartInstance.exports._544(f)),
+_1078: (x0,x1) => x0.hash = x1,
+_1676: (x0,x1) => x0.value = x1,
+_1706: (x0,x1) => x0.disabled = x1,
+_1762: (x0,x1) => x0.value = x1,
+_1763: x0 => x0.value,
+_2344: () => globalThis.window,
+_2404: x0 => x0.location,
+_2705: (x0,x1) => x0.hash = x1,
+_2706: x0 => x0.hash,
+_7203: x0 => x0.detail,
+_7312: (x0,x1) => x0.nodeValue = x1,
+_7319: () => globalThis.document,
+_8021: x0 => x0.clientX,
+_8022: x0 => x0.clientY,
+_8908: x0 => x0.ok,
+_13185: (x0,x1,x2) => x0[x1] = x2
     };
 
     const baseImports = {

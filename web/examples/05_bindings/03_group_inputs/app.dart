@@ -1,4 +1,4 @@
-// ignore_for_file: library_prefixes, non_constant_identifier_names
+// ignore_for_file: library_prefixes, non_constant_identifier_names, unnecessary_null_comparison
 library;
 
 import 'dart:js_interop';
@@ -26,8 +26,8 @@ extension type AppProperties._(JSObject _) implements JSObject {
 void App(Node $$anchor, AppProperties $$properties) {
   $.push($$properties, false);
 
-  var bindingGroup = <HTMLInputElement>[];
-  var bindingGroup1 = <HTMLInputElement>[];
+  var bindingGroup = JSArray<HTMLInputElement>();
+  var bindingGroup1 = JSArray<HTMLInputElement>();
   var scoops = $.mutableSource(1);
   var flavours = $.mutableSource(['Mint choc chip']);
 
