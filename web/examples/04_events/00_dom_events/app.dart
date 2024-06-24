@@ -34,7 +34,7 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   $.event('mousemove', div, handleMousemove, false);
   $.append($$anchor, div);
-  $.appendStyles(null, 'svelte-1c44y5p', '''
+  $.appendStyles($$anchor, 'svelte-1c44y5p', '''
 \tdiv.svelte-1c44y5p {
 \t\twidth: 100%;
 \t\theight: 100%;

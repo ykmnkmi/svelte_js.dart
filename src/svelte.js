@@ -6,8 +6,9 @@ import {
   remove_input_attr_defaults,     // dom/elements/attributes.js
   set_attribute,
   bind_value, bind_group,         // dom/elements/bindings.js
-  bind_checked,
+  bind_checked, bind_files,
   event,                          // dom/elements/events.js
+  remove_textarea_child,          // dom/elements/misc.js
   init,                           // dom/legacy/lifecycle.js
   bubble_event,                   // dom/legacy/misc.js
   first_child, child, sibling,    // dom/operations.js
@@ -47,8 +48,9 @@ export default {
   html,
   if_block,
   remove_input_attr_defaults, set_attribute,
-  bind_value, bind_group, bind_checked,
+  bind_value, bind_group, bind_checked, bind_files,
   event,
+  remove_textarea_child,
   init,
   bubble_event,
   first_child, child, sibling,

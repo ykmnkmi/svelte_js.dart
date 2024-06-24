@@ -5,6 +5,7 @@ export 'package:svelte_js/src/dom/blocks/if.dart';
 export 'package:svelte_js/src/dom/elements/attributes.dart';
 export 'package:svelte_js/src/dom/elements/bindings/input.dart';
 export 'package:svelte_js/src/dom/elements/events.dart';
+export 'package:svelte_js/src/dom/elements/misc.dart';
 export 'package:svelte_js/src/dom/legacy/event_modifiers.dart';
 export 'package:svelte_js/src/dom/legacy/lifecycle.dart';
 export 'package:svelte_js/src/dom/legacy/misc.dart';

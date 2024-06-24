@@ -8,9 +8,9 @@ import 'package:web/web.dart';
 @JS('if_block')
 external void _ifBlock(
   Node anchor,
-  JSExportedDartFunction condition,
-  JSExportedDartFunction consequent, [
-  JSExportedDartFunction? alternate,
+  JSFunction condition,
+  JSFunction consequent, [
+  JSFunction? alternate,
   bool elseIf,
 ]);
 
@@ -21,5 +21,9 @@ void ifBlock(
   void Function(Node anchor)? alternate,
   bool elseIf = false,
 ]) {
-  _ifBlock(anchor, condition.toJS, consequent.toJS, alternate?.toJS, elseIf);
+  if (alternate == null) {
+    _ifBlock(anchor, condition.toJS, consequent.toJS);
+  } else {
+    _ifBlock(anchor, condition.toJS, consequent.toJS, alternate.toJS, elseIf);
+  }
 }

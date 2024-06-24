@@ -16,11 +16,7 @@ void setProperty(JSObject object, String name, Object? value) {
 }
 
 @JS('set_getter')
-external void _setGetter(
-  JSObject object,
-  String name,
-  JSExportedDartFunction getter,
-);
+external void _setGetter(JSObject object, String name, JSFunction getter);
 
 void setGetter(
   JSObject object,

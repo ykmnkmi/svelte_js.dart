@@ -15,10 +15,10 @@ String index<T extends Object?>(T item, int index) {
 external void _each(
   Node anchor,
   int flags,
-  JSExportedDartFunction collection,
-  JSExportedDartFunction key,
-  JSExportedDartFunction render,
-  JSExportedDartFunction? fallback,
+  JSFunction collection,
+  JSFunction key,
+  JSFunction render,
+  JSFunction? fallback,
 );
 
 void eachBlock<T extends Object?>(

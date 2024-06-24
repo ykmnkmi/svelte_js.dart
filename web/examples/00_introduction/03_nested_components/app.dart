@@ -26,7 +26,7 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   Nested(node, NestedProperties());
   $.append($$anchor, fragment);
-  $.appendStyles(null, 'svelte-urs9w7', '''
+  $.appendStyles($$anchor, 'svelte-urs9w7', '''
 \tp.svelte-urs9w7 {
 \t\tcolor: purple;
 \t\tfont-family: 'Comic Sans MS', cursive;

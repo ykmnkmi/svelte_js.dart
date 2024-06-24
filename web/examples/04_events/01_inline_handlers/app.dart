@@ -32,7 +32,7 @@ void App(Node $$anchor, AppProperties $$properties) {
     $.mutate(point, $.get(point)[1] = event.clientY);
   }, false);
   $.append($$anchor, div);
-  $.appendStyles(null, 'svelte-1c44y5p', '''
+  $.appendStyles($$anchor, 'svelte-1c44y5p', '''
 \tdiv.svelte-1c44y5p {
 \t\twidth: 100%;
 \t\theight: 100%;

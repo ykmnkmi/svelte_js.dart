@@ -39,6 +39,8 @@ import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
 import 'examples/05_bindings/01_numeric_inputs/app.dart' as numeric_inputs;
 import 'examples/05_bindings/02_checkbox_inputs/app.dart' as checkbox_inputs;
 import 'examples/05_bindings/03_group_inputs/app.dart' as group_inputs;
+import 'examples/05_bindings/04_textarea_inputs/app.dart' as textarea_inputs;
+import 'examples/05_bindings/05_file_inputs/app.dart' as file_inputs;
 
 ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
@@ -75,6 +77,9 @@ ComponentReference? mountComponent(String name, Node target) {
     'numeric_inputs' => mount(numeric_inputs.App, target: target),
     'checkbox_inputs' => mount(checkbox_inputs.App, target: target),
     'group_inputs' => mount(group_inputs.App, target: target),
+    'textarea_inputs' => mount(textarea_inputs.App, target: target),
+    'file_inputs' => mount(file_inputs.App, target: target),
+    // default
     _ => null,
   };
 }

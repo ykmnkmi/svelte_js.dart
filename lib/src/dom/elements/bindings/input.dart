@@ -8,13 +8,13 @@ import 'package:web/web.dart';
 
 @JS('bind_value')
 external void _bindValue(
-  HTMLInputElement input,
+  HTMLElement input,
   JSFunction getValue,
   JSFunction setValue,
 );
 
 void bindInt(
-  HTMLInputElement input,
+  HTMLElement input,
   int Function() getValue,
   void Function(int value) update,
 ) {
@@ -22,7 +22,7 @@ void bindInt(
 }
 
 void bindDouble(
-  HTMLInputElement input,
+  HTMLElement input,
   double Function() getValue,
   void Function(double value) update,
 ) {
@@ -30,7 +30,7 @@ void bindDouble(
 }
 
 void bindValue(
-  HTMLInputElement input,
+  HTMLElement input,
   String Function() getValue,
   void Function(String value) update,
 ) {
@@ -39,32 +39,28 @@ void bindValue(
 
 @JS('bind_group')
 external void _bindGroup(
-  JSArray<HTMLInputElement> inputs,
+  JSArray<HTMLElement> inputs,
   JSArray<JSNumber> groupIndex,
-  HTMLInputElement input,
+  HTMLElement input,
   JSFunction getValue,
   JSFunction update,
 );
 
 void bindIntGroup(
-  JSArray<HTMLInputElement> inputs,
-  List<int> groupIndex,
-  HTMLInputElement input,
+  JSArray<HTMLElement> inputs,
+  HTMLElement input,
   int Function() getValue,
   void Function(int value) update,
 ) {
-  _bindGroup(inputs, groupIndex.toJS, input, getValue.toJS, update.toJS);
+  _bindGroup(inputs, JSArray<JSNumber>(), input, getValue.toJS, update.toJS);
 }
 
 void bindStringGroup(
-  JSArray<HTMLInputElement> inputs,
-  List<int> groupIndex,
-  HTMLInputElement input,
+  JSArray<HTMLElement> inputs,
+  HTMLElement input,
   List<String> Function() getValue,
   void Function(List<String> value) update,
 ) {
-  var jsGroupIndex = groupIndex.toJS;
-
   JSArray<JSString> jsGetValue() {
     var values = getValue();
     return values.toJS;
@@ -74,20 +70,35 @@ void bindStringGroup(
     update(jsValues.toDart);
   }
 
-  _bindGroup(inputs, jsGroupIndex, input, jsGetValue.toJS, jsUpdate.toJS);
+  _bindGroup(inputs, JSArray<JSNumber>(), input, jsGetValue.toJS, jsUpdate.toJS);
 }
 
 @JS('bind_checked')
 external void _bindChecked(
-  HTMLInputElement input,
+  HTMLElement input,
   JSFunction getValue,
   JSFunction setValue,
 );
 
 void bindChecked(
-  HTMLInputElement input,
+  HTMLElement input,
   bool Function() getValue,
   void Function(bool value) update,
 ) {
   _bindChecked(input, getValue.toJS, update.toJS);
+}
+
+@JS('bind_files')
+external void _bindFiles(
+  HTMLElement input,
+  JSFunction getValue,
+  JSFunction setValue,
+);
+
+void bindFiles(
+  HTMLElement input,
+  FileList? Function() getValue,
+  void Function(FileList? value) update,
+) {
+  _bindFiles(input, getValue.toJS, update.toJS);
 }

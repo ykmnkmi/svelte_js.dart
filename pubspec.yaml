@@ -8,6 +8,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  markdown: ^7.2.2
   meta: ^1.15.0
   web: ^0.5.1
 

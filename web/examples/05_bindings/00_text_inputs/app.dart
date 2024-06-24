@@ -15,7 +15,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
   }
 }
 
-void App(Node $$anchor, AppProperties $properties) {
+void App(Node $$anchor, AppProperties $$properties) {
   var name = $.mutableSource('');
   var fragment = _root();
   var input = $.firstChild<HTMLInputElement>(fragment);

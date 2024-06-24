@@ -98,7 +98,7 @@ void App(Node $$anchor, AppProperties $$properties) {
       $.setText(text, ' ${$.get(flavour)}');
     });
 
-    $.bindStringGroup(bindingGroup1, <int>[], input3, () {
+    $.bindStringGroup(bindingGroup1, input3, () {
       $.get(flavour);
       return $.get(flavours);
     }, ($$value) {
@@ -142,15 +142,15 @@ void App(Node $$anchor, AppProperties $$properties) {
     $.append($$anchor, fragment1);
   });
 
-  $.bindIntGroup(bindingGroup, <int>[], input, () => $.get(scoops), ($$value) {
+  $.bindIntGroup(bindingGroup, input, () => $.get(scoops), ($$value) {
     $.set(scoops, $$value);
   });
 
-  $.bindIntGroup(bindingGroup, <int>[], input1, () => $.get(scoops), ($$value) {
+  $.bindIntGroup(bindingGroup, input1, () => $.get(scoops), ($$value) {
     $.set(scoops, $$value);
   });
 
-  $.bindIntGroup(bindingGroup, <int>[], input2, () => $.get(scoops), ($$value) {
+  $.bindIntGroup(bindingGroup, input2, () => $.get(scoops), ($$value) {
     $.set(scoops, $$value);
   });
 

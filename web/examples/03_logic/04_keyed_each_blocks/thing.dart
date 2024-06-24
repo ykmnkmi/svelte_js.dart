@@ -38,7 +38,7 @@ void Thing(Node $$anchor, ThingProperties $$properties) {
   });
 
   $.append($$anchor, p);
-  $.appendStyles(null, 'svelte-dgndg6', '''
+  $.appendStyles($$anchor, 'svelte-dgndg6', '''
 \tspan.svelte-dgndg6 {
 \t\tdisplay: inline-block;
 \t\tpadding: 0.2em 0.5em;

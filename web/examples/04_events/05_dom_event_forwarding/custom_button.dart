@@ -22,7 +22,7 @@ void CustomButton(Node $$anchor, CustomButtonProperties $$properties) {
   }, false);
 
   $.append($$anchor, button);
-  $.appendStyles(null, 'svelte-urs9w7', '''
+  $.appendStyles($$anchor, 'svelte-urs9w7', '''
 \tbutton.svelte-hg07jm {
 \t\theight: 4rem;
 \t\twidth: 8rem;
