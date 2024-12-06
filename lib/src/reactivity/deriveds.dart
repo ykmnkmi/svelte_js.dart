@@ -10,8 +10,8 @@ import 'package:svelte_js/src/types.dart';
 external Derived<T> _derived<T>(JSExportedDartFunction update);
 
 Derived<T> derived<T>(T Function() update) {
-  ExternalDartReference? jsUpdate() {
-    return ref(update());
+  ExternalDartReference<T> jsUpdate() {
+    return ref<T>(update());
   }
 
   return _derived<T>(jsUpdate.toJS);

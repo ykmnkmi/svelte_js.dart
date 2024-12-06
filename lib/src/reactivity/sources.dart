@@ -8,12 +8,12 @@ import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/runtime.dart';
 import 'package:svelte_js/src/types.dart';
 
-@JS('source')
-external Source<T> _source<T extends Object?>(ExternalDartReference? value);
+// @JS('source')
+// external Source<T> _source<T extends Object?>(ExternalDartReference<T?> value);
 
-Source<T> source<T extends Object?>([T? value]) {
-  return _source<T>(ref(value));
-}
+// Source<T> source<T extends Object?>([T? value]) {
+//   return _source<T>(ref<T?>(value));
+// }
 
 @JS('mutable_state')
 external Source<T> _mutableState<T extends Object?>(

@@ -22,7 +22,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
 void App(Node $$anchor, AppProperties $$properties) {
   $.push($$properties, false);
 
-  var files = $.mutableSource<FileList?>();
+  var files = $.mutableSourceLate<FileList?>();
 
   $.legacyPreEffect(() => $.get(files), () {
     if ($.get(files) != null) {
