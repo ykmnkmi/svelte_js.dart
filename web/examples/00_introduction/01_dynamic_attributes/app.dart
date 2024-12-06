@@ -19,7 +19,6 @@ void App(Node $$anchor, AppProperties $$properties) {
   var src = '/tutorial/image.gif';
   var name = 'Rick Astley';
   var img = _root();
-  assert(img.nodeName == 'IMG');
 
   $.setAttribute(img, 'src', src);
   $.setAttribute(img, 'alt', '$name dancing');

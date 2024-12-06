@@ -1,65 +1,71 @@
+import 'svelte/internal/disclose-version';
+import 'svelte/internal/flags/legacy';
+
 import {
   await as await_block,           // dom/blocks/await.js
   each,                           // dom/blocks/each.js
   html,                           // dom/blocks/html.js
   if as if_block,                 // dom/blocks/if.js
-  remove_input_attr_defaults,     // dom/elements/attributes.js
-  set_attribute,
-  bind_value, bind_group,         // dom/elements/bindings.js
-  bind_checked, bind_files,
+  append_styles,                  // dom/css.js
   event,                          // dom/elements/events.js
-  remove_textarea_child,          // dom/elements/misc.js
+  reset,                          // dom/hydration.js
   init,                           // dom/legacy/lifecycle.js
-  bubble_event,                   // dom/legacy/misc.js
-  first_child, child, sibling,    // dom/operations.js
   template, comment, append,      // dom/template.js
-  derived,                        // reactivity/deriveds.js
-  user_effect, legacy_pre_effect, // reactivity/effects.js
+  set_attribute,                  // dom/elements/attributes.js
+  child, first_child, sibling,    // dom/operations.js
+  legacy_pre_effect,              // reactivity/effects.js
   legacy_pre_effect_reset, template_effect,
-  rest_props, spread_props, prop, // reactivity/props.js
-  source, mutable_source, mutate, // reactivity/sources.js
-  set,
-  set_text, append_styles,        // render.js
+  spread_props, prop,             // reactivity/props.js
+  mutable_state, mutate, set,     // reactivity/sources.js
+  set_text,                       // render.js
   get, push, pop,                 // runtime.js
 } from 'svelte/internal/client';
 
 import {
-  createEventDispatcher,          // client.js
+  createEventDispatcher,          // index.js
   mount, unmount,                 // render.js
 } from 'svelte';
 
-const getter = (value) => {
-  return () => value;
+// import {
+// remove_input_attr_defaults,     // dom/elements/attributes.js
+// bind_value, bind_group,         // dom/elements/bindings.js
+// bind_checked, bind_files,
+// remove_textarea_child,          // dom/elements/misc.js
+// bubble_event,                   // dom/legacy/misc.js
+// derived,                        // reactivity/deriveds.js
+// user_effect,                    // reactivity/effects.js
+// rest_props,                     // reactivity/props.js
+// source,                         // reactivity/sources.js
+// } from 'svelte/internal/client';
+
+const get_props_with_getter = (key, get) => {
+  return {
+    [key]: () => get()
+  };
 };
 
-const set_getter = (object, key, get) => {
-  Object.defineProperty(object, key, { get });
-};
-
-const set_property = (object, key, value) => {
-  object[key] = value;
+const set_props_getter = (props, key, get) => {
+  Object.defineProperty(props, key, { get });
 };
 
 export default {
-  getter, set_getter, set_property,
+  get_props_with_getter, set_props_getter,
 
   await_block,
   each,
   html,
   if_block,
-  remove_input_attr_defaults, set_attribute,
-  bind_value, bind_group, bind_checked, bind_files,
+  set_attribute,
   event,
-  remove_textarea_child,
+  reset,
   init,
-  bubble_event,
-  first_child, child, sibling,
+  child, first_child, sibling,
   template, comment, append,
-  derived,
-  user_effect, legacy_pre_effect, legacy_pre_effect_reset, template_effect,
-  rest_props, spread_props, prop,
-  source, mutable_source, mutate, set,
-  set_text, append_styles,
+  legacy_pre_effect, legacy_pre_effect_reset, template_effect,
+  spread_props, prop,
+  mutable_state, mutate, set,
+  append_styles,
+  set_text,
   get, push, pop,
 
   createEventDispatcher,

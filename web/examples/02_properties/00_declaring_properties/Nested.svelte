@@ -1,5 +1,5 @@
 <script type="application/dart">
-	external var answer;
+	external Object? answer;
 </script>
 
 <p>The answer is {answer}</p>

@@ -28,4 +28,4 @@ Fragment fragment(String html) {
 external DocumentFragment comment();
 
 @JS('append')
-external void append(Node anchor, Node node);
+external void append(Node? anchor, Node node);

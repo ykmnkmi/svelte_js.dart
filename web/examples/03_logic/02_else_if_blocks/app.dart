@@ -28,10 +28,8 @@ void App(Node $$anchor, AppProperties $$properties) {
   $.ifBlock(node, () => x > 10, ($$anchor) {
     var p = _root1();
     assert(p.nodeName == 'P');
-    var text = $.child<Text>(p);
-    assert(text.nodeName == '#text');
 
-    text.nodeValue = '$x is greater than 10';
+    p.textContent = '$x is greater than 10';
     $.append($$anchor, p);
   }, ($$anchor) {
     var fragment1 = $.comment();
@@ -41,18 +39,14 @@ void App(Node $$anchor, AppProperties $$properties) {
     $.ifBlock(node1, () => 5 > x, ($$anchor) {
       var p1 = _root3();
       assert(p1.nodeName == 'P');
-      var text1 = $.child<Text>(p1);
-      assert(text1.nodeName == '#text');
 
-      text1.nodeValue = '$x is less than 5';
+      p1.textContent = '$x is less than 5';
       $.append($$anchor, p1);
     }, ($$anchor) {
       var p2 = _root4();
       assert(p2.nodeName == 'P');
-      var text2 = $.child<Text>(p2);
-      assert(text2.nodeName == '#text');
 
-      text2.nodeValue = '$x is between 5 and 10';
+      p2.textContent = '$x is between 5 and 10';
       $.append($$anchor, p2);
     }, true);
 

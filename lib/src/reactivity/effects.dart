@@ -13,7 +13,10 @@ void userEffect(void Function() callback) {
 }
 
 @JS('legacy_pre_effect')
-external void _legacyPreEffect(JSFunction dependency, JSFunction callback);
+external void _legacyPreEffect(
+  JSFunction dependency,
+  JSFunction callback,
+);
 
 void legacyPreEffect(
   void Function() dependency,

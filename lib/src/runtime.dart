@@ -7,12 +7,18 @@ import 'package:meta/meta.dart';
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/types.dart';
 
+final class _Undefined {
+  const _Undefined();
+}
+
+const Object undefined = _Undefined();
+
 @JS('get')
-external ExternalDartReference? _get(Value signal);
+external ExternalDartReference<T> _get<T extends Object?>(Value<T> signal);
 
 @optionalTypeArgs
-T get<T>(Value<T> signal) {
-  return unref<T>(_get(signal));
+T get<T extends Object?>(Value<T> signal) {
+  return unref<T>(_get<T>(signal));
 }
 
 @JS('push')

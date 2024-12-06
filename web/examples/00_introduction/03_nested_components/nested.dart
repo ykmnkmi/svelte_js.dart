@@ -17,7 +17,6 @@ extension type NestedProperties._(JSObject _) implements JSObject {
 
 void Nested(Node $$anchor, NestedProperties $$properties) {
   var p = _root();
-  assert(p.nodeName == 'P');
 
   $.append($$anchor, p);
 }

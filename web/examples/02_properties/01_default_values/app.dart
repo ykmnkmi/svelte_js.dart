@@ -24,7 +24,7 @@ void App(Node $$anchor, AppProperties $$properties) {
 
   Nested(node, NestedProperties(answer: $.ref(42)));
 
-  var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
+  var node1 = $.sibling<Comment>(node, 2);
   assert(node1.nodeName == '#comment');
 
   Nested(node1, NestedProperties());

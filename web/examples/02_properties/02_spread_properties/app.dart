@@ -22,10 +22,5 @@ void App(Node $$anchor, AppProperties $$properties) {
     website: $.ref('https://svelte.dev'),
   );
 
-  var fragment = $.comment();
-  var node = $.child<Text>(fragment);
-  assert(node.nodeName == '#text');
-
-  Info(node, $.spreadProperties(properties));
-  $.append($$anchor, fragment);
+  Info($$anchor, $.spreadProperties(properties));
 }

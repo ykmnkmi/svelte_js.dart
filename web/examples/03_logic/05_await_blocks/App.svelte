@@ -1,30 +1,28 @@
 <script type="application/dart">
-	Future<String> getRandomNumber() async {
-		var responsePromise = window.fetch('/tutorial/random-number'.toJS);
-		var response = await responsePromise.toDart;
-		var textPromise = response.text();
-		var text = await textPromise.toDart;
+	Future<int> getRandomNumber() async {
+		var uri = Uri.parse('https://httpbin.org/bytes/1/throw');
+		var response = await get(uri);
 
-		if (response.ok) {
-			return text.toDart;
+		if (response.statusCode == 200) {
+			return response.bodyBytes[0];
 		}
 
-		throw Exception(text);
+		throw Exception(response.reasonPhrase);
 	}
 
-	var future = $state(getRandomNumber());
+	var future = getRandomNumber();
 
 	void handleClick() {
 		future = getRandomNumber();
 	}
 </script>
 
-<button onclick={handleClick}>generate random number</button>
+<button on:click={handleClick}>generate random number</button>
 
 {#await future}
 	<p>...waiting</p>
 {:then number}
 	<p>The number is {number}</p>
 {:catch error}
-	<p style="color: red">{error}</p>
+	<p style="color: red">{(error as Exception).message}</p>
 {/await}

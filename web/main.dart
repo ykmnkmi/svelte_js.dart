@@ -32,15 +32,15 @@ import 'examples/04_events/00_dom_events/app.dart' as dom_events;
 import 'examples/04_events/01_inline_handlers/app.dart' as inline_handlers;
 import 'examples/04_events/02_event_modifiers/app.dart' as event_modifiers;
 import 'examples/04_events/03_component_events/app.dart' as component_events;
-import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
-import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
+// import 'examples/04_events/04_event_forwarding/app.dart' as event_forwarding;
+// import 'examples/04_events/05_dom_event_forwarding/app.dart' as dom_event_forwarding;
 // bindings
-import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
-import 'examples/05_bindings/01_numeric_inputs/app.dart' as numeric_inputs;
-import 'examples/05_bindings/02_checkbox_inputs/app.dart' as checkbox_inputs;
-import 'examples/05_bindings/03_group_inputs/app.dart' as group_inputs;
-import 'examples/05_bindings/04_textarea_inputs/app.dart' as textarea_inputs;
-import 'examples/05_bindings/05_file_inputs/app.dart' as file_inputs;
+// import 'examples/05_bindings/00_text_inputs/app.dart' as text_inputs;
+// import 'examples/05_bindings/01_numeric_inputs/app.dart' as numeric_inputs;
+// import 'examples/05_bindings/02_checkbox_inputs/app.dart' as checkbox_inputs;
+// import 'examples/05_bindings/03_group_inputs/app.dart' as group_inputs;
+// import 'examples/05_bindings/04_textarea_inputs/app.dart' as textarea_inputs;
+// import 'examples/05_bindings/05_file_inputs/app.dart' as file_inputs;
 
 ComponentReference? mountComponent(String name, Node target) {
   return switch (name) {
@@ -70,15 +70,15 @@ ComponentReference? mountComponent(String name, Node target) {
     'inline_handlers' => mount(inline_handlers.App, target: target),
     'event_modifiers' => mount(event_modifiers.App, target: target),
     'component_events' => mount(component_events.App, target: target),
-    'event_forwarding' => mount(event_forwarding.App, target: target),
-    'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
+    // 'event_forwarding' => mount(event_forwarding.App, target: target),
+    // 'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
     // bindings
-    'text_inputs' => mount(text_inputs.App, target: target),
-    'numeric_inputs' => mount(numeric_inputs.App, target: target),
-    'checkbox_inputs' => mount(checkbox_inputs.App, target: target),
-    'group_inputs' => mount(group_inputs.App, target: target),
-    'textarea_inputs' => mount(textarea_inputs.App, target: target),
-    'file_inputs' => mount(file_inputs.App, target: target),
+    // 'text_inputs' => mount(text_inputs.App, target: target),
+    // 'numeric_inputs' => mount(numeric_inputs.App, target: target),
+    // 'checkbox_inputs' => mount(checkbox_inputs.App, target: target),
+    // 'group_inputs' => mount(group_inputs.App, target: target),
+    // 'textarea_inputs' => mount(textarea_inputs.App, target: target),
+    // 'file_inputs' => mount(file_inputs.App, target: target),
     // default
     _ => null,
   };
@@ -87,7 +87,6 @@ ComponentReference? mountComponent(String name, Node target) {
 void main() {
   var select = document.querySelector('nav select') as HTMLSelectElement;
   var target = document.querySelector('main') as HTMLElement;
-  var link = document.querySelector('nav a') as HTMLAnchorElement;
 
   ComponentReference? current;
 
@@ -97,7 +96,7 @@ void main() {
         unmount(component);
       }
 
-      window.location.hash = link.hash = select.value;
+      window.location.hash = select.value;
       current = mountComponent(select.value, target);
     } catch (error, stackTrace) {
       print(error);
@@ -108,8 +107,8 @@ void main() {
 
   select.addEventListener('change', onChange.toJS);
 
-  if (window.location.hash case var hash when hash.isNotEmpty) {
-    select.value = link.hash = hash.substring(1);
+  if (window.location.hash.isNotEmpty) {
+    select.value = window.location.hash.substring(1);
     onChange(Event('change'));
   }
 }

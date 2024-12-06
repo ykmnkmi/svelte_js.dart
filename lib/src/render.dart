@@ -3,21 +3,19 @@ library;
 
 import 'dart:js_interop';
 
-import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
 import 'package:web/web.dart';
 
 @JS('set_text')
-external void setText(Text text, String value);
+external void setText(Text text, String? value);
 
-@tryInline
 String stringify(Object? value) {
   return value == null ? '' : '$value';
 }
 
 @anonymous
 extension type _Mount._(JSObject _) implements JSObject {
-  external factory _Mount({Node? anchor, Node target});
+  external factory _Mount({Node? anchor, Node target, bool? intro});
 }
 
 @optionalTypeArgs
@@ -36,14 +34,13 @@ external ComponentReference _mount(
 
 ComponentReference mount<T extends JSObject>(
   Component<T> component, {
-  Node? anchor,
   required Node target,
+  Node? anchor,
+  bool intro = true,
 }) {
-  return _mount(component.toJS, _Mount(anchor: anchor, target: target));
+  var options = _Mount(anchor: anchor, target: target, intro: intro);
+  return _mount(component.toJS, options);
 }
 
 @JS('unmount')
 external void unmount(ComponentReference component);
-
-@JS('append_styles')
-external void appendStyles(Node? target, String id, String styles);

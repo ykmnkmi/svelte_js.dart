@@ -23,6 +23,6 @@ void App(Node $$anchor, AppProperties $$properties) {
   var button = _root();
   assert(button.nodeName == 'BUTTON');
 
-  $.event('click', button, $.once((event) => handleClick()), false);
+  $.event('click', button, $.once((event) => handleClick()));
   $.append($$anchor, button);
 }

@@ -5,13 +5,14 @@ import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
 import 'package:svelte_js/src/ref.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 import 'package:web/web.dart';
 
 @optionalTypeArgs
 extension type ComponentEvent<T>(CustomEvent _) implements CustomEvent {
   T get detail {
-    return unref<T>(unsafeCast<ExternalDartReference?>(_.detail));
+    // ignore: invalid_runtime_check_with_js_interop_types
+    var detailRefref = _.detail as ExternalDartReference<T>;
+    return unref<T>(detailRefref);
   }
 }
 
@@ -19,17 +20,23 @@ extension type ComponentEvent<T>(CustomEvent _) implements CustomEvent {
 external void _event(
   String eventName,
   Node node,
-  JSFunction handler,
-  bool capture,
-  bool passive,
-);
+  JSFunction handler, [
+  bool? capture,
+  bool? passive,
+]);
 
 void event<T extends Event>(
   String eventName,
   Node node,
-  void Function(T) handler,
-  bool capture, [
-  bool passive = false,
+  void Function(T event) handler, [
+  bool? capture,
+  bool? passive,
 ]) {
-  _event(eventName, node, handler.toJS, capture, passive);
+  if (capture == null) {
+    _event(eventName, node, handler.toJS);
+  } else if (passive == null) {
+    _event(eventName, node, handler.toJS, capture);
+  } else {
+    _event(eventName, node, handler.toJS, capture, passive);
+  }
 }

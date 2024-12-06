@@ -18,7 +18,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
 void App(Node $$anchor, AppProperties $$properties) {
   $.push($$properties, false);
 
-  var count = $.mutableSource(0);
+  var count = $.mutableState<int>(0);
 
   void handleClick() {
     $.set(count, $.get(count) + 1);
@@ -38,11 +38,13 @@ void App(Node $$anchor, AppProperties $$properties) {
   var text = $.child<Text>(button);
   assert(text.nodeName == '#text');
 
+  $.reset(button);
+
   $.templateEffect(() {
     $.setText(text, 'Clicked ${$.get(count)} ${$.get(count) == 1 ? 'time' : 'times'}');
   });
 
-  $.event('click', button, (event) => handleClick(), false);
+  $.event('click', button, (event) => handleClick());
   $.append($$anchor, button);
   $.pop();
 }

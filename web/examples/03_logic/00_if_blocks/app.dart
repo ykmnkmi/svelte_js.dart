@@ -22,7 +22,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var user = $.mutableSource(User(loggedIn: false));
+  var user = $.mutableState<User>(User(loggedIn: false));
 
   void toggle() {
     $.mutate(user, $.get(user).loggedIn = !$.get(user).loggedIn);
@@ -36,18 +36,18 @@ void App(Node $$anchor, AppProperties $$properties) {
     var button = _root1();
     assert(button.nodeName == 'BUTTON');
 
-    $.event('click', button, (event) => toggle(), false);
+    $.event('click', button, (event) => toggle());
     $.append($$anchor, button);
   });
 
-  var node1 = $.sibling<Comment>($.sibling<Text>(node), true);
+  var node1 = $.sibling<Comment>(node, 2);
   assert(node1.nodeName == '#comment');
 
   $.ifBlock(node1, () => !$.get(user).loggedIn, ($$anchor) {
     var button1 = _root2();
     assert(button1.nodeName == 'BUTTON');
 
-    $.event('click', button1, (event) => toggle(), false);
+    $.event('click', button1, (event) => toggle());
     $.append($$anchor, button1);
   });
 

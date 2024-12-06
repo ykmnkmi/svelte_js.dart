@@ -4,7 +4,6 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/src/ref.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 
 export 'package:svelte_js/src/dom/elements/events.dart' show ComponentEvent;
 export 'package:svelte_js/src/render.dart' show Component, ComponentReference, mount, unmount;
@@ -12,7 +11,6 @@ export 'package:svelte_js/src/render.dart' show Component, ComponentReference, m
 typedef EventDispatcher = bool Function(
   String type,
   Object? detail, {
-  bool bubbles,
   bool cancelable,
 });
 
@@ -21,7 +19,7 @@ external JSFunction _createEventDispatcher();
 
 @anonymous
 extension type _EventDispatcher._(JSObject _) implements JSObject {
-  external factory _EventDispatcher({bool bubbles, bool cancelable});
+  external factory _EventDispatcher({bool cancelable});
 }
 
 EventDispatcher createEventDispatcher() {
@@ -33,10 +31,14 @@ EventDispatcher createEventDispatcher() {
     bool bubbles = false,
     bool cancelable = false,
   }) {
-    var jsOptions = _EventDispatcher(bubbles: bubbles, cancelable: cancelable);
-    var jsDetail = unsafeCast<JSAny?>(ref(detail));
-    var jsResult = jsFunction.callAsFunction(null, type.toJS, jsDetail, jsOptions);
-    var jsBool = jsResult as JSBoolean;
-    return jsBool.toDart;
+    var jsResult = jsFunction.callAsFunction(
+      null,
+      type.toJS,
+      // ignore: invalid_runtime_check_with_js_interop_types
+      ref(detail) as JSAny?,
+      _EventDispatcher(cancelable: cancelable),
+    ) as JSBoolean;
+
+    return jsResult.toDart;
   };
 }
