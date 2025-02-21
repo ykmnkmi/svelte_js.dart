@@ -8,7 +8,8 @@ import 'package:web/web.dart';
 
 final _root1 = $.template<HTMLLIElement>('''
 <li><a target="_blank" rel="noreferrer"> </a></li>''');
-final _root = $.fragment('''<h1>The Famous Cats of YouTube</h1> <ul></ul>''');
+final _root = $.fragment('''
+<h1>The Famous Cats of YouTube</h1> <ul></ul>''');
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -17,19 +18,20 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var cats = $.mutableSource([
+  var cats = [
     (id: 'J---aiyznGQ', name: 'Keyboard Cat'),
     (id: 'z_AbfPXTKms', name: 'Maru'),
-    (id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat')
-  ]);
+    (id: 'OUtn3pvWmpg', name: 'Henri The Existential Cat'),
+  ];
 
   var fragment = _root();
-  var h1 = $.firstChild<HTMLHeadingElement>(fragment);
-  assert(h1.nodeName == 'H1');
-  var ul = $.sibling<HTMLUListElement>($.sibling<Text>(h1, true));
+  var ul = $.sibling<HTMLUListElement>(
+    $.firstChild<HTMLHeadingElement>(fragment),
+    2,
+  );
   assert(ul.nodeName == 'UL');
 
-  $.eachBlock(ul, 9, () => $.get(cats), $.index, ($$anchor, $$item, index) {
+  $.eachBlock(ul, 5, () => cats, $.index, ($$anchor, $$item, index) {
     String id() {
       return $.get($$item).id;
     }
@@ -45,6 +47,9 @@ void App(Node $$anchor, AppProperties $$properties) {
     var text = $.child<Text>(a);
     assert(text.nodeName == '#text');
 
+    $.reset(a);
+    $.reset(text);
+
     $.templateEffect(() {
       $.setAttribute(a, 'href', 'https://www.youtube.com/watch?v=${id()}');
       $.setText(text, '${index + 1}: ${name()}');
@@ -53,5 +58,6 @@ void App(Node $$anchor, AppProperties $$properties) {
     $.append($$anchor, li);
   });
 
+  $.reset(ul);
   $.append($$anchor, fragment);
 }

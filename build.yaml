@@ -6,29 +6,57 @@ targets:
           - web/main.dart
         options:
           native_null_assertions: false
-          dart2js_args:
-            # - -O0
-            # - --disable-inlining
-            # - --disable-type-inference
-            # - --disable-rti-optimizations
+        dev_options:
+          compilers:
+            dartdevc:
+        release_options:
+          compilers:
+            dart2js:
+              args:
+                # - -O0
+                # - --disable-inlining
+                # - --disable-type-inference
+                # - --disable-rti-optimizations
 
-            # - -O1
+                - -O1
 
-            # - -O2
-            # - --minify
-            # - --lax-runtime-type-to-string
-            # - --omit-late-names
+                # - -O2
+                # - --minify
+                # - --lax-runtime-type-to-string
+                # - --omit-late-names
 
-            # - -O3
-            # - --no-native-null-assertions
-            # - --omit-implicit-checks
+                # - -O3
+                # - --no-native-null-assertions
+                # - --omit-implicit-checks
 
-            # - -O4
-            # - --trust-primitives
+                # - -O4
+                # - --trust-primitives
 
-            # - --csp
-            - --enable-asserts
-            # - --no-minify
-            # - --no-source-maps
-            # - --omit-as-casts
-            # - --verbose
+                # - --csp
+                - --enable-asserts
+                # - --no-minify
+                # - --no-source-maps
+                # - --omit-as-casts
+                # - --verbose
+            dart2wasm:
+              args:
+                # - -O0
+                # - --no-inlining
+                # - --no-minify
+
+                - -O1
+                # - --inlining
+
+                # - -O2
+                # - --minify
+
+                # - -O3
+                # - --omit-implicit-checks
+
+                # - -O4
+                # - --omit-bounds-checks
+
+                - --no-strip-wasm
+                - --enable-asserts
+                # - --no-source-maps
+                # - --verbose

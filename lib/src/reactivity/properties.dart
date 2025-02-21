@@ -5,62 +5,58 @@ import 'dart:js_interop';
 
 import 'package:meta/meta.dart';
 import 'package:svelte_js/src/ref.dart';
-import 'package:svelte_js/src/unsafe_cast.dart';
 
-@JS('rest_props')
-external T _restProperties<T extends JSObject>(
-  JSObject properties,
-  JSArray exclude,
-);
+// @JS('rest_props')
+// external T _restProperties<T extends JSObject>(
+//   JSObject properties,
+//   JSArray exclude,
+// );
 
-T restProperties<T extends JSObject>(
-  JSObject properties,
-  List<String> exclude,
-) {
-  var jsExclude = arrayRefCast<String>(exclude);
-  return _restProperties<T>(properties, jsExclude);
-}
+// T restProperties<T extends JSObject>(
+//   JSObject properties,
+//   List<String> exclude,
+// ) {
+//   var jsExclude = arrayRefCast<String>(exclude);
+//   return _restProperties<T>(properties, jsExclude);
+// }
 
-@JS('spread_props')
-external T _spreadProperties<T extends JSObject>(JSAny properties);
-
-T spreadProperties<T extends JSObject>(JSAny properties) {
-  return _spreadProperties<T>(properties);
-}
+// @JS('spread_props')
+// external T spreadProperties<T extends JSObject>(JSObject properties);
 
 @JS('prop')
-external JSFunction _property(JSObject properties, String key);
+external JSFunction _property(
+  JSObject properties,
+  String key,
+  int flags, [
+  ExternalDartReference? fallback,
+]);
 
 @optionalTypeArgs
-T Function() property<T>(JSObject properties, String key) {
-  var jsFunction = _property(properties, key);
+T Function() property<T>(
+  JSObject properties,
+  String key,
+  int flags, [
+  ExternalDartReference<T>? fallback,
+]) {
+  JSFunction jsFunction;
+
+  if (fallback == null) {
+    jsFunction = _property(properties, key, flags);
+  } else {
+    jsFunction = _property(properties, key, flags, fallback);
+  }
 
   return () {
     var jsResult = jsFunction.callAsFunction();
-    var resultRef = unsafeCast<ExternalDartReference?>(jsResult);
-    return unref<T>(resultRef);
-  };
-}
 
-@JS('prop')
-external JSFunction _propertyWithDefault(
-  JSObject properties,
-  String key,
-  int flags,
-  ExternalDartReference? fallback,
-);
+    // in case if the property is a getter
+    if (jsResult.isA<JSFunction>()) {
+      var jsFunction2 = jsResult as JSFunction;
+      jsResult = jsFunction2.callAsFunction();
+    }
 
-T Function() propertyWithDefault<T>(
-  JSObject properties,
-  String key,
-  int flags,
-  T fallback,
-) {
-  var jsFunction = _propertyWithDefault(properties, key, flags, ref(fallback));
-
-  return () {
-    var jsResult = jsFunction.callAsFunction();
-    var resultRef = unsafeCast<ExternalDartReference?>(jsResult);
-    return unref<T>(resultRef);
+    // ignore: invalid_runtime_check_with_js_interop_types
+    var jsResultRef = jsResult as ExternalDartReference<T>;
+    return unref<T>(jsResultRef);
   };
 }

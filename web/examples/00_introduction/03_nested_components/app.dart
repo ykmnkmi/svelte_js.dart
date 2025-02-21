@@ -11,6 +11,16 @@ import 'nested.dart';
 final _root = $.fragment('''
 <p class="svelte-urs9w7">These styles...</p> <!>''');
 
+final __css = $.CSS(
+  hash: 'svelte-urs9w7',
+  code: '''
+\tp.svelte-urs9w7 {
+\t\tcolor: purple;
+\t\tfont-family: 'Comic Sans MS', cursive;
+\t\tfont-size: 2em;
+\t}''',
+);
+
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
     return AppProperties._(JSObject());
@@ -18,19 +28,11 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
+  $.appendStyles($$anchor, __css);
+
   var fragment = _root();
-  var p = $.firstChild<HTMLParagraphElement>(fragment);
-  assert(p.nodeName == 'P');
-  var node = $.sibling<Comment>($.sibling<Text>(p, true));
-  assert(node.nodeName == '#comment');
+  var node = $.sibling<Comment>($.firstChild(fragment), 2);
 
   Nested(node, NestedProperties());
   $.append($$anchor, fragment);
-  $.appendStyles($$anchor, 'svelte-urs9w7', '''
-\tp.svelte-urs9w7 {
-\t\tcolor: purple;
-\t\tfont-family: 'Comic Sans MS', cursive;
-\t\tfont-size: 2em;
-\t}
-''');
 }

@@ -6,8 +6,10 @@ import 'dart:js_interop';
 import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
-final _root = $.fragment('''
-<label><input type="number" min="0" max="10"> <input type="range" min="0" max="10"></label> <label><input type="number" min="0" max="10"> <input type="range" min="0" max="10"></label> <p> </p>''');
+final _root = $.fragment(
+  '''
+<label><input type="number" min="0" max="10"> <input type="range" min="0" max="10"></label> <label><input type="number" min="0" max="10"> <input type="range" min="0" max="10"></label> <p> </p>''',
+);
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {

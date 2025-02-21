@@ -11,63 +11,91 @@ final _root = $.template<HTMLParagraphElement>('''
 
 extension type InfoProperties._(JSObject _) implements JSObject {
   external factory InfoProperties({
-    ExternalDartReference? name,
-    ExternalDartReference? version,
-    ExternalDartReference? speed,
-    ExternalDartReference? website,
+    ExternalDartReference<String?>? name,
+    ExternalDartReference<int?>? version,
+    ExternalDartReference<String?>? speed,
+    ExternalDartReference<String?>? website,
   });
 
   @JS('name')
-  external ExternalDartReference get _name;
+  external ExternalDartReference<String?>? get _name;
 
-  dynamic get name {
-    return $.unref<dynamic>(_name);
+  String? get name {
+    if (_name case var name?) {
+      return $.unref<String?>(name);
+    }
+
+    return null;
   }
 
   @JS('version')
-  external ExternalDartReference get _version;
+  external ExternalDartReference<int?>? get _version;
 
-  dynamic get version {
-    return $.unref<dynamic>(_version);
+  int? get version {
+    if (_version case var version?) {
+      return $.unref<int?>(version);
+    }
+
+    return null;
   }
 
   @JS('speed')
-  external ExternalDartReference get _speed;
+  external ExternalDartReference<String?>? get _speed;
 
-  dynamic get speed {
-    return $.unref<dynamic>(_speed);
+  String? get speed {
+    if (_speed case var speed?) {
+      return $.unref<String?>(speed);
+    }
+
+    return null;
   }
 
   @JS('website')
-  external ExternalDartReference get _website;
+  external ExternalDartReference<String?>? get _website;
 
-  dynamic get website {
-    return $.unref<dynamic>(_website);
+  String? get website {
+    if (_website case var website?) {
+      return $.unref<String?>(website);
+    }
+
+    return null;
   }
 }
 
 void Info(Node $$anchor, InfoProperties $$properties) {
-  var name = $.property<dynamic>($$properties, 'name');
-  var version = $.property<dynamic>($$properties, 'version');
-  var speed = $.property<dynamic>($$properties, 'speed');
-  var website = $.property<dynamic>($$properties, 'website');
+  var name = $.property<String?>($$properties, 'name', 8);
+  var version = $.property<int?>($$properties, 'version', 8);
+  var speed = $.property<String?>($$properties, 'speed', 8);
+  var website = $.property<String?>($$properties, 'website', 8);
   var p = _root();
   assert(p.nodeName == 'P');
   var code = $.sibling<HTMLElement>($.child<Text>(p));
   assert(code.nodeName == 'CODE');
-  var text = $.child<Text>(code);
+  var text = $.child<Text>(code, true);
   assert(text.nodeName == '#text');
+
+  $.reset(code);
+
   var text1 = $.sibling<Text>(code);
   assert(text1.nodeName == '#text');
   var a = $.sibling<HTMLAnchorElement>(text1);
   assert(a.nodeName == 'A');
-  var a1 = $.sibling<HTMLAnchorElement>($.sibling<Text>(a));
+  var a1 = $.sibling<HTMLAnchorElement>(a, 2);
   assert(a1.nodeName == 'A');
+
+  $.reset(p);
 
   $.templateEffect(() {
     $.setText(text, $.stringify(name()));
-    $.setText(text1, ' package is ${$.stringify(speed())} fast. Download version ${$.stringify(version())} from ');
-    $.setAttribute(a, 'href', 'https://www.npmjs.com/package/${$.stringify(name())}');
+    $.setText(
+      text1,
+      ' package is ${$.stringify(speed())} fast. Download version ${$.stringify(version())} from ',
+    );
+    $.setAttribute(
+      a,
+      'href',
+      'https://www.npmjs.com/package/${$.stringify(name())}',
+    );
     $.setAttribute(a1, 'href', $.stringify(website()));
   });
 

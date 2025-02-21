@@ -1,20 +1,20 @@
 <script type="application/dart">
 	import 'Thing.svelte';
   
-  var things = $state([
+  var things = [
 		(id: 1, color: 'darkblue'),
 		(id: 2, color: 'indigo'),
 		(id: 3, color: 'deeppink'),
 		(id: 4, color: 'salmon'),
 		(id: 5, color: 'gold'),
-	]);
+	];
 
 	void handleClick() {
 		things = things.sublist(1);
 	}
 </script>
 
-<button onclick={handleClick}>Remove first thing</button>
+<button on:click={handleClick}>Remove first thing</button>
 
 <div style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 1em">
 	<div>

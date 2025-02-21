@@ -3,31 +3,23 @@ library;
 
 import 'dart:js_interop';
 
-import 'package:svelte_js/src/types.dart';
+import 'package:meta/dart2js.dart';
+import 'package:svelte_js/src/reactivity/signal.dart';
+
+extension type Effect._(JSObject _) implements Signal<void> {}
 
 @JS('user_effect')
-external void _userEffect(JSFunction callback);
+external Effect? _userEffect(JSExportedDartFunction callback);
 
-void userEffect(void Function() callback) {
-  _userEffect(callback.toJS);
+@tryInline
+Effect? userEffect(void Function() callback) {
+  return _userEffect(callback.toJS);
 }
-
-@JS('legacy_pre_effect')
-external void _legacyPreEffect(JSFunction dependency, JSFunction callback);
-
-void legacyPreEffect(
-  void Function() dependency,
-  void Function() callback,
-) {
-  _legacyPreEffect(dependency.toJS, callback.toJS);
-}
-
-@JS('legacy_pre_effect_reset')
-external void legacyPreEffectReset();
 
 @JS('template_effect')
-external Effect _templateEffect(JSFunction callback);
+external Effect _templateEffect(JSExportedDartFunction callback);
 
+@tryInline
 Effect templateEffect(void Function() callback) {
   return _templateEffect(callback.toJS);
 }

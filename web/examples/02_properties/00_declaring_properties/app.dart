@@ -15,10 +15,5 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var fragment = $.comment();
-  var node = $.firstChild<Text>(fragment);
-  assert(node.nodeName == '#text');
-
-  Nested(node, NestedProperties(answer: $.ref(42)));
-  $.append($$anchor, fragment);
+  Nested($$anchor, NestedProperties(answer: $.ref<Object?>(42)));
 }

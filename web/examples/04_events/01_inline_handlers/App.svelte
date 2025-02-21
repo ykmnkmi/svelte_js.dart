@@ -1,4 +1,6 @@
 <script type="application/dart">
+	import 'package:web/web.dart';
+
 	var point = <int>[0, 0];
 </script>
 

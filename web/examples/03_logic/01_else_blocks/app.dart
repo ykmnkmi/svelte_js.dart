@@ -20,7 +20,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var user = $.mutableSource(User(loggedIn: false));
+  var user = $.mutableState<User>(User(loggedIn: false));
 
   void toggle() {
     $.mutate(user, $.get(user).loggedIn = !$.get(user).loggedIn);
@@ -30,19 +30,24 @@ void App(Node $$anchor, AppProperties $$properties) {
   var node = $.firstChild<Text>(fragment);
   assert(node.nodeName == '#text');
 
-  $.ifBlock(node, () => $.get(user).loggedIn, ($$anchor) {
-    var button = _root1();
-    assert(button.nodeName == 'BUTTON');
+  $.ifBlock(
+    node,
+    () => $.get(user).loggedIn,
+    ($$anchor) {
+      var button = _root1();
+      assert(button.nodeName == 'BUTTON');
 
-    $.event('click', button, (event) => toggle(), false);
-    $.append($$anchor, button);
-  }, ($$anchor) {
-    var button1 = _root2();
-    assert(button1.nodeName == 'BUTTON');
+      $.event('click', button, (event) => toggle());
+      $.append($$anchor, button);
+    },
+    ($$anchor) {
+      var button1 = _root2();
+      assert(button1.nodeName == 'BUTTON');
 
-    $.event('click', button1, (event) => toggle(), false);
-    $.append($$anchor, button1);
-  });
+      $.event('click', button1, (event) => toggle());
+      $.append($$anchor, button1);
+    },
+  );
 
   $.append($$anchor, fragment);
 }

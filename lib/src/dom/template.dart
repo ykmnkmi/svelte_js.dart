@@ -3,6 +3,7 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:meta/dart2js.dart';
 import 'package:web/web.dart';
 
 extension type Template<T extends Node>._(JSFunction _) implements JSFunction {
@@ -16,16 +17,21 @@ extension type Fragment._(JSFunction _) implements JSFunction {
 @JS('template')
 external JSFunction _template(String html, [int flags]);
 
+@tryInline
 Template<T> template<T extends Node>(String html) {
   return Template<T>._(_template(html));
 }
 
+@tryInline
 Fragment fragment(String html) {
   return Fragment._(_template(html, 1));
 }
 
-@JS('comment')
-external DocumentFragment comment();
+@JS()
+external Node text([String value]);
 
-@JS('append')
-external void append(Node anchor, Node node);
+@JS()
+external Node comment();
+
+@JS()
+external void append(Node? anchor, Node node);

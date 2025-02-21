@@ -70,7 +70,13 @@ void bindStringGroup(
     update(jsValues.toDart);
   }
 
-  _bindGroup(inputs, JSArray<JSNumber>(), input, jsGetValue.toJS, jsUpdate.toJS);
+  _bindGroup(
+    inputs,
+    JSArray<JSNumber>(),
+    input,
+    jsGetValue.toJS,
+    jsUpdate.toJS,
+  );
 }
 
 @JS('bind_checked')

@@ -8,23 +8,21 @@ import 'package:meta/meta.dart';
 import 'package:web/web.dart';
 
 @JS('set_text')
-external void setText(Text text, String value);
-
-@tryInline
-String stringify(Object? value) {
-  return value == null ? '' : '$value';
-}
+external void setText(Text text, String? value);
 
 @anonymous
 extension type _Mount._(JSObject _) implements JSObject {
-  external factory _Mount({Node? anchor, Node target});
+  external factory _Mount({
+    JSObject props,
+    Node target,
+    Node? anchor,
+    bool? intro,
+  });
 }
 
 @optionalTypeArgs
-typedef Component<T extends JSObject> = void Function(
-  Node anchor,
-  T properties,
-);
+typedef Component<T extends JSObject> =
+    void Function(Node anchor, T properties);
 
 extension type ComponentReference(JSObject _) implements JSObject {}
 
@@ -34,16 +32,26 @@ external ComponentReference _mount(
   _Mount options,
 );
 
+@tryInline
 ComponentReference mount<T extends JSObject>(
   Component<T> component, {
-  Node? anchor,
+  T? properties,
   required Node target,
+  Node? anchor,
+  bool? intro = true,
 }) {
-  return _mount(component.toJS, _Mount(anchor: anchor, target: target));
+  if (properties == null) {
+    return _mount(
+      component.toJS,
+      _Mount(target: target, anchor: anchor, intro: intro),
+    );
+  } else {
+    return _mount(
+      component.toJS,
+      _Mount(props: properties, target: target, anchor: anchor, intro: intro),
+    );
+  }
 }
 
-@JS('unmount')
+@JS()
 external void unmount(ComponentReference component);
-
-@JS('append_styles')
-external void appendStyles(Node? target, String id, String styles);

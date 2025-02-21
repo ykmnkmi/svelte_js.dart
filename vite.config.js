@@ -5,6 +5,7 @@ export default defineConfig({
   root: '.',
   build: {
     minify: false,
+    sourcemap: true,
     outDir: 'lib/bundle',
     lib: {
       name: '$$',
@@ -17,7 +18,6 @@ export default defineConfig({
           entryFileNames: 'svelte.js',
           format: 'umd',
           name: '$$',
-          sourcemap: true,
         },
         {
           entryFileNames: 'svelte.min.js',

@@ -28,7 +28,7 @@ void Inner(Node $$anchor, InnerProperties $$properties) {
   var button = _root();
   assert(button.nodeName == 'BUTTON');
 
-  $.event('click', button, (event) => sayHello(), false);
+  $.event('click', button, (event) => sayHello());
   $.append($$anchor, button);
   $.pop();
 }

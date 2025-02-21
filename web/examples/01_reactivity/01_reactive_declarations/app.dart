@@ -4,6 +4,7 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
+import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 final _root = $.fragment('''
@@ -16,47 +17,39 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, false);
-
-  var count = $.mutableSource(0);
-  var doubled = $.mutableSource<int>();
-  var quadrupled = $.mutableSource<int>();
+  var count = state<int>(0);
+  var doubled = derived<int>(() => count() * 2);
+  var quadrupled = derived<int>(() => doubled() * 2);
 
   void handleClick() {
-    $.set(count, $.get(count) + 1);
+    count.set(count() + 1);
   }
-
-  $.legacyPreEffect(() => $.get(count), () {
-    $.set(doubled, $.get(count) * 2);
-  });
-
-  $.legacyPreEffect(() => $.get(doubled), () {
-    $.set(quadrupled, $.get(doubled) * 2);
-  });
-
-  $.legacyPreEffectReset();
 
   var fragment = _root();
   var button = $.firstChild<HTMLButtonElement>(fragment);
-  assert(button.nodeName == 'BUTTON');
   var text = $.child<Text>(button);
-  assert(text.nodeName == '#text');
-  var p = $.sibling<HTMLParagraphElement>($.sibling<Text>(button, true));
-  assert(p.nodeName == 'P');
+
+  $.reset(button);
+
+  var p = $.sibling<HTMLParagraphElement>(button, 2);
   var text1 = $.child<Text>(p);
-  assert(text1.nodeName == '#text');
-  var p1 = $.sibling<HTMLParagraphElement>($.sibling<Text>(p, true));
-  assert(p.nodeName == 'P');
+
+  $.reset(p);
+
+  var p1 = $.sibling<HTMLParagraphElement>(p, 2);
   var text2 = $.child<Text>(p1);
-  assert(text2.nodeName == '#text');
+
+  $.reset(p1);
 
   $.templateEffect(() {
-    $.setText(text, 'Count: ${$.get(count)}');
-    $.setText(text1, '${$.get(count)} * 2 = ${$.get(doubled)}');
-    $.setText(text2, '${$.get(doubled)} * 2 = ${$.get(quadrupled)}');
+    $.setText(text, '''
+Count: ${$.get(count)}''');
+    $.setText(text1, '''
+${count()} * 2 = ${doubled()}''');
+    $.setText(text2, '''
+${doubled()} * 2 = ${quadrupled()}''');
   });
 
-  $.event('click', button, (event) => handleClick(), false);
+  $.event<Event>('click', button, (event) => handleClick());
   $.append($$anchor, fragment);
-  $.pop();
 }

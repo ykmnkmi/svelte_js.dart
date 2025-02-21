@@ -28,7 +28,10 @@ void App(Node $$anchor, AppProperties $$properties) {
   assert(text.nodeName == '#text');
 
   $.templateEffect(() {
-    $.setText(text, 'Hello, ${$.get(name).isNotEmpty ? $.get(name) : 'stranger'}!');
+    $.setText(
+      text,
+      'Hello, ${$.get(name).isNotEmpty ? $.get(name) : 'stranger'}!',
+    );
   });
 
   $.bindValue(input, () => $.get(name), ($$value) => $.set(name, $$value));

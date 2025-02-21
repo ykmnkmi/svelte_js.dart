@@ -4,6 +4,9 @@
 .sdk/
 build/
 node_modules/
+web/main.wasm.map
 web/main.unopt.wasm
+web/main.unopt.wasm.map
+deno.lock
 package-lock.json
 pubspec.lock

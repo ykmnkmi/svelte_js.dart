@@ -1,67 +1,60 @@
+import 'svelte/internal/disclose-version';
+
 import {
+  html,                           // dom/blocks/html.js
+  append_styles,                  // dom/css.js
+  set_attribute,                  // dom/elements/attributes.js
+  event,                          // dom/elements/events.js
+  reset,                          // dom/hydration.js
+  child, first_child, sibling,    // dom/operations.js
+  template, comment, append,      // dom/template.js
+  derived,                        // reactivity/derived.js
+  user_effect, template_effect,   // reactivity/effects.js
+  spread_props, prop,             // reactivity/props.js
+  state, set,                     // reactivity/sources.js
+  set_text,                       // render.js
+  get, push, pop,                 // runtime.js
+
   await as await_block,           // dom/blocks/await.js
   each,                           // dom/blocks/each.js
-  html,                           // dom/blocks/html.js
   if as if_block,                 // dom/blocks/if.js
-  remove_input_attr_defaults,     // dom/elements/attributes.js
-  set_attribute,
-  bind_value, bind_group,         // dom/elements/bindings.js
-  bind_checked, bind_files,
-  event,                          // dom/elements/events.js
-  remove_textarea_child,          // dom/elements/misc.js
-  init,                           // dom/legacy/lifecycle.js
-  bubble_event,                   // dom/legacy/misc.js
-  first_child, child, sibling,    // dom/operations.js
-  template, comment, append,      // dom/template.js
-  derived,                        // reactivity/deriveds.js
-  user_effect, legacy_pre_effect, // reactivity/effects.js
-  legacy_pre_effect_reset, template_effect,
-  rest_props, spread_props, prop, // reactivity/props.js
-  source, mutable_source, mutate, // reactivity/sources.js
-  set,
-  set_text, append_styles,        // render.js
-  get, push, pop,                 // runtime.js
+
 } from 'svelte/internal/client';
 
 import {
-  createEventDispatcher,          // client.js
-  mount, unmount,                 // render.js
+  hydrate, mount, unmount,        // render.js
 } from 'svelte';
 
-const getter = (value) => {
-  return () => value;
+const get_props_with_getter = (key, get) => {
+  return {
+    [key]: () => get()
+  };
 };
 
-const set_getter = (object, key, get) => {
-  Object.defineProperty(object, key, { get });
-};
-
-const set_property = (object, key, value) => {
-  object[key] = value;
+const set_props_getter = (props, key, get) => {
+  Object.defineProperty(props, key, { get });
 };
 
 export default {
-  getter, set_getter, set_property,
+  // get_props_with_getter, set_props_getter,
 
-  await_block,
-  each,
   html,
-  if_block,
-  remove_input_attr_defaults, set_attribute,
-  bind_value, bind_group, bind_checked, bind_files,
+  append_styles,
+  set_attribute,
   event,
-  remove_textarea_child,
-  init,
-  bubble_event,
-  first_child, child, sibling,
+  reset,
+  child, first_child, sibling,
   template, comment, append,
   derived,
-  user_effect, legacy_pre_effect, legacy_pre_effect_reset, template_effect,
-  rest_props, spread_props, prop,
-  source, mutable_source, mutate, set,
-  set_text, append_styles,
+  user_effect, template_effect,
+  spread_props, prop,
+  state, set,
+  set_text,
   get, push, pop,
 
-  createEventDispatcher,
-  mount, unmount,
+  // await_block,
+  // each,
+  // if_block,
+
+  hydrate, mount, unmount,
 };

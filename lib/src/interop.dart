@@ -3,25 +3,30 @@ library;
 
 import 'dart:js_interop';
 
-import 'package:svelte_js/src/ref.dart';
+@JS('get_props_with_getter')
+external T _getPropertiesWithGetter<T extends JSObject>(
+  String name,
+  JSFunction getter,
+);
 
-@JS('getter')
-external JSFunction getter(JSAny? value);
-
-@JS('set_property')
-external void _setProperty(JSObject object, String name, ExternalDartReference? value);
-
-void setProperty(JSObject object, String name, Object? value) {
-  _setProperty(object, name, ref(value));
-}
-
-@JS('set_getter')
-external void _setGetter(JSObject object, String name, JSFunction getter);
-
-void setGetter(
-  JSObject object,
+T getPropertiesWithGetter<T extends JSObject>(
   String name,
   ExternalDartReference? Function() getter,
 ) {
-  _setGetter(object, name, getter.toJS);
+  return _getPropertiesWithGetter<T>(name, getter.toJS);
+}
+
+@JS('set_props_getter')
+external void _setPropertiesGetter<T extends JSObject>(
+  T object,
+  String name,
+  JSFunction getter,
+);
+
+void setPropertiesGetter<T extends JSObject>(
+  T object,
+  String name,
+  ExternalDartReference? Function() getter,
+) {
+  _setPropertiesGetter<T>(object, name, getter.toJS);
 }

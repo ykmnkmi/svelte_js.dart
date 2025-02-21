@@ -3,25 +3,29 @@ import 'dart:js_interop';
 import 'package:svelte_js/src/constants.dart';
 import 'package:svelte_js/src/unsafe_cast.dart';
 
-extension JSArrayLength on JSArray {
-  external int get length;
-}
-
 extension JSArrayOfJSNumber on JSArray<JSNumber> {
-  external num operator [](int index);
-
-  external void operator []=(int index, num value);
-
-  List<num> get toDart {
-    // if (isJS) {
-    //   return unsafeCast<List<num>>(this);
-    // }
-
-    num generator(int index) {
-      return this[index];
+  List<int> get toDartInt {
+    if (isJS) {
+      return unsafeCast<List<int>>(this);
     }
 
-    return List<num>.generate(length, generator);
+    int generator(int index) {
+      return this[index].toDartInt;
+    }
+
+    return List<int>.generate(length, generator);
+  }
+
+  List<double> get toDartDouble {
+    if (isJS) {
+      return unsafeCast<List<double>>(this);
+    }
+
+    double generator(int index) {
+      return this[index].toDartDouble;
+    }
+
+    return List<double>.generate(length, generator);
   }
 }
 
@@ -34,7 +38,7 @@ extension JSListOfNum on List<num> {
     var jsArray = JSArray<JSNumber>.withLength(length);
 
     for (var i = 0; i < length; i++) {
-      jsArray[i] = this[i];
+      jsArray[i] = this[i].toJS;
     }
 
     return jsArray;
@@ -47,12 +51,12 @@ extension JSArrayOfJSString on JSArray<JSString> {
   external void operator []=(int index, String value);
 
   List<String> get toDart {
-    // if (isJS) {
-    //   return unsafeCast<List<String>>(this);
-    // }
+    if (isJS) {
+      return unsafeCast<List<String>>(this);
+    }
 
     String generator(int index) {
-      return this[index];
+      return this[index].toDart;
     }
 
     return List<String>.generate(length, generator);
@@ -68,7 +72,7 @@ extension JSListOfString on List<String> {
     var jsArray = JSArray<JSString>.withLength(length);
 
     for (var i = 0; i < length; i++) {
-      jsArray[i] = this[i];
+      jsArray[i] = this[i].toJS;
     }
 
     return jsArray;

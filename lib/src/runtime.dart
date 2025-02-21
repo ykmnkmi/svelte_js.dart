@@ -3,20 +3,22 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:meta/dart2js.dart';
 import 'package:meta/meta.dart';
+import 'package:svelte_js/src/reactivity/signal.dart';
 import 'package:svelte_js/src/ref.dart';
-import 'package:svelte_js/src/types.dart';
 
 @JS('get')
-external ExternalDartReference? _get(Value signal);
+external ExternalDartReference<T> _get<T>(Signal<T> signal);
 
 @optionalTypeArgs
-T get<T>(Value<T> signal) {
-  return unref<T>(_get(signal));
+@tryInline
+T get<T>(Signal<T> signal) {
+  return unref<T>(_get<T>(signal));
 }
 
-@JS('push')
-external void push(JSObject properties, bool runes);
+@JS()
+external void push<T extends JSObject>(T properties, bool runes);
 
-@JS('pop')
+@JS()
 external void pop();

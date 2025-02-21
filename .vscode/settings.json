@@ -1,11 +1,5 @@
 {
-  "dart.lineLength": 160,
-  "dart.sdkPath": ".sdk",
-  "editor.rulers": [
-    80,
-    120,
-    160
-  ],
+  "editor.rulers": [80],
   "files.associations": {
     "*.svelte": "html"
   },

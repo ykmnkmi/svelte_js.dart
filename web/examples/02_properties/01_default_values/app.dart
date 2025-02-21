@@ -20,12 +20,10 @@ extension type AppProperties._(JSObject _) implements JSObject {
 void App(Node $$anchor, AppProperties $$properties) {
   var fragment = _root();
   var node = $.firstChild<Comment>(fragment);
-  assert(node.nodeName == '#comment');
 
-  Nested(node, NestedProperties(answer: $.ref(42)));
+  Nested(node, NestedProperties(answer: $.ref<Object?>(42)));
 
-  var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
-  assert(node1.nodeName == '#comment');
+  var node1 = $.sibling<Comment>(node, 2);
 
   Nested(node1, NestedProperties());
   $.append($$anchor, fragment);

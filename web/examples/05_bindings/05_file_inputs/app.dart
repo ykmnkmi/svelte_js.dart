@@ -10,8 +10,10 @@ import 'array_from.dart';
 
 final _root2 = $.template('<p> </p>');
 final _root1 = $.fragment('<h2>Selected files:</h2> <!>');
-final _root = $.fragment('''
-<label for="avatar">Upload a picture:</label> <input accept="image/png, image/jpeg" id="avatar" name="avatar" type="file"> <label for="many">Upload multiple files of any type:</label> <input id="many" multiple type="file"> <!>''');
+final _root = $.fragment(
+  '''
+<label for="avatar">Upload a picture:</label> <input accept="image/png, image/jpeg" id="avatar" name="avatar" type="file"> <label for="many">Upload multiple files of any type:</label> <input id="many" multiple type="file"> <!>''',
+);
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -22,7 +24,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
 void App(Node $$anchor, AppProperties $$properties) {
   $.push($$properties, false);
 
-  var files = $.mutableSource<FileList?>();
+  var files = $.mutableSourceLate<FileList?>();
 
   $.legacyPreEffect(() => $.get(files), () {
     if ($.get(files) != null) {
@@ -53,16 +55,22 @@ void App(Node $$anchor, AppProperties $$properties) {
     var node1 = $.sibling<Comment>($.sibling<Text>(h2, true));
     assert(node1.nodeName == '#comment');
 
-    $.eachBlock(node1, 1, () => arrayFrom<File>($.get(files)!).toDart, $.index, ($$anchor, file, $$index) {
-      var p = _root2();
-      var text = $.child<Text>(p);
+    $.eachBlock(
+      node1,
+      1,
+      () => arrayFrom<File>($.get(files)!).toDart,
+      $.index,
+      ($$anchor, file, $$index) {
+        var p = _root2();
+        var text = $.child<Text>(p);
 
-      $.templateEffect(() {
-        $.setText(text, '${$.get(file).name} (${$.get(file).size} bytes)');
-      });
+        $.templateEffect(() {
+          $.setText(text, '${$.get(file).name} (${$.get(file).size} bytes)');
+        });
 
-      $.append($$anchor, p);
-    });
+        $.append($$anchor, p);
+      },
+    );
 
     $.append($$anchor, fragment1);
   });

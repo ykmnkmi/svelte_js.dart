@@ -3,41 +3,46 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:svelte_js/src/reactivity/equality.dart';
+import 'package:svelte_js/src/reactivity/signal.dart';
 import 'package:svelte_js/src/ref.dart';
-import 'package:svelte_js/src/types.dart';
+import 'package:svelte_js/src/runtime.dart';
 
-@JS('source')
-external Source<T> _source<T extends Object?>(ExternalDartReference? value);
+import '' as self;
 
-Source<T> source<T extends Object?>([T? value]) {
-  return _source<T>(ref(value));
+extension type State<T>._(JSObject _) implements Signal<T> {
+  T call() {
+    return get<T>(this);
+  }
+
+  T set(T newValue) {
+    return self.set<T>(this, newValue);
+  }
+
+  void update(void Function(T value) callback) {
+    throw UnimplementedError();
+  }
 }
 
-@JS('mutable_source')
-external Source<T> _mutableSource<T extends Object?>(
-  ExternalDartReference? value,
-);
+@JS('state')
+external State<T> _state<T extends Object?>(ExternalDartReference<T?> value);
 
-Source<T> mutableSource<T extends Object?>([T? value]) {
-  return _mutableSource<T>(ref(value));
-}
-
-@JS('mutate')
-external ExternalDartReference? _mutate<S extends Object?, T extends Object?>(
-  Source<S> source,
-  ExternalDartReference? value,
-);
-
-T mutate<S extends Object?, T extends Object?>(Source<S> signal, T value) {
-  return unref<T>(_mutate<S, T>(signal, ref(value)));
+State<T> state<T>(T value) {
+  State<T> state = _state<T>(ref<T>(value));
+  state.equals = safeEquals<T>.toJSCaptureThis;
+  return state;
 }
 
 @JS('set')
-external ExternalDartReference? _set<T extends Object?>(
-  Source<T> source,
-  ExternalDartReference? value,
+external ExternalDartReference<T> _set<T>(
+  State<T> source,
+  ExternalDartReference<T> value,
 );
 
-T set<T extends Object?>(Source<T> source, T value) {
-  return unref<T>(_set(source, ref(value)));
+T set<T>(State<T> source, T value) {
+  return unref<T>(_set(source, ref<T>(value)));
+}
+
+extension<T> on State<T> {
+  external JSFunction equals;
 }

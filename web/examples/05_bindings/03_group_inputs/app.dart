@@ -14,8 +14,10 @@ final _root4 = $.template<HTMLParagraphElement>("""
 <p>Can't order more flavours than scoops!</p>""");
 final _root5 = $.template<HTMLParagraphElement>('''
 <p> </p>''');
-final _root = $.fragment('''
-<h2>Size</h2> <label><input type="radio"> One scoop</label> <label><input type="radio"> Two scoops</label> <label><input type="radio"> Three scoops</label> <h2>Flavours</h2> <!> <!>''');
+final _root = $.fragment(
+  '''
+<h2>Size</h2> <label><input type="radio"> One scoop</label> <label><input type="radio"> Two scoops</label> <label><input type="radio"> Three scoops</label> <h2>Flavours</h2> <!> <!>''',
+);
 
 extension type AppProperties._(JSObject _) implements JSObject {
   factory AppProperties() {
@@ -31,7 +33,11 @@ void App(Node $$anchor, AppProperties $$properties) {
   var scoops = $.mutableSource(1);
   var flavours = $.mutableSource(['Mint choc chip']);
 
-  var menu = $.mutableSource(['Cookies and cream', 'Mint choc chip', 'Raspberry ripple']);
+  var menu = $.mutableSource([
+    'Cookies and cream',
+    'Mint choc chip',
+    'Raspberry ripple',
+  ]);
 
   String join(List<String> flavours) {
     if (flavours.length == 1) {
@@ -79,7 +85,11 @@ void App(Node $$anchor, AppProperties $$properties) {
   var node = $.sibling<Comment>($.sibling<Text>(h21, true));
   assert(node.nodeName == '#comment');
 
-  $.eachBlock(node, 1, () => $.get(menu), $.index, ($$anchor, flavour, $$index) {
+  $.eachBlock(node, 1, () => $.get(menu), $.index, (
+    $$anchor,
+    flavour,
+    $$index,
+  ) {
     var label3 = _root1();
     var input3 = $.child<HTMLInputElement>(label3);
     assert(input3.nodeName == 'INPUT');
@@ -92,18 +102,26 @@ void App(Node $$anchor, AppProperties $$properties) {
 
     $.templateEffect(() {
       if (input3value != (input3value = $.get(flavour))) {
-        input3.value = (input3.__value = $.get(flavour).toJS) == null ? '' : $.get(flavour);
+        input3.value =
+            (input3.__value = $.get(flavour).toJS) == null
+                ? ''
+                : $.get(flavour);
       }
 
       $.setText(text, ' ${$.get(flavour)}');
     });
 
-    $.bindStringGroup(bindingGroup1, input3, () {
-      $.get(flavour);
-      return $.get(flavours);
-    }, ($$value) {
-      $.set(flavours, $$value);
-    });
+    $.bindStringGroup(
+      bindingGroup1,
+      input3,
+      () {
+        $.get(flavour);
+        return $.get(flavours);
+      },
+      ($$value) {
+        $.set(flavours, $$value);
+      },
+    );
 
     $.append($$anchor, label3);
   });
@@ -111,36 +129,50 @@ void App(Node $$anchor, AppProperties $$properties) {
   var node1 = $.sibling<Comment>($.sibling<Text>(node, true));
   assert(node1.nodeName == '#comment');
 
-  $.ifBlock(node1, () => $.get(flavours).isEmpty, ($$anchor) {
-    var p = _root2();
-    assert(p.nodeName == 'P');
+  $.ifBlock(
+    node1,
+    () => $.get(flavours).isEmpty,
+    ($$anchor) {
+      var p = _root2();
+      assert(p.nodeName == 'P');
 
-    $.append($$anchor, p);
-  }, ($$anchor) {
-    var fragment1 = $.comment();
-    var node2 = $.firstChild<Text>(fragment1);
-    assert(node2.nodeName == '#text');
+      $.append($$anchor, p);
+    },
+    ($$anchor) {
+      var fragment1 = $.comment();
+      var node2 = $.firstChild<Text>(fragment1);
+      assert(node2.nodeName == '#text');
 
-    $.ifBlock(node2, () => $.get(flavours).length > $.get(scoops), ($$anchor) {
-      var p1 = _root4();
-      assert(p1.nodeName == 'P');
+      $.ifBlock(
+        node2,
+        () => $.get(flavours).length > $.get(scoops),
+        ($$anchor) {
+          var p1 = _root4();
+          assert(p1.nodeName == 'P');
 
-      $.append($$anchor, p1);
-    }, ($$anchor) {
-      var p2 = _root5();
-      assert(p2.nodeName == 'P');
-      var text1 = $.child<Text>(p2);
-      assert(text1.nodeName == '#text');
+          $.append($$anchor, p1);
+        },
+        ($$anchor) {
+          var p2 = _root5();
+          assert(p2.nodeName == 'P');
+          var text1 = $.child<Text>(p2);
+          assert(text1.nodeName == '#text');
 
-      $.templateEffect(() {
-        $.setText(text1, 'You ordered ${$.get(scoops)} ${$.get(scoops) == 1 ? 'scoop' : 'scoops'} of ${join($.get(flavours))}');
-      });
+          $.templateEffect(() {
+            $.setText(
+              text1,
+              'You ordered ${$.get(scoops)} ${$.get(scoops) == 1 ? 'scoop' : 'scoops'} of ${join($.get(flavours))}',
+            );
+          });
 
-      $.append($$anchor, p2);
-    }, true);
+          $.append($$anchor, p2);
+        },
+        true,
+      );
 
-    $.append($$anchor, fragment1);
-  });
+      $.append($$anchor, fragment1);
+    },
+  );
 
   $.bindIntGroup(bindingGroup, input, () => $.get(scoops), ($$value) {
     $.set(scoops, $$value);
