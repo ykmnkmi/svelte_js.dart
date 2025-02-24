@@ -1,15 +1,19 @@
 <script type="application/dart">
-	var user = User(loggedIn: false);
+  import 'package:svelte_js/svelte_js.dart';
 
-	void toggle() {
-		user.loggedIn = !user.loggedIn;
-	}
+  import 'user.dart';
+
+  var user = state(User(loggedIn: false));
+
+  void toggle() {
+    user.update((user) => User(loggedIn: !user.loggedIn));
+  }
 </script>
 
 {#if loggedIn}
-	<button on:click={toggle}>Log out</button>
+  <button onclick={toggle}>Log out</button>
 {/if}
 
 {#if !loggedIn}
-	<button on:click={toggle}>Log in</button>
+  <button onclick={toggle}>Log in</button>
 {/if}

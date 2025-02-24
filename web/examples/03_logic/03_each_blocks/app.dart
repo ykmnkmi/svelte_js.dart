@@ -31,28 +31,19 @@ void App(Node $$anchor, AppProperties $$properties) {
   );
   assert(ul.nodeName == 'UL');
 
-  $.eachBlock(ul, 5, () => cats, $.index, ($$anchor, $$item, index) {
-    String id() {
-      return $.get($$item).id;
-    }
-
-    String name() {
-      return $.get($$item).name;
-    }
-
+  $.eachBlock(ul, 21, () => cats, $.index, ($$anchor, $$item, i) {
+    String id() => $$item().id;
+    String name() => $$item().name;
     var li = _root1();
-    assert(li.nodeName == 'LI');
     var a = $.child<HTMLAnchorElement>(li);
-    assert(a.nodeName == 'A');
     var text = $.child<Text>(a);
-    assert(text.nodeName == '#text');
 
     $.reset(a);
     $.reset(text);
 
     $.templateEffect(() {
       $.setAttribute(a, 'href', 'https://www.youtube.com/watch?v=${id()}');
-      $.setText(text, '${index + 1}: ${name()}');
+      $.setText(text, '${i + 1}: ${name()}');
     });
 
     $.append($$anchor, li);

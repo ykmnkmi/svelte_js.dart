@@ -3,27 +3,30 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:meta/dart2js.dart';
 import 'package:web/web.dart';
 
 @JS('if_block')
-external void _ifBlock(
-  Node anchor,
-  JSFunction condition,
-  JSFunction consequent, [
-  JSFunction? alternate,
-  bool elseIf,
-]);
+external void _ifBlock(Node anchor, JSFunction branch, [bool elseIf]);
 
+@tryInline
 void ifBlock(
   Node anchor,
-  bool Function() condition,
-  void Function(Node anchor) consequent, [
-  void Function(Node anchor)? alternate,
-  bool elseIf = false,
+  void Function(
+    void Function(void Function(Node anchor) callback, [bool flag]) render,
+  )
+  branch, [
+  bool? elseIf,
 ]) {
-  if (alternate == null) {
-    _ifBlock(anchor, condition.toJS, consequent.toJS);
+  void jsBranch(JSFunction jsRender) {
+    branch((callback, [flag = true]) {
+      jsRender.callAsFunction(null ,callback.toJS, flag.toJS);
+    });
+  }
+
+  if (elseIf == null) {
+    _ifBlock(anchor, jsBranch.toJS);
   } else {
-    _ifBlock(anchor, condition.toJS, consequent.toJS, alternate.toJS, elseIf);
+    _ifBlock(anchor, jsBranch.toJS, elseIf);
   }
 }

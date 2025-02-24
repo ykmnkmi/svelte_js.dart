@@ -7,12 +7,11 @@ import 'package:svelte_js/internal.dart' as $;
 import 'package:web/web.dart';
 
 final _root = $.template<HTMLParagraphElement>(
-  '''
-<p><span class="svelte-dgndg6">initial</span> <span class="svelte-dgndg6">current</span></p>''',
+  '<p><span class="svelte-671r1c">initial</span> <span class="svelte-671r1c">current</span></p>',
 );
 
 final __css = $.CSS(
-  hash: 'svelte-dgndg6',
+  hash: 'svelte-671r1c',
   code: '''
 \tspan {
 \t\tdisplay: inline-block;
@@ -27,39 +26,26 @@ final __css = $.CSS(
 
 extension type ThingProperties._(JSObject _) implements JSObject {
   external factory ThingProperties({ExternalDartReference<String> current});
-
-  @JS('current')
-  external ExternalDartReference<String> get _current;
-
-  String get current {
-    return $.unref<String>(_current);
-  }
 }
 
 void Thing(Node $$anchor, ThingProperties $$properties) {
   $.appendStyles($$anchor, __css);
 
-  var current = $.property<String>($$properties, 'current', 8);
+  var current = $.property<String>($$properties, 'current', 3);
   // ...but `initial` is fixed upon initialisation
   var initial = current();
-  var p = _root();
-  assert(p.nodeName == 'P');
-  var span = $.child<HTMLSpanElement>(p);
-  assert(span.nodeName == 'SPAN');
 
-  $.setAttribute(span, 'style', 'background-color: ${$.stringify(initial)}');
+  var p = _root();
+  var span = $.child<HTMLSpanElement>(p);
+
+  $.setAttribute(span, 'style', 'background-color: $initial');
 
   var span1 = $.sibling<HTMLSpanElement>(span, 2);
-  assert(span1.nodeName == 'SPAN');
 
   $.reset(p);
 
   $.templateEffect(() {
-    $.setAttribute(
-      span1,
-      'style',
-      'background-color: ${$.stringify(current())}',
-    );
+    $.setAttribute(span1, 'style', 'background-color: ${current()}');
   });
 
   $.append($$anchor, p);

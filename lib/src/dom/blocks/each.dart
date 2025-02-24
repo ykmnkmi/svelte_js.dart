@@ -3,8 +3,8 @@ library;
 
 import 'dart:js_interop';
 
+import 'package:svelte_js/src/reactivity.dart';
 import 'package:svelte_js/src/ref.dart';
-import 'package:svelte_js/src/types.dart';
 import 'package:web/web.dart';
 
 JSAny index<T extends Object?>(T item, int index) {
@@ -26,8 +26,7 @@ void eachBlock<T extends Object?>(
   int flags,
   List<T> Function() collection,
   JSAny Function(T item, int index) key,
-  //                                    `index` can be [Source].
-  void Function(Node anchor, Value<T> item, int index) render, [
+  void Function(Node anchor, State<T> item, int index) render, [
   void Function(Node anchor)? fallback,
 ]) {
   JSArray jsCollection() {
@@ -38,15 +37,19 @@ void eachBlock<T extends Object?>(
     return key(unref<T>(item), index);
   }
 
+  void jsRender(Node anchor, State<T> item, int index) {
+    render(anchor, item, index);
+  }
+
   if (fallback == null) {
-    _each(anchor, flags, jsCollection.toJS, jsKey.toJS, render.toJS);
+    _each(anchor, flags, jsCollection.toJS, jsKey.toJS, jsRender.toJS);
   } else {
     _each(
       anchor,
       flags,
       jsCollection.toJS,
       jsKey.toJS,
-      render.toJS,
+      jsRender.toJS,
       fallback.toJS,
     );
   }

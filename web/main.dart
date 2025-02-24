@@ -19,14 +19,12 @@ import 'examples/01_reactivity/02_reactive_statements/app.dart' as r02;
 // properties
 import 'examples/02_properties/00_declaring_properties/app.dart' as p00;
 import 'examples/02_properties/01_default_values/app.dart' as p01;
-// import 'examples/02_properties/02_spread_properties/app.dart'
-//     as spread_properties;
 // logic
-// import 'examples/03_logic/00_if_blocks/app.dart' as if_blocks;
-// import 'examples/03_logic/01_else_blocks/app.dart' as else_blocks;
-// import 'examples/03_logic/02_else_if_blocks/app.dart' as else_if_blocks;
-// import 'examples/03_logic/03_each_blocks/app.dart' as each_blocks;
-// import 'examples/03_logic/04_keyed_each_blocks/app.dart' as keyed_each_blocks;
+import 'examples/03_logic/00_if_blocks/app.dart' as l00;
+import 'examples/03_logic/01_else_blocks/app.dart' as l01;
+import 'examples/03_logic/02_else_if_blocks/app.dart' as l02;
+import 'examples/03_logic/03_each_blocks/app.dart' as l03;
+import 'examples/03_logic/04_keyed_each_blocks/app.dart' as l04;
 // import 'examples/03_logic/05_await_blocks/app.dart' as await_blocks;
 // events
 // import 'examples/04_events/00_dom_events/app.dart' as dom_events;
@@ -45,44 +43,43 @@ import 'examples/02_properties/01_default_values/app.dart' as p01;
 
 Component<JSObject>? selectComponent(String name, Node target) {
   return switch (name) {
-    // introduction
-    'hello_world' => i00.App,
-    'dynamic_attributes' => i01.App,
-    'styling' => i02.App,
-    'nested_components' => i03.App,
-    'html_tags' => i04.App,
-    // reactivity
-    'reactive_assignments' => r00.App,
-    'reactive_declarations' => r01.App,
-    'reactive_statements' => r02.App,
-    // properties
-    'declaring_properties' => p00.App,
-    'default_values' => p01.App,
-    // 'spread_properties' => mount(spread_properties.App, target: target),
-    // logic
-    // 'if_blocks' => mount(if_blocks.App, target: target),
-    // 'else_blocks' => mount(else_blocks.App, target: target),
-    // 'else_if_blocks' => mount(else_if_blocks.App, target: target),
-    // 'each_blocks' => mount(each_blocks.App, target: target),
-    // 'keyed_each_blocks' => mount(keyed_each_blocks.App, target: target),
-    // 'await_blocks' => mount(await_blocks.App, target: target),
-    // events
-    // 'dom_events' => mount(dom_events.App, target: target),
-    // 'inline_handlers' => mount(inline_handlers.App, target: target),
-    // 'event_modifiers' => mount(event_modifiers.App, target: target),
-    // 'component_events' => mount(component_events.App, target: target),
-    // 'event_forwarding' => mount(event_forwarding.App, target: target),
-    // 'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
-    // bindings
-    // 'text_inputs' => mount(text_inputs.App, target: target),
-    // 'numeric_inputs' => mount(numeric_inputs.App, target: target),
-    // 'checkbox_inputs' => mount(checkbox_inputs.App, target: target),
-    // 'group_inputs' => mount(group_inputs.App, target: target),
-    // 'textarea_inputs' => mount(textarea_inputs.App, target: target),
-    // 'file_inputs' => mount(file_inputs.App, target: target),
-    // default
-    _ => null,
-  } as Component<JSObject>?;
+        // introduction
+        'hello_world' => i00.App,
+        'dynamic_attributes' => i01.App,
+        'styling' => i02.App,
+        'nested_components' => i03.App,
+        'html_tags' => i04.App,
+        // reactivity
+        'reactive_assignments' => r00.App,
+        'reactive_declarations' => r01.App,
+        'reactive_statements' => r02.App,
+        // properties
+        'declaring_properties' => p00.App,
+        'default_values' => p01.App,
+        // logic
+        'if_blocks' => l00.App,
+        'else_blocks' => l01.App,
+        'else_if_blocks' => l02.App,
+        'each_blocks' => l03.App,
+        'keyed_each_blocks' => l04.App,
+        // 'await_blocks' => mount(await_blocks.App, target: target),
+        // events
+        // 'dom_events' => mount(dom_events.App, target: target),
+        // 'inline_handlers' => mount(inline_handlers.App, target: target),
+        // 'event_modifiers' => mount(event_modifiers.App, target: target),
+        // 'event_forwarding' => mount(event_forwarding.App, target: target),
+        // 'dom_event_forwarding' => mount(dom_event_forwarding.App, target: target),
+        // bindings
+        // 'text_inputs' => mount(text_inputs.App, target: target),
+        // 'numeric_inputs' => mount(numeric_inputs.App, target: target),
+        // 'checkbox_inputs' => mount(checkbox_inputs.App, target: target),
+        // 'group_inputs' => mount(group_inputs.App, target: target),
+        // 'textarea_inputs' => mount(textarea_inputs.App, target: target),
+        // 'file_inputs' => mount(file_inputs.App, target: target),
+        // default
+        _ => null,
+      }
+      as Component<JSObject>?;
 }
 
 void main() {

@@ -1,8 +1,9 @@
 ## 🛠 Status: Experimental
-Testing Svelte 5 JS bindings and ~~compiler~~ with new Dart JS & WASM  interoperability.
+Testing Svelte 5 JS bindings and ~~compiler~~ with new Dart JS & WASM
+interoperability.
 
 Hard to implement:
-- Passing a Dart `List` reference to the JS side for data population.
+- Mutability. Set new value to signal.
 - ...
 
 Currently, all Dart code in the examples is not generated.

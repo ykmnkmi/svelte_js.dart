@@ -17,9 +17,9 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var count = state<int>(0);
-  var doubled = derived<int>(() => count() * 2);
-  var quadrupled = derived<int>(() => doubled() * 2);
+  var count = state(0);
+  var doubled = derived(() => count() * 2);
+  var quadrupled = derived(() => doubled() * 2);
 
   void handleClick() {
     count.set(count() + 1);
@@ -42,12 +42,9 @@ void App(Node $$anchor, AppProperties $$properties) {
   $.reset(p1);
 
   $.templateEffect(() {
-    $.setText(text, '''
-Count: ${$.get(count)}''');
-    $.setText(text1, '''
-${count()} * 2 = ${doubled()}''');
-    $.setText(text2, '''
-${doubled()} * 2 = ${quadrupled()}''');
+    $.setText(text, 'Count: ${$.get(count)}');
+    $.setText(text1, '${count()} * 2 = ${doubled()}');
+    $.setText(text2, '${doubled()} * 2 = ${quadrupled()}');
   });
 
   $.event<Event>('click', button, (event) => handleClick());

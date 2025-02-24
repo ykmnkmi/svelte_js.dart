@@ -11,24 +11,17 @@ final _root = $.template<HTMLParagraphElement>('''
 
 extension type NestedProperties._(JSObject _) implements JSObject {
   external factory NestedProperties({ExternalDartReference<Object?> answer});
-
-  @JS('answer')
-  external ExternalDartReference<Object?> _answer;
-
-  Object? get answer {
-    return $.unref<Object?>(_answer);
-  }
 }
 
 void Nested(Node $$anchor, NestedProperties $$properties) {
+  var answer = $.property<Object?>($$properties, 'answer', 3);
   var p = _root();
   var text = $.child<Text>(p);
 
   $.reset(p);
 
   $.templateEffect(() {
-    $.setText(text, '''
-The answer is ${$$properties.answer ?? ''}''');
+    $.setText(text, 'The answer is ${answer() ?? ''}');
   });
 
   $.append($$anchor, p);

@@ -4,6 +4,7 @@ library;
 import 'dart:js_interop';
 
 import 'package:svelte_js/internal.dart' as $;
+import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 import 'user.dart';
@@ -20,34 +21,40 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var user = $.mutableState<User>(User(loggedIn: false));
+  var user = state<User>(User(loggedIn: false));
 
   void toggle() {
-    $.mutate(user, $.get(user).loggedIn = !$.get(user).loggedIn);
+    user.update((user) {
+      return User(loggedIn: !user.loggedIn);
+    });
   }
 
   var fragment = $.comment();
-  var node = $.firstChild<Text>(fragment);
-  assert(node.nodeName == '#text');
+  var node = $.firstChild<Comment>(fragment);
 
-  $.ifBlock(
-    node,
-    () => $.get(user).loggedIn,
-    ($$anchor) {
+  {
+    void consequent(Node $$anchor) {
       var button = _root1();
-      assert(button.nodeName == 'BUTTON');
 
-      $.event('click', button, (event) => toggle());
+      $.event<Event>('click', button, (event) => toggle());
       $.append($$anchor, button);
-    },
-    ($$anchor) {
-      var button1 = _root2();
-      assert(button1.nodeName == 'BUTTON');
+    }
 
-      $.event('click', button1, (event) => toggle());
+    void alternate(Node $$anchor) {
+      var button1 = _root2();
+
+      $.event<Event>('click', button1, (event) => toggle());
       $.append($$anchor, button1);
-    },
-  );
+    }
+
+    $.ifBlock(node, ($$render) {
+      if (user().loggedIn) {
+        $$render(consequent);
+      } else {
+        $$render(alternate, false);
+      }
+    });
+  }
 
   $.append($$anchor, fragment);
 }

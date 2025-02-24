@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:js_interop';
 
 import 'package:meta/dart2js.dart';
@@ -11,14 +12,36 @@ JSArray arrayRefCast<T>(List<T> list) {
     return unsafeCast<JSArray>(list);
   }
 
-  var jsArray = JSArray<JSAny?>.withLength(list.length);
+  var refList = _RefList<T>(list);
+  return refList.toJSProxyOrRef;
+}
 
-  for (var index = 0; index < list.length; index++) {
-    jsArray[index] = unsafeCast<JSAny?>(ref<T>(list[index]));
+final class _RefList<T> extends ListBase<JSAny> {
+  _RefList(this._list);
+
+  final List<T> _list;
+
+  @override
+  int get length {
+    return _list.length;
   }
 
-  <JSAny?>[].toJSProxyOrRef;
-  return jsArray;
+  @override
+  set length(int value) {
+    _list.length = value;
+  }
+
+  @override
+  JSAny operator [](int index) {
+    // ignore: invalid_runtime_check_with_js_interop_types
+    return ref<T>(_list[index]) as JSAny;
+  }
+
+  @override
+  void operator []=(int index, JSAny value) {
+    // ignore: invalid_runtime_check_with_js_interop_types
+    _list[index] = unref<T>(value as ExternalDartReference<T>);
+  }
 }
 
 @optionalTypeArgs

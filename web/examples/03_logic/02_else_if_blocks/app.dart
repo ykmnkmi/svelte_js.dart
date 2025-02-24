@@ -21,48 +21,57 @@ extension type AppProperties._(JSObject _) implements JSObject {
 
 void App(Node $$anchor, AppProperties $$properties) {
   var x = 7;
+
   var fragment = $.comment();
   var node = $.firstChild<Text>(fragment);
-  assert(node.nodeName == '#text');
 
-  $.ifBlock(
-    node,
-    () => x > 10,
-    ($$anchor) {
+  {
+    void consequent(Node $$anchor) {
       var p = _root1();
-      assert(p.nodeName == 'P');
 
       p.textContent = '$x is greater than 10';
       $.append($$anchor, p);
-    },
-    ($$anchor) {
+    }
+
+    void alternate1(Node $$anchor) {
       var fragment1 = $.comment();
       var node1 = $.firstChild<Text>(fragment1);
-      assert(node1.nodeName == '#text');
 
-      $.ifBlock(
-        node1,
-        () => 5 > x,
-        ($$anchor) {
+      {
+        void consequent1(Node $$anchor) {
           var p1 = _root3();
-          assert(p1.nodeName == 'P');
 
           p1.textContent = '$x is less than 5';
           $.append($$anchor, p1);
-        },
-        ($$anchor) {
+        }
+
+        void alternate(Node $$anchor) {
           var p2 = _root4();
-          assert(p2.nodeName == 'P');
 
           p2.textContent = '$x is between 5 and 10';
           $.append($$anchor, p2);
-        },
-        true,
-      );
+        }
+
+        $.ifBlock(node1, ($$render) {
+          if (x < 5) {
+            $$render(consequent1);
+          } else {
+            $$render(alternate, false);
+          }
+        });
+      }
 
       $.append($$anchor, fragment1);
-    },
-  );
+    }
+
+    $.ifBlock(node, ($$render) {
+      if (x > 10) {
+        $$render(consequent);
+      } else {
+        $$render(alternate1, false);
+      }
+    });
+  }
 
   $.append($$anchor, fragment);
 }

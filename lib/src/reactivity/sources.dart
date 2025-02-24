@@ -3,7 +3,6 @@ library;
 
 import 'dart:js_interop';
 
-import 'package:svelte_js/src/reactivity/equality.dart';
 import 'package:svelte_js/src/reactivity/signal.dart';
 import 'package:svelte_js/src/ref.dart';
 import 'package:svelte_js/src/runtime.dart';
@@ -19,17 +18,25 @@ extension type State<T>._(JSObject _) implements Signal<T> {
     return self.set<T>(this, newValue);
   }
 
-  void update(void Function(T value) callback) {
-    throw UnimplementedError();
+  void update(T Function(T value) callback) {
+    set(
+      untrack<T>(() {
+        return callback(call());
+      }),
+    );
   }
 }
 
 @JS('state')
 external State<T> _state<T extends Object?>(ExternalDartReference<T?> value);
 
-State<T> state<T>(T value) {
+State<T> state<T>(T value, [bool Function(T a, T? b) equals = identical]) {
+  bool jsEquals(State<T?> self, ExternalDartReference<T> value) {
+    return equals(unref<T>(value), unref<T?>(self.value));
+  }
+
   State<T> state = _state<T>(ref<T>(value));
-  state.equals = safeEquals<T>.toJSCaptureThis;
+  state.equals = jsEquals.toJSCaptureThis;
   return state;
 }
 
@@ -45,4 +52,7 @@ T set<T>(State<T> source, T value) {
 
 extension<T> on State<T> {
   external JSFunction equals;
+
+  @JS('v')
+  external ExternalDartReference<T> value;
 }

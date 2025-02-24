@@ -17,7 +17,7 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  var count = state<int>(0);
+  var count = state(0);
 
   void handleClick() {
     count.set(count() + 1);
@@ -29,8 +29,7 @@ void App(Node $$anchor, AppProperties $$properties) {
   $.reset(button);
 
   $.templateEffect(() {
-    $.setText(text, '''
-Clicked ${count()} ${count() == 1 ? 'time' : 'times'}''');
+    $.setText(text, 'Clicked ${count()} ${count() == 1 ? 'time' : 'times'}');
   });
 
   $.event<Event>('click', button, (event) => handleClick());

@@ -6,23 +6,6 @@ import 'dart:js_interop';
 import 'package:meta/meta.dart';
 import 'package:svelte_js/src/ref.dart';
 
-// @JS('rest_props')
-// external T _restProperties<T extends JSObject>(
-//   JSObject properties,
-//   JSArray exclude,
-// );
-
-// T restProperties<T extends JSObject>(
-//   JSObject properties,
-//   List<String> exclude,
-// ) {
-//   var jsExclude = arrayRefCast<String>(exclude);
-//   return _restProperties<T>(properties, jsExclude);
-// }
-
-// @JS('spread_props')
-// external T spreadProperties<T extends JSObject>(JSObject properties);
-
 @JS('prop')
 external JSFunction _property(
   JSObject properties,
