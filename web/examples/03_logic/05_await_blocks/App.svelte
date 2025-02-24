@@ -1,28 +1,31 @@
 <script type="application/dart">
-	Future<int> getRandomNumber() async {
-		var uri = Uri.parse('https://httpbin.org/bytes/1/throw');
-		var response = await get(uri);
+  import 'dart:math';
 
-		if (response.statusCode == 200) {
-			return response.bodyBytes[0];
-		}
+  import 'package:svelte_js/svelte_js.dart';
 
-		throw Exception(response.reasonPhrase);
-	}
+  Future<int> getRandomNumber() async {
+    var random = Random();
 
-	var future = getRandomNumber();
+    if (random.nextBool()) {
+      return random.nextInt(0xFF)
+    } else {
+      throw Exception('No luck!');
+    }
+  }
 
-	void handleClick() {
-		future = getRandomNumber();
-	}
+  var future = state(getRandomNumber());
+
+  void handleClick() {
+    future.set(getRandomNumber());
+  }
 </script>
 
-<button on:click={handleClick}>generate random number</button>
+<button onclick={handleClick}>generate random number</button>
 
 {#await future}
-	<p>...waiting</p>
+  <p>...waiting</p>
 {:then number}
-	<p>The number is {number}</p>
+  <p>The number is {number}</p>
 {:catch error}
-	<p style="color: red">{(error as Exception).message}</p>
+  <p style="color: red">{(error as Exception).message}</p>
 {/await}

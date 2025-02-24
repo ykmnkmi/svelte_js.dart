@@ -2,9 +2,10 @@
 library;
 
 import 'dart:js_interop';
+import 'dart:math';
 
-import 'package:http/http.dart' show get;
 import 'package:svelte_js/internal.dart' as $;
+import 'package:svelte_js/svelte_js.dart';
 import 'package:web/web.dart';
 
 final _root1 = $.template<HTMLParagraphElement>('''
@@ -22,32 +23,25 @@ extension type AppProperties._(JSObject _) implements JSObject {
 }
 
 void App(Node $$anchor, AppProperties $$properties) {
-  $.push($$properties, false);
-
   Future<int> getRandomNumber() async {
-    var uri = Uri.parse('https://httpbin.org/bytes/1/throw');
-    var response = await get(uri);
+    var random = Random();
 
-    if (response.statusCode == 200) {
-      return response.bodyBytes[0];
+    if (random.nextBool()) {
+      return random.nextInt(0xFF);
+    } else {
+      throw Exception('No luck!');
     }
-
-    throw StateError(response.reasonPhrase!);
   }
 
-  var future = $.mutableState<Future<int>>(getRandomNumber());
+  var future = state(getRandomNumber());
 
   void handleClick() {
-    $.set(future, getRandomNumber());
+    future.set(getRandomNumber());
   }
-
-  $.init();
 
   var fragment = _root();
   var button = $.firstChild<HTMLButtonElement>(fragment);
-  assert(button.nodeName == 'BUTTON');
   var node = $.sibling<Comment>(button, 2);
-  assert(node.nodeName == '#comment');
 
   $.awaitBlock(
     node,
